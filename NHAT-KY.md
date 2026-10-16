@@ -10,11 +10,12 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 | Mục | Giá trị |
 |---|---|
 | Thư mục máy | `C:\Users\HP\vuon-leap-2010` |
-| Repo | `github.com/LearntoLeap/vuon-leap-2010` (riêng tư) |
+| Repo | `github.com/LearntoLeap/vuon-leap-2010` (**công khai**) |
+| Web live | https://learntoleap.github.io/vuon-leap-2010/ (GitHub Pages, nhánh `main`, push là tự cập nhật sau ~1 phút) |
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
 | File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
 | Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`) |
-| Trạng thái 16/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật (danh hiệu / lời chúc / thư CEO là **bản nháp**), chưa có ảnh, **chưa deploy** |
+| Trạng thái 16/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật (danh hiệu / lời chúc / thư CEO là **bản nháp**), chưa có ảnh, đã live trên GitHub Pages |
 
 ### Ba màn hình (điều hướng bằng hash)
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
@@ -97,7 +98,7 @@ window.LEAP = {
 8. "PHỤ NỮ VIỆT NAM" chuyển **tím**.
 9. Sửa **lỗi mở thư** (tờ thư trồi lên đè tim + tên); **chống xuống dòng**; **bỏ xưng hô**, đổi link theo họ tên.
 10. **"Mrs. + Tên"**; tên trong thư đặt trên **thiệp giấy kem** (không lẫn vào nền); **tối ưu hiệu năng** (chỉ animate transform/opacity).
-11. 16/10: đưa lên GitHub (`LearntoLeap/vuon-leap-2010`, riêng tư) + viết nhật ký này và `CLAUDE.md`.
+11. 16/10: đưa lên GitHub (`LearntoLeap/vuon-leap-2010`) + viết nhật ký này và `CLAUDE.md`. CEO chọn chuyển repo **công khai** và bật **GitHub Pages** → link riêng dạng `https://learntoleap.github.io/vuon-leap-2010/#/thu/<id>`. Lưu ý: repo công khai nên ai cũng xem được `data.js` (tên, vai trò) — không đưa thông tin nhạy cảm vào.
 
 ---
 
@@ -119,5 +120,5 @@ window.LEAP = {
 
 - [ ] CEO duyệt/sửa danh hiệu, mô tả, lời chúc, thư CEO trong `data.js`.
 - [ ] Thêm ảnh chân dung (`anhDaiDien`), số liệu, câu chuyện + ảnh vào thư mục `anh/`.
-- [ ] Deploy để gửi link riêng cho từng người trước sáng 20/10 (GitHub Pages cần repo công khai, hoặc dùng Vercel với repo riêng tư).
+- [x] Deploy GitHub Pages (16/10). Gửi link riêng `…/#/thu/<id>` cho từng người sáng 20/10.
 - [ ] (Tuỳ chọn) In QR từng link lên thiệp kèm hoa; kịch bản robot trao thư; chạy thử trên TV văn phòng ngày 19/10.
