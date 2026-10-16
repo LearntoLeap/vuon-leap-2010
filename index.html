@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Vườn Leap · 20.10</title>
+<meta name="theme-color" content="#f9b6d9">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Great+Vibes&family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3a1230;--ink2:#71405f;--pink:#e8559c;--pink2:#ff8cc6;--blush:#ffd3e8;--paper:#fffaf3;
+  --vn:linear-gradient(180deg,#c9a2ff 0%,#8a4ee6 48%,#5b23b8 100%);
+  --gold:#f0bf5a;--white-glass:rgba(255,255,255,.62);
+  --shadow:0 18px 50px rgba(214,70,140,.22),0 2px 6px rgba(160,40,100,.08);
+  --ease:cubic-bezier(.22,1,.36,1);--ease-io:cubic-bezier(.65,0,.35,1);
+  --display:"Playfair Display",Georgia,serif;--script:"Great Vibes",cursive;
+  --num:"Bodoni Moda","Playfair Display",serif;--sans:"Be Vietnam Pro",system-ui,sans-serif;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3 0 0 0 -1.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{font-family:var(--sans);color:var(--ink);background:#ffd9ec;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+h1,h2,h3,.cap span,.tt,.badge h2{text-wrap:balance}
+p{text-wrap:pretty}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+
+/* ---------- Nền hồng hạt nhiễu ---------- */
+.bg{position:fixed;inset:0;z-index:0;background:
+  radial-gradient(55% 45% at 72% 28%,#fff 0%,rgba(255,255,255,0) 62%),
+  radial-gradient(60% 55% at 18% 82%,rgba(255,255,255,.9) 0%,rgba(255,255,255,0) 60%),
+  radial-gradient(70% 60% at 0% 0%,#f48fc2 0%,rgba(244,143,194,0) 62%),
+  radial-gradient(70% 60% at 100% 100%,#f59cc9 0%,rgba(245,156,201,0) 62%),
+  linear-gradient(160deg,#f7a7d0,#ffd6ea 45%,#ffe9f4 70%,#f8b3d7)}
+.bg::after{content:"";position:absolute;inset:0;background-image:var(--noise);opacity:.55}
+#sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.decor{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;--mx:0;--my:0}
+.decor .d{position:absolute;display:block;will-change:transform;
+  translate:calc(var(--mx) * var(--z,10) * 1px) calc(var(--my) * var(--z,10) * 1px);
+  animation:drift var(--t,8s) ease-in-out infinite,decorIn 1.8s var(--ease) both;animation-delay:var(--dl,0s),var(--di,.2s)}
+.decor .d svg{width:100%;height:auto;display:block;overflow:visible}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-14px) rotate(calc(var(--r,0deg) + 5deg))}}
+@keyframes decorIn{from{opacity:0;scale:.5}to{opacity:1;scale:1}}
+.decor .spark{color:var(--ink);font-size:var(--s,22px);line-height:1;animation:twinkle var(--t,3s) ease-in-out infinite,decorIn 1.4s var(--ease) both;animation-delay:var(--dl,0s),var(--di,.4s)}
+@keyframes twinkle{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(.55) rotate(45deg);opacity:.5}}
+.decor .side{transition:filter .7s}
+body[data-route=show] .decor .side,body[data-route=thu] .decor .home-only{filter:opacity(0)}
+#app{position:relative;z-index:2;transition:opacity .45s var(--ease-io)}
+#app.out{opacity:0}
+
+/* ---------- Thành phần chung ---------- */
+.fab{position:fixed;top:16px;right:16px;z-index:50;width:44px;height:44px;border-radius:50%;
+  background:var(--white-glass);border:1px solid #fff;backdrop-filter:blur(10px);font-size:18px;color:var(--pink);
+  display:grid;place-items:center;box-shadow:0 6px 20px rgba(214,70,140,.2);transition:transform .4s var(--ease)}
+.fab:hover{transform:scale(1.1) rotate(-8deg)}
+.fab.on{animation:beat 1.2s ease-in-out infinite;box-shadow:0 0 0 4px rgba(232,85,156,.18),0 6px 20px rgba(214,70,140,.3)}
+@keyframes beat{50%{scale:1.07}}
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;
+  background:var(--white-glass);border:1px solid #fff;backdrop-filter:blur(10px);font-weight:600;font-size:15px;color:var(--ink);
+  box-shadow:0 6px 20px rgba(214,70,140,.15);transition:transform .45s var(--ease),box-shadow .45s var(--ease),background .45s}
+.btn:hover{transform:translateY(-2px);background:#fff;box-shadow:0 10px 28px rgba(214,70,140,.28)}
+.btn:active{transform:translateY(0) scale(.97)}
+.btn.primary{background:linear-gradient(120deg,#ff86c0,#e8559c);color:#fff;border-color:rgba(255,255,255,.7);box-shadow:0 10px 30px rgba(232,85,156,.45)}
+.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);
+  translate:-120% 0;animation:sweep 3.6s var(--ease-io) infinite 1.5s}
+@keyframes sweep{0%{translate:-120% 0}45%,100%{translate:120% 0}}
+.back{position:fixed;top:16px;left:16px;z-index:50;padding:10px 16px;font-size:14px}
+.eyebrow{letter-spacing:.38em;font-size:12px;font-weight:700;text-transform:uppercase;color:var(--ink2)}
+.hint{font-size:14px;font-weight:600;color:var(--ink2)}
+.blink{animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{50%{opacity:.45}}
+.script{font-family:var(--script);color:var(--pink);font-weight:400;line-height:1;text-shadow:0 2px 0 #fff,0 0 18px rgba(255,255,255,.9)}
+.rise{animation:rise 1.2s var(--ease) both;animation-delay:var(--d,0s)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.purpletext .ch,.purpletext.solo{display:inline-block;padding:.2em .02em .06em;margin-top:-.2em;background:var(--vn);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(255,255,255,.95)) drop-shadow(0 8px 16px rgba(90,35,180,.22))}
+
+/* ---------- Hoa (cánh mềm hạt nhiễu, tâm sao vàng, cuống hồng xoắn) ---------- */
+.flower{overflow:visible;display:block}
+.flower .pt{transform-box:fill-box;transform-origin:50% 100%;transform:rotate(var(--r)) scale(0)}
+.flower.bloom .pt{animation:bloom 1.6s cubic-bezier(.2,.9,.25,1.12) forwards;animation-delay:calc(var(--base,0ms) + var(--d))}
+@keyframes bloom{to{transform:rotate(var(--r)) scale(1)}}
+.flower .stemp{stroke-dasharray:1;stroke-dashoffset:1}
+.flower.bloom .stemp{animation:grow 1.6s var(--ease) forwards;animation-delay:var(--base,0ms)}
+@keyframes grow{to{stroke-dashoffset:0}}
+.flower .leaf{transform-box:fill-box;transform-origin:var(--o);transform:scale(0) rotate(-20deg)}
+.flower.bloom .leaf{animation:leaf 1.2s var(--ease) forwards;animation-delay:calc(var(--base,0ms) + var(--ld,500ms))}
+@keyframes leaf{to{transform:none}}
+.flower .ctr{transform-box:fill-box;transform-origin:center;transform:scale(0) rotate(-90deg)}
+.flower.bloom .ctr{animation:star 1s cubic-bezier(.3,1.6,.5,1) forwards,spinStar 9s linear infinite;animation-delay:calc(var(--base,0ms) + 1300ms),calc(var(--base,0ms) + 2300ms)}
+@keyframes star{to{transform:none}}
+@keyframes spinStar{from{transform:rotate(0)}to{transform:rotate(1turn)}}
+.flower .vein{opacity:0}
+.flower.bloom .vein{animation:fadeIn 1s ease forwards;animation-delay:calc(var(--base,0ms) + 1500ms)}
+@keyframes fadeIn{to{opacity:.85}}
+
+/* ---------- Trang chủ ---------- */
+.home{position:relative;isolation:isolate;min-height:100vh;padding:64px 16px 56px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.ribbon{position:absolute;z-index:-1;left:0;top:70px;width:100%;height:clamp(150px,22vw,280px);
+  animation:ribbonIn 2.2s var(--ease) both .3s,ribbonFloat 8s ease-in-out infinite 2.5s}
+@keyframes ribbonIn{from{clip-path:inset(0 100% 0 0);opacity:.3}to{clip-path:inset(0 0 0 0);opacity:1}}
+@keyframes ribbonFloat{50%{transform:translateY(8px)}}
+.home .script{font-size:clamp(44px,8vw,86px);margin-top:18px}
+.vn{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.02em;font-size:clamp(40px,8.6vw,104px);line-height:1.05}
+.vn .ch{animation:letterIn 1.3s var(--ease) both;animation-delay:calc(var(--i) * 55ms + .5s)}
+@keyframes letterIn{from{opacity:0;transform:translateY(.4em) scale(.9)}}
+.date{font-family:var(--num);font-size:clamp(20px,3vw,30px);letter-spacing:.3em;color:var(--pink);margin:10px 0 16px}
+.lead{max-width:560px;color:var(--ink2);font-family:var(--display);font-style:italic;font-size:clamp(17px,2.2vw,20px);line-height:1.6}
+.actions{display:flex;gap:12px;margin:26px 0 8px;flex-wrap:wrap;justify-content:center}
+.wall>a{min-width:0}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:34px 26px;width:min(1040px,100%);margin:40px auto 30px;padding:0 6px}
+.wall>a{display:block;animation:rise 1.2s var(--ease) both,bob var(--bt,6s) ease-in-out infinite;animation-delay:var(--d,0s),calc(var(--d,0s) + 1.2s);will-change:transform}
+@keyframes bob{50%{transform:translateY(-8px)}}
+
+/* Thẻ bài đăng kiểu Instagram */
+.post{background:#fff;border-radius:22px;padding:11px 11px 12px;box-shadow:var(--shadow);transform:rotate(var(--rot,0deg));text-align:left;
+  transition:transform .7s var(--ease),box-shadow .7s var(--ease)}
+a:hover>.post{transform:rotate(0) translateY(-6px) scale(1.03);box-shadow:0 26px 60px rgba(214,70,140,.32)}
+.post header{display:flex;align-items:center;gap:8px;padding:1px 3px 10px;font-size:13px;font-weight:600}
+.post header small{color:#a78198;font-weight:500}
+.post header i{margin-left:auto;font-style:normal;color:#b08aa1;letter-spacing:1px}
+.av{width:30px;height:30px;border-radius:50%;padding:2px;background:conic-gradient(#f45aa6,#ffd98a,#8bcf4a,#b77df0,#f45aa6);flex:none}
+.av span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;background:#fff;color:var(--pink);font-size:13px}
+.shot{position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden;display:grid;place-items:center;isolation:isolate;background:var(--sh)}
+.shot::after{content:"";position:absolute;inset:0;background-image:var(--noise);opacity:.6;pointer-events:none}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shot .flower{width:86%}
+.n{position:absolute;z-index:2;font-family:var(--num);font-weight:400;color:#fff;line-height:1;font-size:var(--nf,54px);
+  text-shadow:0 2px 14px rgba(150,20,90,.45),0 0 2px rgba(150,20,90,.35);animation:numIn 1.4s var(--ease) both;animation-delay:var(--nd,.6s)}
+.n20{top:9%;right:8%}.n10{left:7%;bottom:7%;--nd:.9s}
+@keyframes numIn{from{opacity:0;transform:translateY(14px);filter:blur(6px)}}
+.icons{display:flex;align-items:center;gap:12px;padding:11px 3px 6px}
+.icons svg{width:21px;height:21px;flex:none}
+.icons .hrt{fill:#ff3358;transform-origin:center;transition:transform .4s var(--ease)}
+a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
+@keyframes heartbeat{25%{transform:scale(1.25)}50%{transform:scale(.95)}75%{transform:scale(1.15)}}
+.icons .pg{flex:1;display:flex;justify-content:center;gap:4px}
+.icons .pg i{width:5px;height:5px;border-radius:50%;background:#e9d3df}
+.icons .pg i:first-child{background:#3b82f6}
+.cap{padding:0 3px;font-size:13px;line-height:1.45}
+.cap b{display:block;font-family:var(--display);font-size:16px;font-weight:600}
+.cap span{font-family:var(--display);font-style:italic;color:var(--pink)}
+
+/* ---------- Phong thư ---------- */
+.env-stage{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;
+  transition:opacity 1s var(--ease-io),transform 1.2s var(--ease),filter 1s var(--ease-io)}
+.env-stage.gone{opacity:0;transform:translateY(-40px) scale(.96);pointer-events:none}
+.heart-title{position:relative;width:min(300px,76vw);animation:rise 1.2s var(--ease) backwards .1s;transition:opacity .6s var(--ease-io),transform .9s var(--ease)}
+.heart-title svg{width:100%;height:auto;display:block;overflow:visible}
+.heart-title .rib{stroke-dasharray:1;stroke-dashoffset:1;animation:grow 2.2s var(--ease-io) forwards .2s}
+.heart-title .ht{position:absolute;inset:16% 13% 34%;display:flex;flex-direction:column;align-items:center;justify-content:center;isolation:isolate}
+.heart-title .ht::before{content:"";position:absolute;inset:-6% -4%;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(255,255,255,.55) 60%,rgba(255,255,255,0))}
+.heart-title .ht .script{font-size:clamp(44px,12vw,62px)}
+.heart-title .ht b{display:block;width:100%;text-align:center;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(20px,5.6vw,27px);color:var(--ink);margin-top:-2px;text-shadow:var(--gw)}
+.env-wrap{margin-top:-30px;animation:envIn 1.3s var(--ease) backwards .45s;transition:transform 1.1s var(--ease)}
+.env-stage .hint.rise{animation-fill-mode:backwards;transition:opacity .5s}
+/* Khi mở: tim + tên bay lên mờ dần, phong thư hạ xuống để tờ thư trồi lên không đè chữ */
+.env-stage.opening .heart-title{opacity:0;transform:translateY(-36px) scale(.9)}
+.env-stage.opening .env-wrap{transform:translateY(clamp(60px,12vh,110px))}
+.env-stage.opening .hint{opacity:0}
+@keyframes envIn{from{opacity:0;transform:translateY(50px) scale(.9) rotate(-4deg)}}
+.env{position:relative;width:min(330px,82vw);aspect-ratio:1.5;cursor:pointer;perspective:1200px;
+  animation:float 5s ease-in-out infinite;filter:drop-shadow(0 22px 34px rgba(214,70,140,.35));outline:none;transition:scale .5s var(--ease)}
+.env:hover{scale:1.04}
+@keyframes float{50%{transform:translateY(-10px) rotate(1deg)}}
+.env>div{position:absolute;inset:0;border-radius:14px}
+.env .env-back{background:linear-gradient(160deg,#f69ac6,#f4a7cd)}
+.env .env-paper{inset:7% 7% 10%;border-radius:6px;background:var(--paper);z-index:1;box-shadow:inset 0 0 0 6px var(--paper),inset 0 0 0 7px #e5c27a;
+  display:grid;place-items:start center;padding-top:9%;font-family:var(--num);letter-spacing:.2em;color:var(--pink);font-size:20px;
+  transition:transform 1.3s var(--ease) .5s}
+.env .env-front{z-index:2;background:linear-gradient(180deg,#ffb9d8,#f48cbd);clip-path:polygon(0 0,50% 52%,100% 0,100% 100%,0 100%)}
+.env .env-front::after{content:"";position:absolute;inset:0;background-image:var(--noise);opacity:.45}
+.env .env-flap{z-index:3;background:linear-gradient(180deg,#ffcfe4,#f7a0c8);clip-path:polygon(0 0,100% 0,50% 56%);
+  transform-origin:top;transition:transform .9s var(--ease-io),z-index 0s .45s}
+.env .seal{z-index:4;inset:auto;left:50%;top:56%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;
+  display:grid;place-items:center;transition:opacity .5s,transform .6s var(--ease);animation:sealPulse 2.4s ease-in-out infinite}
+.env .seal svg{width:56px;height:56px;filter:drop-shadow(0 6px 10px rgba(180,40,110,.35))}
+@keyframes sealPulse{50%{transform:scale(1.08)}}
+.env.open .env-flap{transform:rotateX(180deg);z-index:0}
+.env.open .seal{opacity:0;transform:scale(1.8);animation:none}
+.env.open .env-paper{transform:translateY(-58%)}
+.env-stage .hint{margin-top:22px}
+
+/* ---------- Lá thư ---------- */
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:110px 16px 80px}
+.letter{width:min(680px,100%);opacity:0;transform:translateY(40px);transition:opacity 1.1s var(--ease-io),transform 1.3s var(--ease)}
+.letter.show{opacity:1;transform:none}
+.hero{position:relative;text-align:center;margin:0 auto;max-width:580px;padding:86px 26px 30px;border-radius:6px;background:var(--paper);
+  box-shadow:inset 0 0 0 10px var(--paper),inset 0 0 0 11px #e5c27a,0 24px 60px rgba(214,70,140,.28)}
+.hero::after{content:"";position:absolute;top:0;right:0;width:64px;height:64px;background:linear-gradient(225deg,#ffd9ea 0 50%,#f37fb7 50% 100%);
+  box-shadow:-6px 6px 12px rgba(180,40,110,.22);border-bottom-left-radius:10px}
+.hero .flower{position:absolute;left:50%;top:-74px;width:140px;translate:-50% 0;filter:drop-shadow(0 12px 22px rgba(214,70,140,.35))}
+.hero .script{font-size:54px}
+.hero .fullname{margin-top:6px;font-family:var(--display);font-style:italic;font-size:clamp(16px,4.2vw,19px);color:var(--ink2)}
+.hero h1{font-family:var(--display);font-weight:600;letter-spacing:.01em;font-size:clamp(34px,8vw,58px);line-height:1.15;min-height:1.2em;color:var(--ink);margin-top:2px}
+.caret{display:inline-block;width:2px;height:.8em;background:var(--pink);margin-left:6px;vertical-align:-.05em;animation:blink 1s steps(2) infinite}
+.role{display:inline-block;margin-top:12px;padding:6px 16px;border-radius:999px;background:#fff;border:1px solid #ffc4e0;color:var(--pink);
+  letter-spacing:.2em;text-transform:uppercase;font-size:11px;font-weight:700;box-shadow:0 6px 16px rgba(214,70,140,.15)}
+.sec{margin-top:64px}
+.sec-h{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;
+  font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(14px,3.4vw,17px);color:var(--ink);text-align:center}
+.sec-h::before,.sec-h::after{content:"✦";color:var(--pink);font-size:15px;transform:scale(0) rotate(-90deg);transition:transform 1s cubic-bezier(.3,1.6,.5,1) .3s}
+.in .sec-h::before,.in .sec-h::after,.sec-h.in::before,.sec-h.in::after{transform:none}
+
+.badge{position:relative;margin:0 auto;width:min(380px,100%);padding:36px 26px 28px;border-radius:28px;text-align:center;background:#fff;
+  box-shadow:var(--shadow);overflow:hidden;isolation:isolate;transition:transform .8s var(--ease)}
+.badge::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(80% 60% at 50% 0%,#ffe0ef,transparent 70%),var(--noise);opacity:.9}
+.badge::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.9) 48%,transparent 62%);
+  background-size:250% 100%;animation:sheen 5s ease-in-out infinite;mix-blend-mode:soft-light}
+@keyframes sheen{0%{background-position:150% 0}60%,100%{background-position:-100% 0}}
+.badge:hover{transform:translateY(-4px) rotate(-.6deg)}
+.medal{width:80px;height:80px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 45%,#ffd1e6,#f58bbd 75%);box-shadow:0 0 0 6px #fff,0 0 0 7px #ffc4e0,0 10px 30px rgba(232,85,156,.35)}
+.medal svg{width:46px;height:46px;animation:spinStar 10s linear infinite}
+.in .medal{animation:medalIn 1.2s cubic-bezier(.3,1.5,.5,1) both .2s}
+@keyframes medalIn{from{transform:scale(0) rotate(-180deg)}}
+.badge small{display:block;letter-spacing:.32em;font-size:11px;font-weight:700;color:var(--pink)}
+.badge h2{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(28px,6.6vw,36px);line-height:1.2;margin:10px 0 12px;color:var(--ink)}
+.badge p{color:var(--ink2);font-size:14px;line-height:1.6}
+.badge .btn{margin-top:18px;font-size:13px;padding:9px 16px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{padding:22px 8px 18px;border-radius:20px;background:#fff;box-shadow:var(--shadow);text-align:center;transition:transform .6s var(--ease)}
+.stat:hover{transform:translateY(-4px)}
+.stat b{display:block;font-family:var(--num);font-weight:400;font-size:clamp(28px,6vw,40px);line-height:1.1;color:var(--pink)}
+.stat span{display:block;margin-top:6px;font-size:12px;font-weight:600;line-height:1.4;color:var(--ink2)}
+
+.timeline{display:grid;gap:26px}
+.moment{background:#fff;border-radius:22px;padding:11px 11px 16px;box-shadow:var(--shadow)}
+.moment:nth-child(odd){--rot:-1deg}.moment:nth-child(even){--rot:1deg}
+.moment.in{transform:rotate(var(--rot))}
+.ph{aspect-ratio:16/10;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(160deg,#ffd0e6,#fff2f8)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 1.2s var(--ease)}
+.moment:hover .ph img{transform:scale(1.04)}
+.ph.empty{display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--ink2)}
+.ph.empty span::before{content:"✿";display:block;font-size:30px;color:var(--pink);margin-bottom:4px;text-align:center}
+.moment h3{font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;margin:12px 4px 2px;color:var(--pink)}
+.moment p{line-height:1.65;font-size:15px;margin:0 4px;color:var(--ink)}
+
+.wishes{columns:2 250px;column-gap:16px}
+.wishes.one{columns:1;max-width:480px;margin:0 auto}
+.wish{position:relative;break-inside:avoid;margin:10px 0 18px;padding:24px 20px 16px;border-radius:6px;background:var(--paper);
+  box-shadow:0 12px 30px rgba(214,70,140,.18)}
+.wish::before{content:"";position:absolute;top:-10px;left:50%;width:84px;height:22px;margin-left:-42px;background:rgba(255,160,205,.7);transform:rotate(-3deg)}
+.wish>div{animation:bob var(--bt,6s) ease-in-out infinite}
+.wish p{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.6;color:var(--ink)}
+.wish span{display:block;text-align:right;margin-top:8px;font-size:13px;font-weight:700;color:var(--pink)}
+
+/* Thư CEO: giấy kem viền vàng, góc gấp hồng */
+.ceo{position:relative;padding:44px 30px 30px;border-radius:4px;color:var(--ink);background:var(--paper);
+  box-shadow:inset 0 0 0 10px var(--paper),inset 0 0 0 11px #e5c27a,0 24px 60px rgba(214,70,140,.3)}
+.ceo::before{content:"";position:absolute;inset:0;background-image:var(--noise);opacity:.25;filter:invert(1);mix-blend-mode:multiply;pointer-events:none}
+.ceo::after{content:"";position:absolute;top:0;right:0;width:74px;height:74px;background:linear-gradient(225deg,#ffd9ea 0 50%,#f37fb7 50% 100%);
+  box-shadow:-6px 6px 12px rgba(180,40,110,.25);border-bottom-left-radius:10px}
+.ceo .body{position:relative;font-family:var(--display);font-style:italic;font-size:clamp(17px,4.3vw,19px);line-height:1.8;white-space:pre-line}
+.ceo .sign{position:relative;text-align:right;margin-top:18px}
+.ceo .sign img{max-height:70px;margin-left:auto;display:block}
+.ceo .sign b{display:block;font-family:var(--script);font-weight:400;font-size:44px;color:var(--pink);line-height:1.2}
+.ceo .sign small{font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--ink2);text-transform:uppercase}
+.ceo-wrap .ceo{transform:rotate(-4deg) translateY(30px);transition:transform 1.4s var(--ease)}
+.ceo-wrap.in .ceo{transform:rotate(-.8deg)}
+.foot{text-align:center;margin-top:64px;font-size:11px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--ink2)}
+
+.reveal{opacity:0;transform:translateY(34px);
+  transition:opacity 1s var(--ease-io),transform 1.2s var(--ease);transition-delay:var(--sd,0s)}
+.reveal.in{opacity:1}
+.reveal.in:not(.moment){transform:none}
+
+/* ---------- Trình chiếu ---------- */
+.screen{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:70px 24px 90px}
+.slide{grid-area:1/1;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6vw;max-width:1200px;width:100%;position:relative;isolation:isolate;
+  animation:slideIn 1.4s var(--ease) both}
+.slide.leave{animation:slideOut 1s var(--ease-io) forwards;pointer-events:none}
+@keyframes slideIn{from{opacity:0;transform:scale(1.03)}}
+@keyframes slideOut{to{opacity:0;transform:scale(.97)}}
+.slide .post{width:min(32vw,380px,46vh);--nf:clamp(56px,6vw,96px);animation:postIn 1.4s var(--ease) both .2s}
+@keyframes postIn{from{opacity:0;transform:rotate(-10deg) translateY(40px) scale(.9)}}
+.slide .who>*{opacity:0;animation:rise 1.2s var(--ease) forwards}
+.slide .who>*:nth-child(1){animation-delay:.5s}
+.slide .who>*:nth-child(2){animation-delay:.85s}
+.slide .who>*:nth-child(3){animation-delay:1.4s}
+.slide .who>*:nth-child(4){animation-delay:1.9s}
+.slide .who>*:nth-child(5){animation-delay:2.3s}
+.who .script{font-size:clamp(46px,6vw,96px)}
+.who{min-width:0}
+.who h1{font-family:var(--display);font-weight:600;letter-spacing:.01em;font-size:clamp(36px,5.6vw,92px);line-height:1.08;margin:.12em 0;color:var(--ink);
+  text-shadow:0 2px 0 #fff,0 0 30px rgba(255,255,255,.9)}
+.who h2{font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(22px,2.8vw,42px);line-height:1.25;color:var(--pink)}
+.who p{margin-top:16px;font-size:clamp(14px,1.4vw,20px);font-weight:500;line-height:1.6;max-width:640px;color:var(--ink2)}
+.slide.center{grid-template-columns:1fr;text-align:center;justify-items:center}
+.slide.center .who p{margin-inline:auto}
+.slide .ribbon{top:-4%;left:-10vw;width:calc(100% + 20vw)}
+.who .vn{font-size:clamp(42px,7vw,112px)}
+.who .bignum{font-family:var(--num);font-size:clamp(36px,5vw,72px);color:var(--pink);letter-spacing:.12em;line-height:1.1}
+.minis{display:flex;justify-content:center;gap:2px;margin-top:22px;flex-wrap:wrap}
+.minis .flower{width:clamp(44px,5.4vw,74px)}
+.ctrl{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:30;
+  padding:6px;border-radius:999px;background:var(--white-glass);backdrop-filter:blur(10px);border:1px solid #fff;box-shadow:0 8px 24px rgba(214,70,140,.2)}
+.ctrl .btn{width:40px;height:40px;padding:0;justify-content:center;box-shadow:none}
+.dots{display:flex;align-items:center;padding:0 6px}
+.dots i{width:8px;height:8px;border-radius:4px;background:#f2c2da;margin:0 3px;transition:width .6s var(--ease),background .6s;cursor:pointer}
+.dots i.on{background:var(--pink);width:24px}
+.bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:30;background:linear-gradient(90deg,var(--pink2),var(--pink),var(--gold))}
+.bar.go{animation:barGo var(--ms) linear forwards}
+.bar.paused{animation-play-state:paused}
+@keyframes barGo{to{width:100%}}
+
+/* =================================================================
+   GLOW CHỮ (tông hồng/trắng) + CHUYỂN ĐỘNG TỰ CHẠY
+   ================================================================= */
+:root{
+  --gw:0 0 6px #fff,0 0 16px rgba(255,255,255,.9),0 0 34px rgba(255,190,225,.7);
+  --gp:0 0 6px rgba(255,255,255,.95),0 0 18px rgba(255,140,198,.6),0 0 40px rgba(255,120,190,.4);
+}
+/* Chữ viết tay: dải hồng ánh kim chạy qua + hào quang */
+.script{display:inline-block;padding:.12em .3em .18em;margin:-.12em -.3em -.18em;text-shadow:none;
+  background:linear-gradient(100deg,#df3f8e 0%,#ff69b0 28%,#ffa6d2 44%,#ff69b0 60%,#df3f8e 100%);background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 0 14px rgba(255,110,185,.6));
+  animation:scriptShine 5s linear infinite}
+@keyframes scriptShine{to{background-position:-260% 0}}
+.home .script.rise{animation:rise 1.2s var(--ease) both,scriptShine 5s linear infinite;animation-delay:var(--d,0s),0s}
+
+/* "PHỤ NỮ VIỆT NAM": viền trắng + hào quang hồng, chữ gợn sóng nối tiếp */
+.purpletext .ch{filter:none}
+.vn.purpletext{filter:drop-shadow(0 2px 0 #fff) drop-shadow(0 0 8px rgba(255,255,255,.95)) drop-shadow(0 0 20px rgba(190,140,255,.55));animation:vnFloat 6s ease-in-out infinite 2.5s;will-change:transform}
+@keyframes vnFloat{50%{transform:translateY(-6px)}}
+.vn .ch{animation:letterIn 1.2s var(--ease) backwards;animation-delay:calc(var(--i) * 50ms + .4s)}
+@keyframes wave{0%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}60%{transform:translateY(1px)}}
+
+/* Chữ thường: hào quang trắng nhẹ, tiêu đề lớn có nhịp sáng */
+.eyebrow,.lead,.hint,.role,.cap b,.badge p,.stat span,.moment p,.foot,.who p{text-shadow:var(--gw)}
+.date,.who .bignum{text-shadow:var(--gp)}
+.who h1{text-shadow:var(--gw),0 0 50px rgba(255,140,198,.45)}
+.who h2,.cap span,.badge h2,.moment h3,.stat b,.badge small,.wish span{text-shadow:var(--gp)}
+.sec-h{text-shadow:var(--gw)}
+@keyframes glowPulse{50%{text-shadow:0 0 10px #fff,0 0 26px rgba(255,255,255,.95),0 0 56px rgba(255,130,195,.75)}}
+.n{text-shadow:0 0 6px rgba(255,255,255,.9),0 0 18px rgba(255,120,190,.7),0 2px 14px rgba(150,20,90,.4);
+  animation:numIn 1.4s var(--ease) both,numGlow 3.6s ease-in-out infinite;animation-delay:var(--nd,.6s),calc(var(--nd,.6s) + 1.4s)}
+@keyframes numGlow{50%{transform:translateY(-4px)}}
+.env .env-paper{text-shadow:var(--gp)}
+
+/* ---- Chuyển động tự chạy ---- */
+/* Thiệp: vừa bồng bềnh vừa nghiêng nhẹ */
+.wall>a{animation:rise 1.2s var(--ease) both,bobSway var(--bt,6s) ease-in-out infinite;animation-delay:var(--d,0s),calc(var(--d,0s) + 1.2s)}
+@keyframes bobSway{0%,100%{transform:translateY(0) rotate(-.9deg)}50%{transform:translateY(-10px) rotate(.9deg)}}
+/* Hoa trong thiệp/hero/mini: thở + xoay nhẹ */
+.shot .flower,.hero .flower,.minis .flower{animation:flowerIdle 6s ease-in-out infinite;will-change:transform}
+.minis .flower:nth-child(even){animation-duration:7.5s;animation-direction:reverse}
+@keyframes flowerIdle{0%,100%{transform:scale(1) rotate(-4deg)}50%{transform:scale(1.07) rotate(4deg)}}
+/* Vệt sáng lướt qua ảnh thiệp */
+.shot::before{content:"";position:absolute;inset:-20%;z-index:3;pointer-events:none;will-change:translate;
+  background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  translate:-100% 0;animation:shotSweep 6s var(--ease-io) infinite;animation-delay:var(--sw,1s)}
+@keyframes shotSweep{0%{translate:-100% 0}40%,100%{translate:100% 0}}
+.wall>a:nth-child(2n) .shot{--sw:2.5s}.wall>a:nth-child(3n) .shot{--sw:4s}
+/* Tim đập liên tục, chấm trang chuyển lần lượt, viền avatar xoay */
+.icons .hrt{animation:heartbeat 2.4s ease-in-out infinite}
+.wall>a:nth-child(2n) .hrt{animation-delay:.6s}.wall>a:nth-child(3n) .hrt{animation-delay:1.2s}
+@keyframes heartbeat{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.25)}20%{transform:scale(.95)}30%{transform:scale(1.15)}}
+.icons .pg i:first-child{background:#e9d3df}
+.icons .pg i{animation:dotRun 3.2s steps(1) infinite}
+.icons .pg i:nth-child(2){animation-delay:.8s}.icons .pg i:nth-child(3){animation-delay:1.6s}.icons .pg i:nth-child(4){animation-delay:2.4s}
+@keyframes dotRun{0%{background:#3b82f6}25%,100%{background:#e9d3df}}
+.av{animation:spinStar 6s linear infinite}
+.av span{animation:spinStar 6s linear infinite reverse}
+/* Nút chính phát sáng theo nhịp */
+@keyframes btnGlow{50%{box-shadow:0 10px 30px rgba(232,85,156,.45),0 0 0 8px rgba(255,140,198,.18),0 0 36px rgba(255,140,198,.55)}}
+/* Ngôi sao ở tiêu đề mục lấp lánh liên tục */
+.in .sec-h::before,.in .sec-h::after,.sec-h.in::before,.sec-h.in::after{animation:twinkle 2.6s ease-in-out infinite 1.3s}
+.sec-h::after{animation-delay:1.9s!important}
+/* Tim ruy băng đập nhẹ sau khi vẽ xong */
+.heart-title svg{animation:htBeat 2.6s ease-in-out infinite 2.4s;transform-origin:50% 60%}
+@keyframes htBeat{0%,50%,100%{transform:scale(1)}15%{transform:scale(1.05)}30%{transform:scale(.99)}}
+/* Khối nội dung lá thư bồng bềnh lệch nhịp */
+.badge,.stat,.moment{animation:floatY 7s ease-in-out infinite}
+.stat:nth-child(2){animation-delay:-2.3s}.stat:nth-child(3){animation-delay:-4.6s}
+.moment:nth-child(even){animation-delay:-3.5s}
+.ceo-wrap.in{animation:floatY 8s ease-in-out infinite 1.5s}
+@keyframes floatY{50%{translate:0 -7px}}
+.medal{animation:medalBob 5s ease-in-out infinite}
+@keyframes medalBob{50%{transform:translateY(-5px) scale(1.04)}}
+.in .medal{animation:medalIn 1.2s cubic-bezier(.3,1.5,.5,1) both .2s,medalBob 5s ease-in-out infinite 1.4s}
+/* Trình chiếu: thiệp bồng bềnh */
+.slide .post{animation:postIn 1.4s var(--ease) both .2s,bobSway 7s ease-in-out infinite 1.6s}
+/* Dải lụa gợn sóng */
+@keyframes silk{50%{transform:translateY(6px) scaleY(1.08)}}
+
+@media (max-width:700px){
+  .decor .d{opacity:.85}
+  .wall{grid-template-columns:repeat(2,1fr);gap:22px 14px}
+  .post{padding:8px 8px 10px;border-radius:16px}
+  .post header{font-size:11px;padding-bottom:7px}.post header small{display:none}
+  .n{--nf:38px}
+  .icons{gap:8px}.icons svg{width:17px;height:17px}
+  .cap b{font-size:14px}
+  .slide{grid-template-columns:1fr;text-align:center;justify-items:center;gap:14px}
+  .slide .post{width:62vw}
+  .who p{margin-inline:auto}
+  .stats{gap:8px}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<canvas id="sky"></canvas>
+<div class="decor" id="decor" aria-hidden="true"></div>
+<button id="musicBtn" class="fab" aria-label="Bật hoặc tắt nhạc" title="Nhạc nền">♪</button>
+<main id="app"></main>
+
+<!-- luôn tải data.js mới nhất để sửa dữ liệu là thấy ngay -->
+<script>document.write('<script src="data.js?t=' + Date.now() + '"><\/script>');</script>
+<script>
+(() => {
+const D = window.LEAP;
+const $app = document.getElementById('app');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let cleanup = [];
+
+/* ================= Bảng màu + định nghĩa SVG dùng chung ================= */
+const PAL = {
+  hong: ['#f2559f', '#ff9fd0', '#ffe3f0'],
+  tim:  ['#a86ef0', '#d7b8ff', '#f1e6ff'],
+  dao:  ['#ff6f86', '#ffb3a6', '#ffe8e2'],
+  vang: ['#f0a020', '#ffd27a', '#fff3d6'],
+  xanh: ['#4f93f0', '#b3d4ff', '#e6f1ff']
+};
+const KINDS = ['tron', 'tulip', 'sao'];
+(() => {
+  const grads = Object.entries(PAL).map(([k, c]) => `
+    <radialGradient id="pg-${k}" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="78">
+      <stop offset="0" stop-color="${c[0]}"/><stop offset=".42" stop-color="${c[1]}"/><stop offset=".8" stop-color="#fff5fa"/><stop offset="1" stop-color="#fff"/>
+    </radialGradient>
+    <radialGradient id="pt-${k}" gradientUnits="userSpaceOnUse" cx="0" cy="40" r="95">
+      <stop offset="0" stop-color="${c[0]}"/><stop offset=".5" stop-color="${c[1]}"/><stop offset="1" stop-color="#fff6fb"/>
+    </radialGradient>`).join('');
+  const defs = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>${grads}
+    <filter id="fuzz" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1.3" result="soft"/>
+      <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="7" result="n"/>
+      <feColorMatrix in="n" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3.2 0 0 0 -1.75" result="w"/>
+      <feComposite in="w" in2="soft" operator="in" result="speck"/>
+      <feMerge><feMergeNode in="soft"/><feMergeNode in="speck"/></feMerge>
+    </filter>
+    <linearGradient id="leafg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a9dc5c"/><stop offset="1" stop-color="#6fb535"/></linearGradient>
+    <radialGradient id="heart3d" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#fff"/><stop offset=".55" stop-color="#ffeaf3"/><stop offset="1" stop-color="#f6b9d6"/></radialGradient>
+    <radialGradient id="glassg" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="rgba(255,255,255,.2)"/><stop offset=".7" stop-color="rgba(255,235,245,.45)"/><stop offset="1" stop-color="rgba(255,170,210,.55)"/></radialGradient>
+    <linearGradient id="silk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f3c35a"/><stop offset=".3" stop-color="#fff2c2"/><stop offset=".55" stop-color="#f0b443"/><stop offset=".8" stop-color="#ffe8a8"/><stop offset="1" stop-color="#f3c35a"/></linearGradient>
+    <linearGradient id="silk2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff9fcd"/><stop offset=".35" stop-color="#ffe3f0"/><stop offset=".65" stop-color="#f784bd"/><stop offset="1" stop-color="#ffd1e7"/></linearGradient>
+    <linearGradient id="rib" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb0d6"/><stop offset=".45" stop-color="#ef4f9c"/><stop offset=".75" stop-color="#ff9fcd"/><stop offset="1" stop-color="#ffd6ea"/></linearGradient>
+  </defs></svg>`;
+  document.body.insertAdjacentHTML('afterbegin', defs);
+})();
+
+const STAR4 = 'M0 -16 Q2 -2 16 0 Q2 2 0 16 Q-2 2 -16 0 Q-2 -2 0 -16Z';
+const HEART = 'M0 30 C-42 4 -50 -22 -36 -36 C-22 -50 -4 -40 0 -26 C4 -40 22 -50 36 -36 C50 -22 42 4 0 30Z';
+function flower(mau, {kind = 'tron', base = 0, cls = '', stem = true} = {}) {
+  const k = PAL[mau] ? mau : 'hong';
+  let petals = '', veins = '', center = `<path class="ctr" d="${STAR4}" fill="#ffe14a" stroke="#ffd21f" stroke-width="1"/>`;
+  if (kind === 'tron') {
+    const P = 'M0 0 C-36 -8 -46 -58 -16 -72 C-6 -77 6 -77 16 -72 C46 -58 36 -8 0 0Z';
+    for (let i = 0; i < 5; i++) {
+      petals += `<path class="pt" d="${P}" style="--r:${i * 72}deg;--d:${600 + i * 90}ms"/>`;
+      veins += `<path d="M0 -20 C-5 -30 -4 -40 3 -48" transform="rotate(${i * 72 + 22})"/>`;
+    }
+  } else if (kind === 'tulip') {
+    petals = `<g fill="url(#pt-${k})">
+      <path class="pt" style="--r:0deg;--d:650ms" d="M2 34 C-42 34 -66 2 -62 -32 C-44 -42 -22 -30 -8 -10 C-4 10 -2 26 2 34Z"/>
+      <path class="pt" style="--r:0deg;--d:750ms" d="M-2 34 C42 34 66 2 62 -32 C44 -42 22 -30 8 -10 C4 10 2 26 -2 34Z"/>
+      <path class="pt" style="--r:0deg;--d:550ms" d="M0 36 C-26 24 -34 -22 -18 -58 C-8 -44 8 -44 18 -58 C34 -22 26 24 0 36Z"/></g>`;
+    veins = `<path d="M-40 -14 C-34 0 -24 12 -12 20"/><path d="M40 -14 C34 0 24 12 12 20"/>`;
+    center = '';
+  } else {
+    petals = `<path class="pt" style="--r:12deg;--d:600ms" d="M0 -80 C9 -30 26 -12 80 0 C26 12 9 30 0 80 C-9 30 -26 12 -80 0 C-26 -12 -9 -30 0 -80Z"/>`;
+  }
+  const stemSvg = stem ? `
+    <path class="stemp" pathLength="1" d="M0 ${kind === 'tulip' ? 34 : 10} C4 60 -26 80 -30 112 C-34 140 -6 152 6 136 C16 122 -2 104 -14 122 C-26 142 -4 180 -6 210 C-8 240 -2 262 -8 284"
+      fill="none" stroke="#f27ab8" stroke-width="3" stroke-linecap="round"/>
+    <path class="leaf" style="--o:0% 70%;--ld:700ms" d="M-6 200 C10 168 54 158 72 170 C60 196 22 210 -6 200Z" fill="url(#leafg)"/>
+    <path class="leaf" style="--o:100% 50%;--ld:950ms" d="M-28 120 C-50 96 -88 100 -96 112 C-82 134 -50 136 -28 120Z" fill="url(#leafg)"/>` : '';
+  return `<svg class="flower ${cls}" viewBox="${stem ? '-100 -100 200 390' : '-100 -100 200 200'}" style="--base:${base}ms" aria-hidden="true">
+    ${stemSvg}
+    <g filter="url(#fuzz)" fill="url(#pg-${k})">${petals}</g>
+    <g class="vein" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round">${veins}</g>
+    ${center}
+  </svg>`;
+}
+const glassFlower = () => `<svg viewBox="-80 -80 160 160">${[0,1,2,3,4].map(i =>
+  `<path d="M0 0 C-30 -8 -40 -52 -14 -64 C-5 -68 5 -68 14 -64 C40 -52 30 -8 0 0Z" transform="rotate(${i * 72})" fill="url(#glassg)" stroke="rgba(255,150,195,.75)" stroke-width="1.6"/>`).join('')}
+  <circle r="13" fill="#ffd64a" opacity=".9"/><circle r="7" fill="#ffb81f"/></svg>`;
+const heart3d = () => `<svg viewBox="-55 -55 110 95"><path d="${HEART}" fill="url(#heart3d)"/><ellipse cx="-20" cy="-26" rx="10" ry="6" fill="#fff" opacity=".9" transform="rotate(-30 -20 -26)"/></svg>`;
+const rings = () => `<svg viewBox="0 0 120 70" fill="none" stroke="#3a1230" stroke-width="1"><ellipse cx="60" cy="18" rx="56" ry="12"/><ellipse cx="60" cy="35" rx="56" ry="12"/><ellipse cx="60" cy="52" rx="56" ry="12"/></svg>`;
+const bloomAll = root => root && requestAnimationFrame(() => requestAnimationFrame(() =>
+  root.querySelectorAll('.flower').forEach(f => f.classList.add('bloom'))));
+const ribbon = () => `<svg class="ribbon" viewBox="0 0 1200 320" preserveAspectRatio="none" aria-hidden="true">
+  <path d="M-40 130 C200 50 380 210 620 130 S980 20 1240 70 L1240 94 C980 52 830 240 620 172 S200 92 -40 160 Z" fill="url(#silk2)" opacity=".75"/>
+  <path d="M-40 214 C160 94 330 264 560 174 S930 44 1240 134 L1240 180 C940 100 800 294 560 234 S170 154 -40 264 Z" fill="url(#silk)" opacity=".92"/>
+  <path d="M-40 222 C160 104 330 272 560 182 S930 54 1240 142" fill="none" stroke="#fff" stroke-width="3" opacity=".7"/>
+</svg>`;
+
+/* ================= Trang trí cố định (theo inspo) ================= */
+document.getElementById('decor').innerHTML = `
+  <span class="d" style="left:-70px;top:-60px;width:clamp(150px,20vw,260px);--t:10s;--z:10;--r:-8deg">${flower('hong', {kind: 'tron', stem: false, cls: 'bloom'})}</span>
+  <span class="d side" style="right:-40px;top:34%;width:clamp(90px,12vw,170px);--t:9s;--dl:-3s;--z:18;--r:14deg">${flower('dao', {kind: 'tulip', stem: false, cls: 'bloom'})}</span>
+  <span class="d" style="left:2%;bottom:4%;width:clamp(90px,12vw,160px);--t:11s;--dl:-5s;--z:14;--r:-10deg">${flower('hong', {kind: 'sao', stem: false, cls: 'bloom'})}</span>
+  <span class="d" style="right:4%;top:5%;width:clamp(70px,9vw,130px);--t:8s;--dl:-2s;--z:24;--r:8deg;--di:.5s">${glassFlower()}</span>
+  <span class="d side" style="left:4%;top:40%;width:clamp(56px,7vw,100px);--t:9s;--dl:-1s;--z:28;--r:-14deg;--di:.7s">${glassFlower()}</span>
+  <span class="d" style="right:5%;bottom:5%;width:clamp(56px,7vw,96px);--t:7s;--dl:-4s;--z:20;--r:12deg;--di:.8s">${heart3d()}</span>
+  <span class="d side" style="right:16%;bottom:16%;width:clamp(30px,3.6vw,52px);--t:6s;--dl:-2s;--z:30;--r:-16deg;--di:1s">${heart3d()}</span>
+  <span class="d side home-only" style="left:9%;top:62%;width:clamp(60px,7vw,110px);--t:12s;--z:8;--di:1s">${rings()}</span>
+  <span class="d spark" style="left:22%;top:12%;--s:22px;--t:3s;--z:30">✦</span>
+  <span class="d spark" style="right:22%;top:24%;--s:16px;--t:2.6s;--dl:-1s;--z:34">✦</span>
+  <span class="d spark side" style="left:14%;bottom:26%;--s:18px;--t:3.4s;--dl:-2s;--z:26">✦</span>
+  <span class="d spark" style="right:12%;bottom:32%;--s:12px;--t:2.2s;--z:36">✦</span>`;
+
+/* ================= Hiệu ứng canvas: cánh hoa rơi, lấp lánh ================= */
+const sky = (() => {
+  const cv = document.getElementById('sky'), g = cv.getContext('2d');
+  const reduce = false; // web là quà trải nghiệm: luôn chạy hiệu ứng
+  const COLORS = ['#ffffff', '#ff8cc6', '#ffe14a', '#e8559c', '#ffd3e8'];
+  const PETAL = ['rgba(255,150,200,.55)', 'rgba(255,255,255,.85)', 'rgba(255,190,220,.6)', 'rgba(255,215,235,.75)'];
+  let W, H, glints = [], petals = [], parts = [];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  function size() {
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    glints = Array.from({length: reduce ? 8 : 26}, () => ({x: rnd(0, W), y: rnd(0, H), r: rnd(3, 8), p: rnd(0, 6.28), s: rnd(.6, 1.6)}));
+  }
+  function newPetal(top) {
+    return {x: rnd(-40, W), y: top ? rnd(-H, 0) : -20, vy: rnd(.35, .85), vx: rnd(.1, .45), sw: rnd(0, 6.28),
+            rot: rnd(0, 6.28), vr: rnd(-.02, .02), s: rnd(6, 12), c: PETAL[(Math.random() * PETAL.length) | 0]};
+  }
+  function glint(x, y, r, a, c) {
+    g.globalAlpha = a; g.fillStyle = c; g.beginPath();
+    g.moveTo(x, y - r); g.quadraticCurveTo(x, y, x + r, y); g.quadraticCurveTo(x, y, x, y + r);
+    g.quadraticCurveTo(x, y, x - r, y); g.quadraticCurveTo(x, y, x, y - r); g.fill();
+  }
+  function heart(x, y, s, a, c) {
+    g.globalAlpha = a; g.fillStyle = c; g.beginPath();
+    g.moveTo(x, y + s * .35);
+    g.bezierCurveTo(x - s, y - s * .3, x - s * .45, y - s, x, y - s * .45);
+    g.bezierCurveTo(x + s * .45, y - s, x + s, y - s * .3, x, y + s * .35); g.fill();
+  }
+  function frame(t) {
+    g.clearRect(0, 0, W, H);
+    const ts = t / 1000;
+    for (const s of glints) {
+      const a = Math.max(0, Math.sin(ts * s.s + s.p));
+      glint(s.x, s.y, s.r * a, a, '#fff');
+    }
+    for (const p of petals) {
+      p.y += p.vy; p.sw += .02; p.x += p.vx + Math.sin(p.sw) * .6; p.rot += p.vr;
+      if (p.y > H + 20 || p.x > W + 40) Object.assign(p, newPetal(false));
+      g.save(); g.translate(p.x, p.y); g.rotate(p.rot); g.globalAlpha = 1; g.fillStyle = p.c;
+      g.beginPath(); g.ellipse(0, 0, p.s, p.s * .6, 0, 0, 6.29); g.fill(); g.restore();
+    }
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const q = parts[i];
+      q.x += q.vx; q.y += q.vy; q.vx *= .97; q.vy = q.vy * .97 + q.gy; q.life--;
+      const a = Math.max(0, q.life / q.max);
+      if (q.kind === 'heart') heart(q.x, q.y, q.r, a, q.c); else glint(q.x, q.y, q.r * (.5 + a * .5), a, q.c);
+      if (q.life <= 0) parts.splice(i, 1);
+    }
+    g.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  function burst(x, y, n = 40, kind = 'glint') {
+    for (let i = 0; i < n; i++) {
+      const ang = rnd(0, 6.28), sp = rnd(1, kind === 'heart' ? 3 : 5.5);
+      parts.push({x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - (kind === 'heart' ? 2 : 0),
+        gy: kind === 'heart' ? -.03 : .03, r: rnd(kind === 'heart' ? 6 : 3, kind === 'heart' ? 13 : 8),
+        c: kind === 'heart' ? ['#ff6fb0', '#ffb8dc', '#ff3d8f', '#fff'][(Math.random() * 4) | 0] : COLORS[(Math.random() * COLORS.length) | 0],
+        life: rnd(55, 110) | 0, max: 110, kind});
+    }
+  }
+  size(); petals = Array.from({length: reduce ? 4 : 16}, () => newPetal(true));
+  addEventListener('resize', size);
+  let last = 0;
+  if (!reduce) addEventListener('pointermove', e => {
+    const now = performance.now(); if (now - last < 45) return; last = now;
+    parts.push({x: e.clientX, y: e.clientY, vx: rnd(-.4, .4), vy: rnd(.2, .8), gy: .01, r: rnd(3, 6),
+      c: COLORS[(Math.random() * COLORS.length) | 0], life: 40, max: 40, kind: 'glint'});
+  });
+  requestAnimationFrame(frame);
+  return {burst};
+})();
+
+/* ================= Nhạc nền hộp nhạc (tự sinh bằng Web Audio) ================= */
+const fab = document.getElementById('musicBtn');
+const music = {
+  ctx: null, on: false, want: true, step: 0, next: 0, timer: null,
+  hz: m => 440 * Math.pow(2, (m - 69) / 12),
+  CHORDS: [[72,76,79,83],[69,72,76,79],[65,69,72,76],[67,71,74,79]],
+  init() {
+    const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+    const ctx = this.ctx = new C();
+    const out = this.out = ctx.createGain(); out.gain.value = .15;
+    const d = ctx.createDelay(); d.delayTime.value = .42;
+    const fb = ctx.createGain(); fb.gain.value = .38;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2400;
+    out.connect(ctx.destination); out.connect(d); d.connect(lp); lp.connect(fb); fb.connect(d); lp.connect(ctx.destination);
+  },
+  note(f, t, v) {
+    const ctx = this.ctx, g = ctx.createGain(), o = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o.type = 'sine'; o.frequency.value = f; o2.type = 'triangle'; o2.frequency.value = f * 2; g2.gain.value = .08;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5 * v, t + .012); g.gain.exponentialRampToValueAtTime(.0008, t + 2.4);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(this.out);
+    o.start(t); o2.start(t); o.stop(t + 2.5); o2.stop(t + 2.5);
+  },
+  tick() {
+    const PAT = [0,1,2,3,2,1];
+    while (this.next < this.ctx.currentTime + .35) {
+      const chord = this.CHORDS[Math.floor(this.step / 12) % 4], i = this.step % 12;
+      this.note(this.hz(chord[PAT[i % 6]]), this.next, .8);
+      if (i === 0) this.note(this.hz(chord[0] - 24), this.next, .55);
+      if (Math.random() < .12) this.note(this.hz(chord[(Math.random() * 4) | 0] + 12), this.next + .15, .25);
+      this.step++; this.next += .3;
+    }
+  },
+  start() {
+    if (!this.want) return;
+    if (!this.ctx) this.init(); if (!this.ctx) return;
+    this.ctx.resume();
+    if (this.on) return;
+    this.on = true; this.next = this.ctx.currentTime + .1;
+    this.timer = setInterval(() => this.tick(), 100); fab.classList.add('on');
+  },
+  stop() { this.on = false; clearInterval(this.timer); fab.classList.remove('on'); }
+};
+fab.onclick = () => { if (music.on) { music.want = false; music.stop(); } else { music.want = true; music.start(); } };
+
+/* ================= Thẻ bài đăng ================= */
+const ICON = {
+  heart: `<svg viewBox="0 0 24 24"><path class="hrt" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 4.5 6.8 4.5c2.2 0 3.6 1.3 5.2 3.2 1.6-1.9 3-3.2 5.2-3.2 3.8 0 5.9 4 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>`,
+  chat: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.4L3.5 20.5l1.5-4.6a8.4 8.4 0 1 1 15.5-4.3z"/></svg>`,
+  send: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M21.5 3 10 14.5M21.5 3l-7 18-4.5-6.5L3 10z"/></svg>`,
+  save: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>`
+};
+const ROT = [-2.2, 1.6, -1, 2.4];
+function post(p, i, base = 0) {
+  const c = PAL[p.mau] || PAL.hong;
+  return `<article class="post" style="--rot:${ROT[i % 4]}deg">
+    <header><span class="av"><span>✿</span></span>learntoleap<small>· 20.10</small><i>•••</i></header>
+    <div class="shot" style="--sh:radial-gradient(95% 75% at 22% 12%,#fff 0%,${c[2]} 26%,${c[1]} 66%,${c[0]} 125%)">
+      ${p.anhDaiDien ? `<img src="${esc(p.anhDaiDien)}" alt="${esc(p.ten)}" loading="lazy">` : flower(p.mau, {kind: KINDS[i % 3], stem: false, base})}
+      <span class="n n20">20</span><span class="n n10">10</span>
+    </div>
+    <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg"><i></i><i></i><i></i><i></i></span>${ICON.save}</div>
+    <div class="cap"><b data-fit="11">${esc(nm(p))}</b><span>${esc(p.danhHieu)}</span></div>
+  </article>`;
+}
+// Co cỡ chữ để tiêu đề/tên nằm gọn trên một dòng (không xuống dòng)
+function fit(el, min = 14) {
+  if (!el || !el.clientWidth) return;
+  el.style.fontSize = ''; el.style.whiteSpace = 'nowrap';
+  let size = parseFloat(getComputedStyle(el).fontSize);
+  while (el.scrollWidth > el.clientWidth + 1 && size > min) { size -= 1; el.style.fontSize = size + 'px'; }
+  if (el.scrollWidth > el.clientWidth + 1) el.style.whiteSpace = '';
+}
+const fitAll = (root = document) => root.querySelectorAll('[data-fit]').forEach(el => fit(el, +el.dataset.fit || 14));
+const fitWhenReady = root => document.fonts.ready.then(() => fitAll(root));
+addEventListener('resize', () => fitAll());
+const nm = p => p.goiTen || p.ten;
+const splitChars = t => Array.from(t).map((c, i) => c === ' ' ? ' ' : `<span class="ch" style="--i:${i}">${esc(c)}</span>`).join('');
+
+/* ================= Trang 1: Bức tường vinh danh ================= */
+function home() {
+  const cards = D.chiEm.map((p, i) => `
+    <a href="#/thu/${encodeURIComponent(p.id)}" style="--d:${(1.2 + i * .12).toFixed(2)}s;--bt:${5 + (i % 3)}s" aria-label="Mở thư gửi ${esc(p.ten)}">
+      ${post(p, i, 1400 + i * 150)}
+    </a>`).join('');
+  $app.innerHTML = `
+    <section class="home">
+      ${ribbon()}
+      <div class="eyebrow rise" style="--d:.1s">Learn to Leap · ${esc(D.tieuDe)}</div>
+      <div class="script rise" style="--d:.3s">Chúc mừng ngày</div>
+      <h1 class="vn purpletext" data-fit="24" aria-label="Phụ nữ Việt Nam">${splitChars('Phụ nữ Việt Nam')}</h1>
+      <div class="date rise" style="--d:1.2s">${esc(D.ngay)}</div>
+      <p class="lead rise" style="--d:1.35s">${esc(D.loiMoDau)}</p>
+      <div class="actions rise" style="--d:1.5s"><a class="btn primary" href="#/trinh-chieu">✦ Trình chiếu màn hình lớn</a></div>
+      <div class="wall">${cards}</div>
+      <p class="hint rise" style="--d:2.2s"><span class="blink">Chạm vào một tấm thiệp để mở thư</span></p>
+    </section>`;
+  bloomAll($app); fitWhenReady($app);
+}
+
+/* ================= Trang 2: Phong thư riêng ================= */
+function countUp(el) {
+  const v = el.dataset.v;
+  if (!/^\d{1,3}(\.\d{3})*$/.test(v)) { el.textContent = v; return; }
+  const n = parseInt(v.replace(/\./g, ''), 10), t0 = performance.now(), dur = 1600;
+  const step = t => {
+    const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(n * e).toLocaleString('vi-VN');
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function letter(id) {
+  const idx = D.chiEm.findIndex(x => x.id === id), p = D.chiEm[idx];
+  if (!p) { location.hash = '#/'; return; }
+  const ceo = D.thuCEO || {};
+  const story = (p.cauChuyen || []).map((m, i) => `
+    <div class="moment reveal" style="--sd:${(i % 2) * .1}s">
+      <div class="ph ${m.anh ? '' : 'empty'}">${m.anh ? `<img src="${esc(m.anh)}" alt="${esc(m.nhan)}" loading="lazy">` : '<span>Ảnh sẽ được bổ sung</span>'}</div>
+      <h3>${esc(m.nhan)}</h3><p>${esc(m.ke)}</p>
+    </div>`).join('');
+  const wishes = (p.loiChuc || []).map((w, i) => `
+    <div class="wish reveal" style="--sd:${(i % 2) * .15}s;--bt:${5 + (i % 3)}s">
+      <div><p>“${esc(w.noiDung)}”</p><span>— ${esc(w.tu)}</span></div>
+    </div>`).join('');
+  const stats = (p.soLieu || []).map(s => `<div class="stat"><b data-v="${esc(s.so)}">${esc(s.so)}</b><span>${esc(s.nhan)}</span></div>`).join('');
+
+  $app.innerHTML = `
+    <a class="btn back" href="#/">← Bức tường</a>
+    <section class="env-stage" id="stage">
+      <div class="heart-title">
+        <svg viewBox="0 0 300 260" aria-hidden="true">
+          <path class="rib" pathLength="1" d="M150 238 C60 172 16 122 20 78 C24 34 64 14 98 20 C124 25 142 44 150 70 C158 44 176 25 202 20 C236 14 276 34 280 78 C284 122 240 172 150 238Z"
+            fill="none" stroke="url(#rib)" stroke-width="15" stroke-linejoin="round"/>
+          <path class="rib" pathLength="1" d="M150 238 C60 172 16 122 20 78 C24 34 64 14 98 20 C124 25 142 44 150 70 C158 44 176 25 202 20 C236 14 276 34 280 78 C284 122 240 172 150 238Z"
+            fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round" opacity=".7" transform="translate(-3 -4)"/>
+        </svg>
+        <div class="ht"><span class="script">Gửi</span><b data-fit="13">${esc(nm(p))}</b></div>
+      </div>
+      <div class="env-wrap"><div class="env" id="env" role="button" tabindex="0" aria-label="Mở thư">
+        <div class="env-back"></div>
+        <div class="env-paper">20 · 10</div>
+        <div class="env-flap"></div>
+        <div class="env-front"></div>
+        <div class="seal">${heart3d()}</div>
+      </div></div>
+      <p class="hint rise" style="--d:1s"><span class="blink">Chạm để mở thư ✨</span></p>
+    </section>
+    <div class="page" id="page" hidden>
+      <article class="letter" id="letter">
+        <header class="hero">
+          ${flower(p.mau, {kind: KINDS[idx % 3], stem: false, base: 300})}
+          <div class="script">Gửi</div>
+          <h1 id="heroName"><span id="tw"></span><i class="caret"></i></h1>
+          ${p.goiTen ? `<div class="fullname">${esc(p.ten)}</div>` : ''}
+          <div class="role">${esc(p.vaiTro)}</div>
+        </header>
+
+        <section class="sec reveal">
+          <h2 class="sec-h" data-fit="11">Danh hiệu vinh danh</h2>
+          <div class="badge">
+            <div class="medal"><svg viewBox="-20 -20 40 40"><path d="${STAR4}" fill="#ffe14a" stroke="#fff" stroke-width="1.5"/></svg></div>
+            <small>DANH HIỆU 20.10</small>
+            <h2>${esc(p.danhHieu)}</h2>
+            <p>${esc(p.moTaDanhHieu)}</p>
+            <button class="btn" id="dl">Tải huy hiệu ↓</button>
+          </div>
+        </section>
+
+        ${stats ? `<section class="sec reveal" id="statsSec">
+          <h2 class="sec-h">Một năm qua, bằng những con số</h2>
+          <div class="stats">${stats}</div>
+        </section>` : ''}
+
+        ${story ? `<section class="sec">
+          <h2 class="sec-h reveal">Những khoảnh khắc đáng nhớ</h2>
+          <div class="timeline">${story}</div>
+        </section>` : ''}
+
+        ${wishes ? `<section class="sec">
+          <h2 class="sec-h reveal">Lời chúc</h2>
+          <div class="wishes${(p.loiChuc || []).length === 1 ? ' one' : ''}">${wishes}</div>
+        </section>` : ''}
+
+        ${ceo.noiDung ? `<section class="sec reveal ceo-wrap">
+          <h2 class="sec-h">Thư tay từ CEO</h2>
+          <div class="ceo">
+            <div class="body">${esc(ceo.noiDung)}</div>
+            <div class="sign">${ceo.anhChuKy ? `<img src="${esc(ceo.anhChuKy)}" alt="Chữ ký">` : ''}<b>${esc(ceo.nguoiKy)}</b><small>${esc(ceo.chucVu)}</small></div>
+          </div>
+        </section>` : ''}
+
+        <p class="foot">Learn to Leap · ${esc(D.tieuDe)} · ${esc(D.ngay)}</p>
+      </article>
+    </div>`;
+
+  const stage = document.getElementById('stage'), env = document.getElementById('env');
+  const page = document.getElementById('page'), letterEl = document.getElementById('letter');
+  let opened = false;
+  const open = () => {
+    if (opened) return; opened = true;
+    env.classList.add('open'); music.start();
+    const r = env.getBoundingClientRect();
+    const later = (ms, f) => { const t = setTimeout(f, ms); cleanup.push(() => clearTimeout(t)); };
+    later(900, () => sky.burst(r.left + r.width / 2, r.top + r.height * .2, 60, 'heart'));
+    // phong thư mờ dần trong lúc lá thư hiện lên (crossfade, không bị khựng)
+    stage.classList.add('opening');
+    later(1800, () => {
+      page.hidden = false; scrollTo(0, 0); stage.classList.add('gone');
+      void letterEl.offsetWidth; letterEl.classList.add('show'); bloomAll(page); observe();
+    });
+    later(2500, () => typewrite(document.getElementById('tw'), nm(p)));
+    later(1850, () => { const tw = document.getElementById('tw'); tw.textContent = nm(p); fit(document.getElementById('heroName'), 18); tw.textContent = ''; fitAll(page); });
+    later(3000, () => stage.remove());
+  };
+  fitWhenReady(stage);
+  env.onclick = open;
+  env.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
+  document.getElementById('dl').onclick = () => downloadBadge(p);
+}
+
+function typewrite(el, text) {
+  const chars = Array.from(text); let i = 0;
+  const t = setInterval(() => { el.textContent = chars.slice(0, ++i).join(''); if (i >= chars.length) clearInterval(t); }, 95);
+  cleanup.push(() => clearInterval(t));
+}
+
+function observe() {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('in'); io.unobserve(e.target);
+    if (e.target.id === 'statsSec') e.target.querySelectorAll('b[data-v]').forEach(countUp);
+  }), {threshold: .18});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  cleanup.push(() => io.disconnect());
+}
+
+/* Huy hiệu tải về (PNG 1080×1350) — phong cách poster hồng hạt nhiễu */
+async function downloadBadge(p) {
+  await document.fonts.ready;
+  const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const g = cv.getContext('2d'), c = PAL[p.mau] || PAL.hong;
+  const bg = g.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#f7a7d0'); bg.addColorStop(.45, '#ffd6ea'); bg.addColorStop(.7, '#ffeef6'); bg.addColorStop(1, '#f8b3d7');
+  g.fillStyle = bg; g.fillRect(0, 0, W, H);
+  const hi = g.createRadialGradient(540, 420, 0, 540, 420, 560); hi.addColorStop(0, 'rgba(255,255,255,.95)'); hi.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = hi; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 26000; i++) { g.globalAlpha = Math.random() * .5; g.fillStyle = '#fff'; g.fillRect(Math.random() * W, Math.random() * H, 1.4, 1.4); }
+  g.globalAlpha = 1;
+  // bông hoa 5 cánh mềm
+  g.save(); g.translate(540, 380); g.filter = 'blur(2px)';
+  const fg = g.createRadialGradient(0, 0, 0, 0, 0, 230);
+  fg.addColorStop(0, c[0]); fg.addColorStop(.42, c[1]); fg.addColorStop(.8, '#fff5fa'); fg.addColorStop(1, '#fff');
+  g.fillStyle = fg;
+  for (let i = 0; i < 5; i++) {
+    g.save(); g.rotate(i * Math.PI * 2 / 5); g.beginPath(); g.moveTo(0, 0);
+    g.bezierCurveTo(-108, -24, -138, -174, -48, -216); g.bezierCurveTo(-18, -231, 18, -231, 48, -216);
+    g.bezierCurveTo(138, -174, 108, -24, 0, 0); g.fill(); g.restore();
+  }
+  g.filter = 'none';
+  g.fillStyle = '#ffe14a'; g.beginPath(); g.moveTo(0, -46); g.quadraticCurveTo(6, -6, 46, 0); g.quadraticCurveTo(6, 6, 0, 46);
+  g.quadraticCurveTo(-6, 6, -46, 0); g.quadraticCurveTo(-6, -6, 0, -46); g.fill(); g.restore();
+  // chữ
+  g.textAlign = 'center';
+  g.fillStyle = '#e8559c'; g.font = '700 30px "Be Vietnam Pro"'; if ('letterSpacing' in g) g.letterSpacing = '12px';
+  g.fillText('DANH HIỆU 20.10', 540, 720);
+  if ('letterSpacing' in g) g.letterSpacing = '0px';
+  g.fillStyle = '#3a1230'; g.font = 'italic 500 78px "Playfair Display"';
+  let y = wrap(g, p.danhHieu, 540, 820, 940, 96);
+  g.fillStyle = '#71405f'; g.font = '500 34px "Be Vietnam Pro"';
+  y = wrap(g, p.moTaDanhHieu || '', 540, y + 66, 860, 48);
+  g.fillStyle = '#3a1230'; g.font = '600 46px "Playfair Display"'; g.fillText(nm(p), 540, Math.max(y + 100, 1140));
+  g.fillStyle = '#71405f'; g.font = '600 26px "Be Vietnam Pro"'; g.fillText([p.goiTen ? p.ten : '', p.vaiTro].filter(Boolean).join(' · ').toUpperCase(), 540, Math.max(y + 148, 1188));
+  g.fillStyle = '#e8559c'; g.font = '400 64px "Great Vibes"'; g.fillText('Learn to Leap', 540, 1290);
+  const a = document.createElement('a'); a.href = cv.toDataURL('image/png'); a.download = `huy-hieu-${p.id}.png`; a.click();
+}
+function wrap(g, text, x, y, max, lh) {
+  const words = String(text).split(' '); let line = '';
+  for (const w of words) {
+    const t = line ? line + ' ' + w : w;
+    if (g.measureText(t).width > max && line) { g.fillText(line, x, y); line = w; y += lh; } else line = t;
+  }
+  if (line) g.fillText(line, x, y);
+  return y;
+}
+
+/* ================= Trang 3: Trình chiếu màn hình lớn ================= */
+const SLIDE_MS = 9000;
+function showView() {
+  const minis = D.chiEm.map((p, i) => flower(p.mau, {kind: KINDS[i % 3], stem: false, base: 400 + i * 160})).join('');
+  const lastPara = ((D.thuCEO || {}).noiDung || '').split(/\n\s*\n/).pop();
+  const slides = [
+    () => `<div class="slide center">${ribbon()}<div class="who">
+        <div class="script">Chúc mừng ngày</div>
+        <h1 class="vn purpletext" data-fit="24">${splitChars('Phụ nữ Việt Nam')}</h1>
+        <div class="bignum">20 · 10</div>
+        <p>${esc(D.loiMoDau)}</p>
+        <div class="minis">${minis}</div></div></div>`,
+    ...D.chiEm.map((p, i) => () => `<div class="slide">
+        ${post(p, i, 500)}
+        <div class="who">
+          <div class="script">Vinh danh</div>
+          <h1 data-fit="24">${esc(nm(p))}</h1>
+          <h2 data-fit="18">${esc(p.danhHieu)}</h2>
+          <p>${p.goiTen ? esc(p.ten) + ' · ' : ''}${esc(p.vaiTro)}${p.moTaDanhHieu ? '<br>' + esc(p.moTaDanhHieu) : ''}</p>
+        </div></div>`),
+    () => `<div class="slide center"><div class="who">
+        <div class="script">Tri ân</div>
+        <h1>Cảm ơn vì đã nở hoa cùng Leap</h1>
+        <p>${esc(lastPara)}</p>
+        <div class="minis">${minis}</div></div></div>`
+  ];
+  $app.innerHTML = `
+    <a class="btn back" href="#/">← Thoát</a>
+    <div class="bar" id="bar"></div>
+    <section class="screen" id="show"></section>
+    <div class="ctrl">
+      <button class="btn" id="prev" aria-label="Trước">‹</button>
+      <div class="dots" id="dots">${slides.map((_, i) => `<i data-i="${i}"></i>`).join('')}</div>
+      <button class="btn" id="play" aria-label="Tạm dừng">❚❚</button>
+      <button class="btn" id="next" aria-label="Sau">›</button>
+      <button class="btn" id="fs" aria-label="Toàn màn hình">⛶</button>
+    </div>`;
+  const $show = document.getElementById('show'), $dots = [...document.querySelectorAll('#dots i')];
+  const $play = document.getElementById('play');
+  let idx = 0, timer = null, paused = false;
+
+  function go(i) {
+    idx = (i + slides.length) % slides.length;
+    $show.querySelectorAll('.slide:not(.leave)').forEach(el => {
+      el.classList.add('leave'); setTimeout(() => el.remove(), 1000);
+    });
+    $show.insertAdjacentHTML('beforeend', slides[idx]());
+    $dots.forEach((d, j) => d.classList.toggle('on', j === idx));
+    bloomAll($show.lastElementChild); fitWhenReady($show.lastElementChild);
+    const old = document.getElementById('bar'), bar = old.cloneNode();
+    bar.className = 'bar go' + (paused ? ' paused' : ''); bar.style.setProperty('--ms', SLIDE_MS + 'ms'); old.replaceWith(bar);
+    setTimeout(() => sky.burst(innerWidth / 2, innerHeight * .4, 50), 900);
+    schedule();
+  }
+  function schedule() { clearTimeout(timer); if (!paused) timer = setTimeout(() => go(idx + 1), SLIDE_MS); }
+  function toggle() {
+    paused = !paused; $play.textContent = paused ? '▶' : '❚❚';
+    if (paused) { clearTimeout(timer); document.getElementById('bar').classList.add('paused'); } else go(idx);
+  }
+  document.getElementById('prev').onclick = () => { music.start(); go(idx - 1); };
+  document.getElementById('next').onclick = () => { music.start(); go(idx + 1); };
+  $play.onclick = toggle;
+  $dots.forEach(d => d.onclick = () => go(+d.dataset.i));
+  document.getElementById('fs').onclick = () => { music.start(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); };
+  const onKey = e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { music.start(); go(idx + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') go(idx - 1);
+    else if (e.key === ' ') { e.preventDefault(); music.start(); toggle(); }
+    else if (e.key === 'f') document.getElementById('fs').click();
+  };
+  addEventListener('keydown', onKey);
+  cleanup.push(() => { clearTimeout(timer); removeEventListener('keydown', onKey); });
+  go(0);
+}
+
+/* ================= Điều hướng (mờ dần giữa các trang) ================= */
+let firstRoute = true, routeTimer = null;
+function route() {
+  if (firstRoute) { firstRoute = false; render(); return; }
+  clearTimeout(routeTimer);
+  $app.classList.add('out');
+  routeTimer = setTimeout(() => { render(); void $app.offsetWidth; $app.classList.remove('out'); }, 450);
+}
+function render() {
+  cleanup.forEach(f => f()); cleanup = [];
+  const h = decodeURIComponent(location.hash.slice(1)) || '/';
+  scrollTo(0, 0);
+  document.body.dataset.route = h.startsWith('/thu/') ? 'thu' : h === '/trinh-chieu' ? 'show' : 'home';
+  if (h.startsWith('/thu/')) letter(h.slice(5));
+  else if (h === '/trinh-chieu') showView();
+  else home();
+}
+addEventListener('hashchange', route);
+
+// Vật trang trí trôi nhẹ theo con trỏ (lerp cho mượt)
+(() => {
+  const el = document.getElementById('decor');
+  let tx = 0, ty = 0, x = 0, y = 0;
+  addEventListener('pointermove', e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; });
+  (function loop() {
+    x += (tx - x) * .05; y += (ty - y) * .05;
+    el.style.setProperty('--mx', x.toFixed(3)); el.style.setProperty('--my', y.toFixed(3));
+    requestAnimationFrame(loop);
+  })();
+})();
+route();
+})();
+</script>
+</body>
+</html>
