@@ -58,6 +58,15 @@ body[data-route=show] .decor .side,body[data-route=thu] .decor .home-only{filter
 .fab:hover{transform:scale(1.1) rotate(-8deg)}
 .fab.on{animation:beat 1.2s ease-in-out infinite;box-shadow:0 0 0 4px rgba(232,85,156,.18),0 6px 20px rgba(214,70,140,.3)}
 @keyframes beat{50%{scale:1.07}}
+/* Tên bài đang phát (cạnh nút ♪) */
+.np{position:fixed;top:20px;right:68px;z-index:50;display:flex;align-items:center;gap:3px;height:36px;max-width:calc(100vw - 230px);padding:0 14px 0 12px;border-radius:999px;
+  background:var(--white-glass);border:1px solid #fff;backdrop-filter:blur(10px);box-shadow:0 6px 20px rgba(214,70,140,.2);font-size:13px;font-weight:600;color:var(--ink);
+  opacity:0;transform:translateX(12px);pointer-events:none;transition:opacity .5s var(--ease-io),transform .6s var(--ease)}
+.np.on{opacity:1;transform:none;pointer-events:auto}
+.np span{margin-left:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.np i{flex:none;width:3px;height:14px;border-radius:2px;background:var(--pink);transform-origin:50% 100%;animation:eq .9s ease-in-out infinite}
+.np i:nth-child(2){animation-delay:-.3s}.np i:nth-child(3){animation-delay:-.6s}
+@keyframes eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
 .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:999px;
   background:var(--white-glass);border:1px solid #fff;backdrop-filter:blur(10px);font-weight:600;font-size:15px;color:var(--ink);
   box-shadow:0 6px 20px rgba(214,70,140,.15);transition:transform .45s var(--ease),box-shadow .45s var(--ease),background .45s}
@@ -199,6 +208,9 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 .caret{display:inline-block;width:2px;height:.8em;background:var(--pink);margin-left:6px;vertical-align:-.05em;animation:blink 1s steps(2) infinite}
 .role{display:inline-block;margin-top:12px;padding:6px 16px;border-radius:999px;background:#fff;border:1px solid #ffc4e0;color:var(--pink);
   letter-spacing:.2em;text-transform:uppercase;font-size:11px;font-weight:700;box-shadow:0 6px 16px rgba(214,70,140,.15)}
+.tune{display:flex;align-items:center;gap:6px;margin:14px auto 0;font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink2)}
+.tune b{font-weight:600;color:var(--pink)}
+.tune:hover b{text-decoration:underline}
 .sec{margin-top:64px}
 .sec-h{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;
   font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(14px,3.4vw,17px);color:var(--ink);text-align:center}
@@ -240,13 +252,15 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 .moment h3{font-family:var(--display);font-style:italic;font-weight:500;font-size:22px;margin:12px 4px 2px;color:var(--pink)}
 .moment p{line-height:1.65;font-size:15px;margin:0 4px;color:var(--ink)}
 
-.wishes{columns:2 250px;column-gap:16px}
-.wishes.one{columns:1;max-width:480px;margin:0 auto}
-.wish{position:relative;break-inside:avoid;margin:10px 0 18px;padding:24px 20px 16px;border-radius:6px;background:var(--paper);
+.wishes{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px 16px;align-items:start}
+.wishes.one{grid-template-columns:1fr;max-width:480px;margin:0 auto}
+/* Lời chúc lẻ cuối cùng nằm giữa, như lời kết */
+.wish:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:min(480px,100%)}
+.wish{position:relative;margin:10px 0 0;padding:24px 20px 16px;border-radius:6px;background:var(--paper);
   box-shadow:0 12px 30px rgba(214,70,140,.18)}
 .wish::before{content:"";position:absolute;top:-10px;left:50%;width:84px;height:22px;margin-left:-42px;background:rgba(255,160,205,.7);transform:rotate(-3deg)}
 .wish>div{animation:bob var(--bt,6s) ease-in-out infinite}
-.wish p{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.6;color:var(--ink)}
+.wish p{font-family:var(--display);font-style:italic;font-size:17px;line-height:1.6;color:var(--ink);white-space:pre-line}
 .wish span{display:block;text-align:right;margin-top:8px;font-size:13px;font-weight:700;color:var(--pink)}
 
 /* Thư CEO: giấy kem viền vàng, góc gấp hồng */
@@ -332,7 +346,7 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 @keyframes wave{0%,100%{transform:translateY(0)}30%{transform:translateY(-7px)}60%{transform:translateY(1px)}}
 
 /* Chữ thường: hào quang trắng nhẹ, tiêu đề lớn có nhịp sáng */
-.eyebrow,.lead,.hint,.role,.cap b,.badge p,.stat span,.moment p,.foot,.who p{text-shadow:var(--gw)}
+.eyebrow,.lead,.hint,.role,.tune,.cap b,.badge p,.stat span,.moment p,.foot,.who p{text-shadow:var(--gw)}
 .date,.who .bignum{text-shadow:var(--gp)}
 .who h1{text-shadow:var(--gw),0 0 50px rgba(255,140,198,.45)}
 .who h2,.cap span,.badge h2,.moment h3,.stat b,.badge small,.wish span{text-shadow:var(--gp)}
@@ -401,6 +415,7 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
   .slide .post{width:62vw}
   .who p{margin-inline:auto}
   .stats{gap:8px}
+  .ceo{padding-top:84px}
 }
 </style>
 </head>
@@ -409,6 +424,7 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 <canvas id="sky"></canvas>
 <div class="decor" id="decor" aria-hidden="true"></div>
 <button id="musicBtn" class="fab" aria-label="Bật hoặc tắt nhạc" title="Nhạc nền">♪</button>
+<button id="np" class="np" aria-live="polite" title="Bài đang phát"></button>
 <main id="app"></main>
 
 <!-- luôn tải data.js mới nhất để sửa dữ liệu là thấy ngay -->
@@ -589,12 +605,84 @@ const sky = (() => {
   return {burst};
 })();
 
-/* ================= Nhạc nền hộp nhạc (tự sinh bằng Web Audio) ================= */
-const fab = document.getElementById('musicBtn');
+/* ================= Nhạc nền: mỗi người một giai điệu riêng (tự sinh bằng Web Audio) ================= */
+// hop: vòng hợp âm (mỗi hợp âm một ô nhịp) · dem: tiếng đệm mỗi ô nhịp (b = bè trầm, 0-3 = nốt trong hợp âm, 4-7 = cao một quãng tám, . = nghỉ)
+// giai: giai điệu, mỗi ký hiệu một bước (. = ngân/nghỉ, | chỉ để dễ đọc) · sp: giây mỗi bước · tim: âm sắc · spark: tỉ lệ nốt lấp lánh
+const SONGS = {
+  'vuon-leap':    {ten: 'Vườn Leap', tim: 'hopnhac', sp: .3, oct: 12, spark: .12,
+                   hop: 'Cmaj7 Am7 Fmaj7 G', dem: 'b+0 1 2 3 2 1 0 1 2 3 2 1'},
+  // Valse 3/4 ngay ngắn như sổ sách
+  'bang-can-doi': {ten: 'Bảng cân đối dịu dàng', tim: 'hac', sp: .22,
+                   hop: 'F C Dm Bb F Gm C7 F', dem: 'b . 1+2 . 1+2 .',
+                   giai: 'F5 . . . E5 F5 | G5 . E5 . C5 . | D5 . F5 . A5 . | Bb5 . . . F5 D5 | C5 . F5 . A5 . | Bb5 . A5 . G5 . | G5 . E5 . D5 E5 | F5 . . . . .'},
+  // Pop sôi nổi, câu hook dễ nhớ
+  'chien-dich':   {ten: 'Chiến dịch rực rỡ', tim: 'marimba', sp: .19,
+                   hop: 'D A Bm G D A G A', dem: 'b 1 2 4 . 2 4 1',
+                   giai: 'A5 . A5 B5 A5 . F#5 . | E5 . . . C#5 . E5 . | F#5 . F#5 G5 F#5 . D5 . | B4 . . . D5 . E5 . | A5 . A5 B5 A5 . D6 . | C#6 . . . B5 . A5 . | B5 . A5 . G5 . F#5 . | E5 . . . . . . .'},
+  // Chậm rãi, chỉn chu như một tiết dạy mẫu
+  'giao-an':      {ten: 'Giáo án du dương', tim: 'hopnhac', sp: .28,
+                   hop: 'G D Em Bm C G C D', dem: 'b 1 2 4 5 4 2 1',
+                   giai: 'B5 . . . . . . . | A5 . . . . . . . | G5 . . . . . . . | F#5 . . . . . . . | E5 . . . . . . . | D5 . . . . . . . | E5 . . . . . . . | F#5 . . . A5 . . . | ' +
+                         'B5 . D6 . B5 . G5 . | A5 . F#5 . A5 . D5 . | G5 . B5 . G5 . E5 . | F#5 . D5 . F#5 . B5 . | E5 . G5 . C6 . G5 . | D5 . G5 . B5 . G5 . | C6 . B5 . A5 . G5 . | F#5 . . . . . . .'},
+  // Kèn hiệu rộn ràng trước giờ G
+  'khai-mac':     {ten: 'Đếm ngược khai mạc', tim: 'ken', sp: .17,
+                   hop: 'C C F G C Am G C', dem: 'b . 0+1+2 . b . 0+1+2 .',
+                   giai: 'G4 . . G4 C5 . E5 . | G5 . . . E5 . C5 . | A5 . . A5 C6 . A5 . | G5 . . . . . D5 . | E5 . G5 . C6 . . . | C6 . B5 . A5 . E5 . | D5 . G5 . B5 . D6 . | C6 . . . . . . .'},
+  // Nhịp 6/8 mơ màng, lấp lánh như đèn sân khấu
+  'den-san-khau': {ten: 'Ánh đèn sân khấu', tim: 'chuong', sp: .24, spark: .3,
+                   hop: 'Am F C G Am F Dm E', dem: 'b 1 2 4 2 1',
+                   giai: 'E5 . . A5 . B5 | C6 . . A5 . . | G5 . . E5 . G5 | B4 . . D5 . . | E5 . . A5 . C6 | C6 . . F5 . A5 | A5 . . F5 . D5 | E5 . . G#5 . B5'},
+  // Nảy nhịp, "ting ting" như thông báo mới
+  'xu-huong':     {ten: 'Lên xu hướng', tim: 'marimba', sp: .16,
+                   hop: 'A F#m D E A F#m D E', dem: 'b . 1+2 . . 1+2 b .',
+                   giai: 'C#6 . C#6 . . A5 . E5 | F#5 . A5 . . C#6 . . | D6 . C#6 . A5 . F#5 . | E5 . . G#5 . B5 . . | C#6 . C#6 . . E6 . C#6 | A5 . . F#5 . A5 . C#6 | B5 . A5 . F#5 . D5 . | E5 . B4 . E5 . G#5 .'},
+  // Màu lydian tinh nghịch, ý tưởng bật sáng
+  'y-tuong':      {ten: 'Ý tưởng lấp lánh', tim: 'hopnhac', sp: .2, spark: .2,
+                   hop: 'F G Em Am F G C C', dem: 'b 2 0 2 4 2 0 2',
+                   giai: 'A5 . C6 . B5 . C6 . | D6 . . . B5 . G5 . | E5 . G5 . B5 . E6 . | C6 . . . . . A5 . | A5 . C6 . E6 . C6 . | B5 . D6 . G6 . D6 . | E6 . . . C6 . G5 . | C6 . . . . . . .'},
+  // Ngũ cung điệu Bắc, luyến láy như đàn tranh
+  'khuc-xuan':    {ten: 'Khúc xuân lớp học', tim: 'dan', sp: .26,
+                   hop: 'Csus2 Fsus2 Csus2 Gsus4 Dm7 Fsus2 Gsus4 Csus2', dem: 'b . 2 . 4 . 2 .',
+                   giai: 'C6 . A5 G5 A5 . . . | F5 . G5 . A5 . C6 . | D6 . C6 . A5 . G5 . | G5 . . . . . . . | A5 . C6 . D6 . . . | C6 . A5 . G5 . F5 . | G5 . F5 . D5 . F5 . | C5 . . . . . . .'}
+};
+// w: sóng chính · hw/h/hv: hoạ âm phụ (loại, bội số, độ lớn) · a: tấn công · d: độ ngân · bend: tỉ lệ nốt luyến lên
+const TIMBRE = {
+  hopnhac: {w: 'sine', hw: 'triangle', h: 2, hv: .08, a: .012, d: 2.4},
+  hac:     {w: 'triangle', hw: 'sine', h: 2, hv: .1, a: .006, d: 2},
+  marimba: {w: 'sine', hw: 'sine', h: 4, hv: .12, a: .004, d: .8},
+  chuong:  {w: 'sine', hw: 'sine', h: 2.76, hv: .14, a: .005, d: 3.2},
+  ken:     {w: 'triangle', hw: 'sine', h: 2, hv: .25, a: .03, d: 1.2},
+  dan:     {w: 'triangle', hw: 'sine', h: 3, hv: .12, a: .003, d: 1.6, bend: .35}
+};
+const PITCH = {C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11};
+const QUAL = {'': [0, 4, 7, 12], m: [0, 3, 7, 12], 7: [0, 4, 7, 10], m7: [0, 3, 7, 10], maj7: [0, 4, 7, 11], sus2: [0, 2, 7, 12], sus4: [0, 5, 7, 12]};
+const midiOf = s => { const m = /^([A-G])([#b]?)(\d)$/.exec(s); return 12 * (+m[3] + 1) + PITCH[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0); };
+function parseSong(S) {
+  if (S.P) return S.P;
+  const toks = s => (s || '').split(/[\s|]+/).filter(Boolean);
+  const chords = toks(S.hop).map(sym => {
+    const m = /^([A-G][#b]?)(.*)$/.exec(sym);
+    let r = midiOf(m[1] + '3'); if (r < 53) r += 12;   // gốc hợp âm trong khoảng F3–E4
+    return QUAL[m[2]].map(x => r + x);
+  });
+  const pat = toks(S.dem).map(x => x === '.' ? [] : x.split('+').map(y => y === 'b' ? 'b' : +y));
+  const mel = toks(S.giai).map(x => x === '.' ? 0 : midiOf(x));
+  return S.P = {chords, pat, len: pat.length, mel: mel.length ? mel : null, sp: S.sp, oct: S.oct || 0, spark: S.spark || 0, tim: TIMBRE[S.tim] || TIMBRE.hopnhac};
+}
+// Bài của một người: giai điệu có sẵn (nhac), hoặc file nhạc thật (fileNhac) nếu có
+const tuneOf = p => {
+  const key = p && SONGS[p.nhac] ? p.nhac : 'vuon-leap';
+  return {key, file: (p && p.fileNhac) || '', ten: (p && p.tenNhac) || SONGS[key].ten};
+};
+
+const fab = document.getElementById('musicBtn'), $np = document.getElementById('np');
+function showTune() {
+  $np.innerHTML = `<i></i><i></i><i></i><span>${esc(music.tune.ten)}</span>`;
+  $np.classList.toggle('on', music.on);
+}
 const music = {
-  ctx: null, on: false, want: true, step: 0, next: 0, timer: null,
+  ctx: null, on: false, want: true, step: 0, next: 0, timer: null, bus: null, audio: null, song: null, tune: tuneOf(null),
   hz: m => 440 * Math.pow(2, (m - 69) / 12),
-  CHORDS: [[72,76,79,83],[69,72,76,79],[65,69,72,76],[67,71,74,79]],
   init() {
     const C = window.AudioContext || window.webkitAudioContext; if (!C) return;
     const ctx = this.ctx = new C();
@@ -604,34 +692,70 @@ const music = {
     const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 2400;
     out.connect(ctx.destination); out.connect(d); d.connect(lp); lp.connect(fb); fb.connect(d); lp.connect(ctx.destination);
   },
-  note(f, t, v) {
-    const ctx = this.ctx, g = ctx.createGain(), o = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
-    o.type = 'sine'; o.frequency.value = f; o2.type = 'triangle'; o2.frequency.value = f * 2; g2.gain.value = .08;
-    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5 * v, t + .012); g.gain.exponentialRampToValueAtTime(.0008, t + 2.4);
-    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(this.out);
-    o.start(t); o2.start(t); o.stop(t + 2.5); o2.stop(t + 2.5);
+  note(m, t, v, S, bus, mel) {
+    const ctx = this.ctx, T = S.tim, f = this.hz(m);
+    const g = ctx.createGain(), o = ctx.createOscillator(), o2 = ctx.createOscillator(), g2 = ctx.createGain();
+    o.type = T.w; o2.type = T.hw; g2.gain.value = T.hv;
+    if (mel && T.bend && Math.random() < T.bend) {   // nhấn luyến từ dưới lên như đàn tranh
+      o.frequency.setValueAtTime(f * .944, t); o.frequency.linearRampToValueAtTime(f, t + .14);
+      o2.frequency.setValueAtTime(f * T.h * .944, t); o2.frequency.linearRampToValueAtTime(f * T.h, t + .14);
+    } else { o.frequency.value = f; o2.frequency.value = f * T.h; }
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5 * v, t + T.a); g.gain.exponentialRampToValueAtTime(.0008, t + T.d);
+    o.connect(g); o2.connect(g2); g2.connect(g); g.connect(bus);
+    o.start(t); o2.start(t); o.stop(t + T.d + .1); o2.stop(t + T.d + .1);
   },
   tick() {
-    const PAT = [0,1,2,3,2,1];
-    while (this.next < this.ctx.currentTime + .35) {
-      const chord = this.CHORDS[Math.floor(this.step / 12) % 4], i = this.step % 12;
-      this.note(this.hz(chord[PAT[i % 6]]), this.next, .8);
-      if (i === 0) this.note(this.hz(chord[0] - 24), this.next, .55);
-      if (Math.random() < .12) this.note(this.hz(chord[(Math.random() * 4) | 0] + 12), this.next + .15, .25);
-      this.step++; this.next += .3;
+    const S = this.song, bus = this.bus; if (!bus) return;
+    const now = this.ctx.currentTime;
+    if (this.next < now) this.next = now + .05;   // tab bị ẩn lâu: bỏ qua, không dồn nốt
+    while (this.next < now + .35) {
+      const t = this.next, n = this.step, c = S.chords[Math.floor(n / S.len) % S.chords.length];
+      for (const x of S.pat[n % S.len])
+        x === 'b' ? this.note(c[0] - 12, t, .5, S, bus) : this.note(c[x % 4] + 12 * (x >> 2) + S.oct, t, S.mel ? .3 : .78, S, bus);
+      const m = S.mel && S.mel[n % S.mel.length];
+      if (m) this.note(m, t, .62, S, bus, true);
+      if (Math.random() < S.spark) this.note(c[(Math.random() * 4) | 0] + 24 + S.oct, t + S.sp / 2, .22, S, bus);
+      this.step++; this.next += S.sp;
     }
+  },
+  // Đổi bài theo người đang xem; nếu nhạc đang bật thì chuyển bài ngay
+  use(p) {
+    const tn = tuneOf(p);
+    if (tn.key === this.tune.key && tn.file === this.tune.file) return;
+    this.tune = tn; showTune();
+    if (this.on) { this.halt(); this.play(); }
+  },
+  play() {
+    const tn = this.tune;
+    if (tn.file && !tn.bad) {
+      const a = this.audio = new Audio(tn.file); a.loop = true; a.volume = .6;
+      a.onerror = () => { if (this.audio === a) { tn.bad = true; this.audio = null; this.play(); } };   // thiếu file → dùng giai điệu
+      a.play().catch(() => {});
+      return;
+    }
+    if (!this.ctx) this.init(); if (!this.ctx) return;
+    this.ctx.resume();
+    this.song = parseSong(SONGS[tn.key]);
+    this.bus = this.ctx.createGain(); this.bus.connect(this.out);
+    this.step = 0; this.next = this.ctx.currentTime + .1;
+    this.timer = setInterval(() => this.tick(), 100);
+  },
+  halt() {
+    clearInterval(this.timer); this.timer = null;
+    if (this.audio) { this.audio.pause(); this.audio = null; }
+    const b = this.bus; this.bus = null;
+    if (b) { const t = this.ctx.currentTime; b.gain.setValueAtTime(1, t); b.gain.linearRampToValueAtTime(0, t + .5); setTimeout(() => b.disconnect(), 800); }
   },
   start() {
     if (!this.want) return;
-    if (!this.ctx) this.init(); if (!this.ctx) return;
-    this.ctx.resume();
+    if (this.ctx) this.ctx.resume();
     if (this.on) return;
-    this.on = true; this.next = this.ctx.currentTime + .1;
-    this.timer = setInterval(() => this.tick(), 100); fab.classList.add('on');
+    this.on = true; this.play(); fab.classList.add('on'); showTune();
   },
-  stop() { this.on = false; clearInterval(this.timer); fab.classList.remove('on'); }
+  stop() { this.on = false; this.halt(); fab.classList.remove('on'); showTune(); }
 };
-fab.onclick = () => { if (music.on) { music.want = false; music.stop(); } else { music.want = true; music.start(); } };
+fab.onclick = $np.onclick = () => { if (music.on) { music.want = false; music.stop(); } else { music.want = true; music.start(); } };
+showTune();
 
 /* ================= Thẻ bài đăng ================= */
 const ICON = {
@@ -685,7 +809,7 @@ function home() {
       <div class="wall">${cards}</div>
       <p class="hint rise" style="--d:2.2s"><span class="blink">Chạm vào một tấm thiệp để mở thư</span></p>
     </section>`;
-  bloomAll($app); fitWhenReady($app);
+  bloomAll($app); fitWhenReady($app); music.use(null);
 }
 
 /* ================= Trang 2: Phong thư riêng ================= */
@@ -745,6 +869,7 @@ function letter(id) {
           <h1 id="heroName"><span id="tw"></span><i class="caret"></i></h1>
           ${p.goiTen ? `<div class="fullname">${esc(p.ten)}</div>` : ''}
           <div class="role">${esc(p.vaiTro)}</div>
+          <button class="tune" id="tune">♪ Giai điệu riêng: <b>${esc(tuneOf(p).ten)}</b></button>
         </header>
 
         <section class="sec reveal">
@@ -804,10 +929,11 @@ function letter(id) {
     later(1850, () => { const tw = document.getElementById('tw'); tw.textContent = nm(p); fit(document.getElementById('heroName'), 18); tw.textContent = ''; fitAll(page); });
     later(3000, () => stage.remove());
   };
-  fitWhenReady(stage);
+  fitWhenReady(stage); music.use(p);
   env.onclick = open;
   env.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
   document.getElementById('dl').onclick = () => downloadBadge(p);
+  document.getElementById('tune').onclick = () => { music.want = true; music.start(); };
 }
 
 function typewrite(el, text) {
@@ -923,6 +1049,7 @@ function showView() {
     });
     $show.insertAdjacentHTML('beforeend', slides[idx]());
     $dots.forEach((d, j) => d.classList.toggle('on', j === idx));
+    music.use(D.chiEm[idx - 1]);   // slide mở đầu/tri ân: bài chung; slide từng người: bài riêng
     bloomAll($show.lastElementChild); fitWhenReady($show.lastElementChild);
     const old = document.getElementById('bar'), bar = old.cloneNode();
     bar.className = 'bar go' + (paused ? ' paused' : ''); bar.style.setProperty('--ms', SLIDE_MS + 'ms'); old.replaceWith(bar);

@@ -5,10 +5,22 @@
    - goiTen: tên hiển thị chính, ví dụ "Mrs. Thảo" (có thể đổi sang "Ms. Thảo"). Họ tên đầy đủ (ten) hiện ở dòng phụ.
    - mau: màu hoa — "hong" | "tim" | "dao" | "vang" | "xanh"
    - anhDaiDien: ảnh chân dung hiện trên thẻ bài đăng, ví dụ "anh/thao.jpg". Để "" thì hiện bông hoa.
-   - danhHieu / moTaDanhHieu / loiChuc: đang là BẢN NHÁP theo vai trò, anh sửa lại cho đúng người.
+   - danhHieu / moTaDanhHieu: đang là BẢN NHÁP theo vai trò, anh sửa lại cho đúng người.
+   - nhac: giai điệu riêng, tự phát khi mở thư / tới slide của người đó (không cần file nhạc). Chọn 1 trong:
+       "bang-can-doi"  Bảng cân đối dịu dàng   (valse, đàn hạc)
+       "chien-dich"    Chiến dịch rực rỡ       (pop sôi nổi, marimba)
+       "giao-an"       Giáo án du dương        (chậm rãi, hộp nhạc)
+       "khai-mac"      Đếm ngược khai mạc      (kèn hiệu rộn ràng)
+       "den-san-khau"  Ánh đèn sân khấu        (6/8 mơ màng, chuông)
+       "xu-huong"      Lên xu hướng            (nảy nhịp, marimba)
+       "y-tuong"       Ý tưởng lấp lánh        (tinh nghịch, hộp nhạc)
+       "khuc-xuan"     Khúc xuân lớp học       (ngũ cung, đàn tranh)
+   - fileNhac: muốn dùng bài hát thật thì bỏ file vào thư mục nhac/ rồi điền, ví dụ "nhac/thao.mp3".
+     Để "" thì dùng giai điệu ở trên. Lưu ý: repo công khai — chỉ dùng nhạc được phép chia sẻ.
+   - tenNhac: tên bài hiển thị. Để "" thì dùng tên giai điệu.
    - soLieu: tối đa 3 ô { so, nhan }. Để [] thì phần này tự ẩn.
    - cauChuyen: { anh, nhan, ke }. Ảnh bỏ vào thư mục anh/, ví dụ anh: "anh/thao-1.jpg". Để [] thì tự ẩn.
-   - loiChuc: { tu, noiDung }. Để [] thì tự ẩn.
+   - loiChuc: { tu, noiDung }. Muốn xuống dòng trong lời chúc thì viết \n (không bấm Enter). Để [] thì tự ẩn.
    ========================================================= */
 
 window.LEAP = {
@@ -34,12 +46,15 @@ window.LEAP = {
       vaiTro: "Hành chính Nhân sự – Kế toán",
       mau: "hong",
       anhDaiDien: "",
+      nhac: "bang-can-doi", fileNhac: "", tenNhac: "",
       danhHieu: "Người giữ nhịp cho cả nhà",
       moTaDanhHieu: "Lo trọn từng con số và từng con người của Leap, chu đáo đến từng chi tiết.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
-        { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã lặng lẽ giữ cho mọi thứ vận hành trơn tru. Chúc một ngày 20/10 thật nhẹ nhàng và nhiều niềm vui!" }
+        { tu: "Phiếu chi đặc biệt số 20/10", noiDung: "Nội dung chi: một ngày thật vui.\nSố tiền: không giới hạn nụ cười.\nNgười duyệt: cả nhà Leap.\nTrạng thái: đã duyệt, không cần chứng từ!" },
+        { tu: "Những con số biết ơn", noiDung: "Sổ sách cuối tháng có thể khoá, nhưng sự chu đáo thì chưa bao giờ khoá sổ. Chúc tài khoản niềm vui luôn dư có, bảng cân đối luôn khớp ngay lần đầu, và mọi nỗi lo đều được xoá sổ." },
+        { tu: "Learn to Leap", noiDung: "Từ hồ sơ nhân sự đến từng bảng lương, mỗi việc đều được lo trọn vẹn và lặng lẽ. Cảm ơn vì đã giữ cho ngôi nhà Leap luôn ngăn nắp và ấm áp." }
       ]
     },
     {
@@ -49,12 +64,15 @@ window.LEAP = {
       vaiTro: "Giám đốc Marketing",
       mau: "tim",
       anhDaiDien: "",
+      nhac: "chien-dich", fileNhac: "", tenNhac: "",
       danhHieu: "Người kể chuyện của Leap",
       moTaDanhHieu: "Đưa câu chuyện của Learn to Leap đến gần hơn với từng ngôi trường.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
-        { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã dẫn dắt đội Marketing và làm hình ảnh Leap ngày một đẹp hơn. Chúc luôn rạng rỡ và tràn đầy cảm hứng!" }
+        { tu: "Bản brief chiến dịch 20/10", noiDung: "Mục tiêu: hạnh phúc tăng trưởng 200%.\nKênh triển khai: mọi ngày trong năm.\nNgân sách: không giới hạn.\nKPI duy nhất: nụ cười luôn đạt 100%." },
+        { tu: "Báo cáo hiệu quả", noiDung: "Chúc 20/10 có độ phủ rộng khắp, tương tác nồng nhiệt và toàn bình luận yêu thương. Một chiến dịch như vậy, chỉ người kể chuyện giỏi nhất của Leap mới xứng đáng." },
+        { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã dẫn dắt đội Marketing và đưa câu chuyện STEM của Leap đến gần hơn với thầy cô, phụ huynh và học sinh. Chúc luôn rạng rỡ và tràn đầy cảm hứng!" }
       ]
     },
     {
@@ -64,11 +82,14 @@ window.LEAP = {
       vaiTro: "Giám đốc Chuyên môn",
       mau: "dao",
       anhDaiDien: "",
+      nhac: "giao-an", fileNhac: "", tenNhac: "",
       danhHieu: "Người giữ chất lượng từng bài học",
       moTaDanhHieu: "Mỗi chương trình đến tay học sinh đều mang một dấu ấn chỉn chu.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Giáo án đặc biệt ngày 20/10", noiDung: "Mục tiêu: hạnh phúc trọn vẹn.\nKhởi động: một bó hoa thật đẹp.\nHình thành kiến thức: được cả nhà Leap trân trọng.\nVận dụng: cười thật nhiều.\nĐánh giá: Hoàn thành xuất sắc!" },
+        { tu: "Cây bút đỏ duyệt bài", noiDung: "Hôm nay bút đỏ xin nghỉ phép: không sửa giáo án, không góp ý học liệu. Chỉ còn một nhận xét duy nhất cho người giữ chất lượng từng bài học: Đạt chuẩn, vượt mong đợi!" },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã giữ vững chuyên môn – nền móng của Leap. Chúc một ngày 20/10 thật an yên và hạnh phúc!" }
       ]
     },
@@ -79,11 +100,14 @@ window.LEAP = {
       vaiTro: "Sự kiện",
       mau: "vang",
       anhDaiDien: "",
+      nhac: "khai-mac", fileNhac: "", tenNhac: "",
       danhHieu: "Phù thuỷ sự kiện",
       moTaDanhHieu: "Biến mỗi sự kiện của Leap thành một kỷ niệm đáng nhớ.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Kịch bản chương trình 20/10", noiDung: "08:00 – Mở màn bằng hoa và lời chúc.\n10:00 – Tiết mục chính: cười thật tươi.\n12:00 – Giải lao không giới hạn.\n17:00 – Bế mạc: một ngày trọn vẹn, không phát sinh sự cố!" },
+        { tu: "Bộ đàm hậu trường", noiDung: "Alo alo, tổng đạo diễn nghe rõ trả lời! Hôm nay không cần chạy sân khấu, không cần check-in khách mời. Nhiệm vụ duy nhất: đứng yên để nhận hoa. Hết!" },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì những sự kiện chạy trơn tru đến từng phút. Chúc luôn tươi tắn và tràn năng lượng!" }
       ]
     },
@@ -94,11 +118,14 @@ window.LEAP = {
       vaiTro: "Sự kiện",
       mau: "xanh",
       anhDaiDien: "",
+      nhac: "den-san-khau", fileNhac: "", tenNhac: "",
       danhHieu: "Người thắp sáng sân khấu",
       moTaDanhHieu: "Phía sau mỗi sự kiện trọn vẹn là một sự tận tâm thầm lặng.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Checklist hậu cần 20/10", noiDung: "✓ Hoa tươi: đã có.\n✓ Ánh đèn: chiếu đúng người.\n✓ Âm thanh: toàn lời khen.\n✓ Khán giả: cả nhà Leap.\n✓ Việc phải lo hôm nay: không có!" },
+        { tu: "Ánh đèn sân khấu", noiDung: "Bao nhiêu lần đứng sau cánh gà để mọi thứ diễn ra suôn sẻ. Hôm nay đèn xin đổi hướng, chiếu thẳng vào nhân vật chính của ngày 20/10." },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã góp sức cho những ngày hội rộn ràng của Leap. Chúc một ngày 20/10 thật nhiều niềm vui và quà xinh!" }
       ]
     },
@@ -109,11 +136,14 @@ window.LEAP = {
       vaiTro: "Marketing",
       mau: "hong",
       anhDaiDien: "",
+      nhac: "xu-huong", fileNhac: "", tenNhac: "",
       danhHieu: "Người lan toả cảm hứng",
       moTaDanhHieu: "Mang hình ảnh Learn to Leap lan toả đến nhiều người hơn mỗi ngày.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Bài đăng ngày 20/10", noiDung: "Caption: Ngày của những bông hoa đẹp nhất Leap ✿\nHashtag: #XinhĐẹp #SángTạo #20Tháng10\nLượt thích: không đếm xuể.\nBình luận nổi bật: «Bài này phải lên xu hướng!»" },
+        { tu: "Thuật toán mạng xã hội", noiDung: "Đã phân tích dữ liệu và kết luận: nội dung chạm đến người xem nhất hôm nay chính là nụ cười của người làm nội dung. Đề xuất: đẩy lên xu hướng cả ngày!" },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì những nội dung chạm đến người xem. Chúc luôn xinh đẹp và sáng tạo không ngừng!" }
       ]
     },
@@ -124,11 +154,14 @@ window.LEAP = {
       vaiTro: "Marketing",
       mau: "tim",
       anhDaiDien: "",
+      nhac: "y-tuong", fileNhac: "", tenNhac: "",
       danhHieu: "Ngọn lửa sáng tạo",
       moTaDanhHieu: "Luôn có ý tưởng mới cho những câu chuyện của Leap.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Biên bản brainstorm 20/10", noiDung: "Ý tưởng 1: tặng hoa – duyệt.\nÝ tưởng 2: tặng thêm một ngày thật vui – duyệt.\nÝ tưởng 3: để người có nhiều ý tưởng hay nhất được nghỉ ngơi – duyệt ngay, không cần họp lại!" },
+        { tu: "Bóng đèn ý tưởng", noiDung: "Mỗi lần có ý tưởng mới, bóng đèn này lại bật sáng. Hôm nay đèn xin sáng cả ngày để chúc mừng người nghĩ ra những ý tưởng ấy: luôn tươi mới, luôn rực rỡ!" },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì những ý tưởng làm Leap thêm tươi mới. Chúc một ngày 20/10 thật rực rỡ!" }
       ]
     },
@@ -139,11 +172,14 @@ window.LEAP = {
       vaiTro: "Quản lý Giáo viên",
       mau: "dao",
       anhDaiDien: "",
+      nhac: "khuc-xuan", fileNhac: "", tenNhac: "",
       danhHieu: "Người dẫn dắt đội ngũ giáo viên",
       moTaDanhHieu: "Đồng hành cùng từng thầy cô để mỗi giờ học STEM đều trọn vẹn.",
       soLieu: [],
       cauChuyen: [],
       loiChuc: [
+        { tu: "Sổ đầu bài ngày 20/10", noiDung: "Tiết 1: Nhận hoa – cả lớp hăng hái.\nTiết 2: Nghe lời chúc – cả lớp đồng thanh.\nTiết 3: Học cách nghỉ ngơi.\nBài tập về nhà: cười thật nhiều.\nXếp loại tiết học: Tốt!" },
+        { tu: "Thời khoá biểu", noiDung: "Đã xếp lại toàn bộ lịch dạy: hôm nay không có tiết trống nào phải lo, không có lớp nào cần dạy thay. Chỉ còn đúng một tiết: tiết vinh danh người quản lý tận tâm nhất." },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã chăm chút đội ngũ giáo viên như chăm một khu vườn. Chúc một ngày 20/10 thật ấm áp và hạnh phúc!" }
       ]
     }

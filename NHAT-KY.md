@@ -15,7 +15,7 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
 | File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
 | Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`) |
-| Trạng thái 16/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật (danh hiệu / lời chúc / thư CEO là **bản nháp**), chưa có ảnh, đã live trên GitHub Pages |
+| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật, **mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban** (danh hiệu / thư CEO vẫn là **bản nháp**), chưa có ảnh. Bản 19/10 cần push lên `main` để cập nhật GitHub Pages |
 
 ### Ba màn hình (điều hướng bằng hash)
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
@@ -54,10 +54,12 @@ window.LEAP = {
     vaiTro: "Giám đốc Chuyên môn",
     mau: "dao",                   // hong | tim | dao | vang | xanh
     anhDaiDien: "",               // ảnh chân dung trên thẻ; "" → hiện bông hoa
+    nhac: "giao-an",              // giai điệu riêng (khoá trong SONGS của index.html)
+    fileNhac: "", tenNhac: "",    // file nhạc thật "nhac/x.mp3" (lỗi/thiếu file → tự dùng giai điệu) + tên bài hiển thị
     danhHieu: "...", moTaDanhHieu: "...",
     soLieu: [ { so: "47", nhan: "..." } ],          // tối đa 3; [] → ẩn mục
     cauChuyen: [ { anh, nhan, ke } ],               // [] → ẩn mục
-    loiChuc: [ { tu, noiDung } ]                    // [] → ẩn mục
+    loiChuc: [ { tu, noiDung } ]                    // noiDung xuống dòng bằng \n; [] → ẩn mục
   } ]
 }
 ```
@@ -80,13 +82,17 @@ window.LEAP = {
 - **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó.
 - **Lớp trang trí cố định** `#decor`: hoa to mờ, hoa kính, tim 3D, vòng elip, sao ✦; trôi nhẹ theo con trỏ (parallax). Class `side` ẩn khi trình chiếu, `home-only` ẩn ở trang thư — ẩn bằng `filter:opacity(0)`.
 - **Canvas `#sky`**: cánh hoa rơi + lấp lánh + nổ tim/lấp lánh (`sky.burst(x, y, n, 'heart'|'glint')`).
-- **Nhạc nền**: hộp nhạc tự sinh bằng Web Audio (không cần file nhạc), nút ♪ góc phải; bật khi mở thư/trình chiếu.
+- **Nhạc nền** (tự sinh bằng Web Audio, không cần file): nút ♪ góc phải + nhãn tên bài đang phát (`#np`); bật khi mở thư/trình chiếu.
+  - `SONGS`: 9 giai điệu — `vuon-leap` (bài chung: trang chủ, slide mở đầu/tri ân) + 8 bài riêng đặt tên theo nghề: `bang-can-doi` (Thảo, valse), `chien-dich` (Thịnh, pop), `giao-an` (Ngọc, chậm rãi), `khai-mac` (Phương Anh, kèn hiệu), `den-san-khau` (An, 6/8 chuông), `xu-huong` (Nhung, nảy nhịp), `y-tuong` (Nga, lydian), `khuc-xuan` (Xuân, ngũ cung + luyến đàn tranh).
+  - Cú pháp bài: `hop` vòng hợp âm (mỗi hợp âm 1 ô nhịp), `dem` tiếng đệm mỗi ô nhịp (`b` bè trầm, `0-3` nốt hợp âm, `4-7` cao 1 quãng tám, `.` nghỉ, `+` chơi cùng lúc), `giai` giai điệu (mỗi ký hiệu 1 bước), `sp` giây/bước, `tim` âm sắc trong `TIMBRE`.
+  - `music.use(p)` đổi bài theo người (null → bài chung); mỗi bài phát qua một `GainNode` riêng (`bus`) để chuyển bài mờ dần, không lẫn nốt bài cũ.
+  - Trong thư có dòng "♪ Giai điệu riêng: …" (bấm để bật nhạc).
 - **Co chữ một dòng**: thuộc tính `data-fit="<cỡ tối thiểu>"` + hàm `fit()` / `fitAll()`; chạy sau khi font tải xong, khi đổi slide, khi mở thư, khi đổi kích thước cửa sổ.
 - **Huy hiệu PNG** 1080×1350 vẽ bằng canvas (`downloadBadge`), phong cách poster hồng.
 
 ---
 
-## 5. Diễn biến theo thời gian (15–16/10/2026)
+## 5. Diễn biến theo thời gian (15–19/10/2026)
 
 1. **Ý tưởng** "Vườn Leap": mỗi người là một bông hoa; vinh danh + câu chuyện + lời chúc + thư CEO; màn hình lớn tại văn phòng; gợi ý robot UBTECH trao thư (chưa làm).
 2. **Demo đầu** (theme đêm tím mộng mơ): vườn hoa SVG, phong thư, lá thư, trình chiếu, nhạc Web Audio, "tưới hoa" lưu localStorage.
@@ -99,6 +105,7 @@ window.LEAP = {
 9. Sửa **lỗi mở thư** (tờ thư trồi lên đè tim + tên); **chống xuống dòng**; **bỏ xưng hô**, đổi link theo họ tên.
 10. **"Mrs. + Tên"**; tên trong thư đặt trên **thiệp giấy kem** (không lẫn vào nền); **tối ưu hiệu năng** (chỉ animate transform/opacity).
 11. 16/10: đưa lên GitHub (`LearntoLeap/vuon-leap-2010`) + viết nhật ký này và `CLAUDE.md`. CEO chọn chuyển repo **công khai** và bật **GitHub Pages** → link riêng dạng `https://learntoleap.github.io/vuon-leap-2010/#/thu/<id>`. Lưu ý: repo công khai nên ai cũng xem được `data.js` (tên, vai trò) — không đưa thông tin nhạy cảm vào.
+12. 19/10: kiểm tra chạy lại cả 3 màn hình (không lỗi). **Mỗi người một giai điệu riêng** (8 bài tự sinh, tên theo công việc; trình chiếu tự đổi bài theo slide; có thể thay bằng file mp3 qua `fileNhac`). **Viết lại lời chúc**: mỗi người 3 lời — 1 lời "đúng định dạng nghề" (phiếu chi, brief chiến dịch, giáo án, kịch bản chương trình, checklist hậu cần, bài đăng, biên bản brainstorm, sổ đầu bài), 1 lời dí dỏm, 1 lời tri ân từ Learn to Leap. Lời chúc hỗ trợ xuống dòng `\n`; lưới lời chúc 2 cột, lời lẻ cuối nằm giữa. Sửa góc gấp thư CEO che chữ trên điện thoại.
 
 ---
 
@@ -118,7 +125,9 @@ window.LEAP = {
 
 ## 7. Việc tiếp theo gợi ý
 
-- [ ] CEO duyệt/sửa danh hiệu, mô tả, lời chúc, thư CEO trong `data.js`.
+- [ ] CEO duyệt/sửa danh hiệu, mô tả, thư CEO và 24 lời chúc mới (19/10) trong `data.js`.
+- [ ] Push bản 19/10 (giai điệu riêng + lời chúc mới) lên `main` để cập nhật web live.
+- [ ] (Tuỳ chọn) Thay giai điệu bằng bài hát thật: bỏ file vào `nhac/`, điền `fileNhac` — repo công khai nên chỉ dùng nhạc được phép chia sẻ.
 - [ ] Thêm ảnh chân dung (`anhDaiDien`), số liệu, câu chuyện + ảnh vào thư mục `anh/`.
 - [x] Deploy GitHub Pages (16/10). Gửi link riêng `…/#/thu/<id>` cho từng người sáng 20/10.
 - [ ] (Tuỳ chọn) In QR từng link lên thiệp kèm hoa; kịch bản robot trao thư; chạy thử trên TV văn phòng ngày 19/10.
