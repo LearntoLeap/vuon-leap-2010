@@ -119,7 +119,7 @@ window.LEAP = {
       goiTen: "Mrs. An",
       vaiTro: "Sự kiện",
       mau: "xanh",
-      anh: ["anh/ho-thi-an-1.jpg", "anh/ho-thi-an-2.jpg"],
+      anh: ["anh/ho-thi-an-2.jpg", "anh/ho-thi-an-1.jpg"],
       nhac: "den-san-khau", fileNhac: "", tenNhac: "",
       danhHieu: "Người thắp sáng sân khấu",
       moTaDanhHieu: "Phía sau mỗi sự kiện trọn vẹn là một sự tận tâm thầm lặng.",
