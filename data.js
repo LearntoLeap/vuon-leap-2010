@@ -101,7 +101,7 @@ window.LEAP = {
       goiTen: "Mrs. Phương Anh",
       vaiTro: "Sự kiện",
       mau: "vang",
-      anh: ["anh/dinh-hoang-phuong-anh-1.jpg", "anh/dinh-hoang-phuong-anh-2.jpg"],
+      anh: ["anh/dinh-hoang-phuong-anh-3.jpg"],
       nhac: "khai-mac", fileNhac: "", tenNhac: "",
       danhHieu: "Phù thuỷ sự kiện",
       moTaDanhHieu: "Biến mỗi sự kiện của Leap thành một kỷ niệm đáng nhớ.",

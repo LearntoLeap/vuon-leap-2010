@@ -9,13 +9,13 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 
 | Mục | Giá trị |
 |---|---|
-| Thư mục máy | `C:\Users\HP\vuon-leap-2010` |
+| Thư mục máy | `C:\Users\HP\vuon-leap-2010` (máy 1) · `D:\Claude G\vuon-leap-2010` (máy 2, clone 20/10 — không có Python) |
 | Repo | `github.com/LearntoLeap/vuon-leap-2010` (**công khai**) |
 | Web live | https://learntoleap.github.io/vuon-leap-2010/ (GitHub Pages, nhánh `main`, push là tự cập nhật sau ~1 phút) |
 | Web live (Vercel) | https://vuon-leap-2010.vercel.app/ — project `vuon-leap-2010`, team "LTL's projects", nối repo GitHub, push `main` là tự deploy production. Bảo vệ đăng nhập Vercel chỉ áp cho bản preview (link production công khai) |
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
 | File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
-| Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`) |
+| Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`). Máy 2: `npx http-server -p 5210 -c-1`, preview `vuon-leap` ở `D:\Claude G\.claude\launch.json` |
 | Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu **9 người** thật, mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban + **album ảnh trượt** (18 ảnh). Danh hiệu / thư CEO vẫn là **bản nháp**. Đã push lên `main`, live trên GitHub Pages + Vercel |
 
 ### Ba màn hình (điều hướng bằng hash)
@@ -113,6 +113,7 @@ window.LEAP = {
 12. 19/10: kiểm tra chạy lại cả 3 màn hình (không lỗi). **Mỗi người một giai điệu riêng** (8 bài tự sinh, tên theo công việc; trình chiếu tự đổi bài theo slide; có thể thay bằng file mp3 qua `fileNhac`). **Viết lại lời chúc**: mỗi người 3 lời — 1 lời "đúng định dạng nghề" (phiếu chi, brief chiến dịch, giáo án, kịch bản chương trình, checklist hậu cần, bài đăng, biên bản brainstorm, sổ đầu bài), 1 lời dí dỏm, 1 lời tri ân từ Learn to Leap. Lời chúc hỗ trợ xuống dòng `\n`; lưới lời chúc 2 cột, lời lẻ cuối nằm giữa. Sửa góc gấp thư CEO che chữ trên điện thoại. Push lên GitHub + tạo project **Vercel** `vuon-leap-2010` nối repo (team mặc định khoá mọi bản deploy bằng đăng nhập Vercel → chuyển project về chỉ khoá bản preview để link production mở công khai).
 13. 19/10 (chiều): thêm **Ngọc Hà – Hành chính Tổng hợp** (bài "Đóng dấu yêu thương", 3 lời chúc kiểu công văn/con dấu). Nạp **ảnh cho cả 9 người** (18 ảnh, không trùng, đúng theo tên file CEO đặt) thành **album trượt**: thẻ trên bức tường + trình chiếu (kiểu Instagram), mục "Khoảnh khắc rạng rỡ" dạng polaroid trong thư. Trường `anhDaiDien` thay bằng mảng `anh` (code vẫn đọc `anhDaiDien` cũ).
 14. 19/10: theo CEO, đảo thứ tự ảnh Hồ An — ảnh tốt nghiệp ("Hồ An 2") lên làm ảnh chính, ảnh "Hồ An 1" ra sau.
+15. 20/10: clone repo sang máy 2 (`D:\Claude G\vuon-leap-2010`). Theo CEO, Phương Anh **chỉ dùng 1 ảnh mới** (selfie hoa sứ) → xoá `-1`, `-2`, lưu ảnh mới tên `dinh-hoang-phuong-anh-3.jpg` (đặt tên mới để người đã mở link không bị dính ảnh cũ trong cache). Cắt 4:5 bằng System.Drawing của PowerShell (máy 2 không có Python), xoá EXIF.
 
 ---
 
