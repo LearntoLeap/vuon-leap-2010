@@ -12,10 +12,11 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 | Thư mục máy | `C:\Users\HP\vuon-leap-2010` |
 | Repo | `github.com/LearntoLeap/vuon-leap-2010` (**công khai**) |
 | Web live | https://learntoleap.github.io/vuon-leap-2010/ (GitHub Pages, nhánh `main`, push là tự cập nhật sau ~1 phút) |
+| Web live (Vercel) | https://vuon-leap-2010.vercel.app/ — project `vuon-leap-2010`, team "LTL's projects", nối repo GitHub, push `main` là tự deploy production. Bảo vệ đăng nhập Vercel chỉ áp cho bản preview (link production công khai) |
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
 | File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
 | Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`) |
-| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật, **mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban** (danh hiệu / thư CEO vẫn là **bản nháp**), chưa có ảnh. Bản 19/10 cần push lên `main` để cập nhật GitHub Pages |
+| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật, **mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban** (danh hiệu / thư CEO vẫn là **bản nháp**), chưa có ảnh. Đã push lên `main` và deploy Vercel 19/10 |
 
 ### Ba màn hình (điều hướng bằng hash)
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
@@ -105,7 +106,7 @@ window.LEAP = {
 9. Sửa **lỗi mở thư** (tờ thư trồi lên đè tim + tên); **chống xuống dòng**; **bỏ xưng hô**, đổi link theo họ tên.
 10. **"Mrs. + Tên"**; tên trong thư đặt trên **thiệp giấy kem** (không lẫn vào nền); **tối ưu hiệu năng** (chỉ animate transform/opacity).
 11. 16/10: đưa lên GitHub (`LearntoLeap/vuon-leap-2010`) + viết nhật ký này và `CLAUDE.md`. CEO chọn chuyển repo **công khai** và bật **GitHub Pages** → link riêng dạng `https://learntoleap.github.io/vuon-leap-2010/#/thu/<id>`. Lưu ý: repo công khai nên ai cũng xem được `data.js` (tên, vai trò) — không đưa thông tin nhạy cảm vào.
-12. 19/10: kiểm tra chạy lại cả 3 màn hình (không lỗi). **Mỗi người một giai điệu riêng** (8 bài tự sinh, tên theo công việc; trình chiếu tự đổi bài theo slide; có thể thay bằng file mp3 qua `fileNhac`). **Viết lại lời chúc**: mỗi người 3 lời — 1 lời "đúng định dạng nghề" (phiếu chi, brief chiến dịch, giáo án, kịch bản chương trình, checklist hậu cần, bài đăng, biên bản brainstorm, sổ đầu bài), 1 lời dí dỏm, 1 lời tri ân từ Learn to Leap. Lời chúc hỗ trợ xuống dòng `\n`; lưới lời chúc 2 cột, lời lẻ cuối nằm giữa. Sửa góc gấp thư CEO che chữ trên điện thoại.
+12. 19/10: kiểm tra chạy lại cả 3 màn hình (không lỗi). **Mỗi người một giai điệu riêng** (8 bài tự sinh, tên theo công việc; trình chiếu tự đổi bài theo slide; có thể thay bằng file mp3 qua `fileNhac`). **Viết lại lời chúc**: mỗi người 3 lời — 1 lời "đúng định dạng nghề" (phiếu chi, brief chiến dịch, giáo án, kịch bản chương trình, checklist hậu cần, bài đăng, biên bản brainstorm, sổ đầu bài), 1 lời dí dỏm, 1 lời tri ân từ Learn to Leap. Lời chúc hỗ trợ xuống dòng `\n`; lưới lời chúc 2 cột, lời lẻ cuối nằm giữa. Sửa góc gấp thư CEO che chữ trên điện thoại. Push lên GitHub + tạo project **Vercel** `vuon-leap-2010` nối repo (team mặc định khoá mọi bản deploy bằng đăng nhập Vercel → chuyển project về chỉ khoá bản preview để link production mở công khai).
 
 ---
 
@@ -126,7 +127,7 @@ window.LEAP = {
 ## 7. Việc tiếp theo gợi ý
 
 - [ ] CEO duyệt/sửa danh hiệu, mô tả, thư CEO và 24 lời chúc mới (19/10) trong `data.js`.
-- [ ] Push bản 19/10 (giai điệu riêng + lời chúc mới) lên `main` để cập nhật web live.
+- [x] Push bản 19/10 lên `main` + deploy Vercel (https://vuon-leap-2010.vercel.app/).
 - [ ] (Tuỳ chọn) Thay giai điệu bằng bài hát thật: bỏ file vào `nhac/`, điền `fileNhac` — repo công khai nên chỉ dùng nhạc được phép chia sẻ.
 - [ ] Thêm ảnh chân dung (`anhDaiDien`), số liệu, câu chuyện + ảnh vào thư mục `anh/`.
 - [x] Deploy GitHub Pages (16/10). Gửi link riêng `…/#/thu/<id>` cho từng người sáng 20/10.
