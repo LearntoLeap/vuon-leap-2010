@@ -4,7 +4,8 @@
    - id: viết liền không dấu, dùng làm link riêng (…/#/thu/<id>)
    - goiTen: tên hiển thị chính, ví dụ "Mrs. Thảo" (có thể đổi sang "Ms. Thảo"). Họ tên đầy đủ (ten) hiện ở dòng phụ.
    - mau: màu hoa — "hong" | "tim" | "dao" | "vang" | "xanh"
-   - anhDaiDien: ảnh chân dung hiện trên thẻ bài đăng, ví dụ "anh/thao.jpg". Để "" thì hiện bông hoa.
+   - anh: danh sách ảnh (khung 4:5), trượt để xem trên thẻ, trong thư và khi trình chiếu, theo đúng thứ tự viết.
+     Ví dụ ["anh/phan-thi-thao-1.jpg", "anh/phan-thi-thao-2.jpg"]. Để [] thì chỉ hiện bông hoa.
    - danhHieu / moTaDanhHieu: đang là BẢN NHÁP theo vai trò, anh sửa lại cho đúng người.
    - nhac: giai điệu riêng, tự phát khi mở thư / tới slide của người đó (không cần file nhạc). Chọn 1 trong:
        "bang-can-doi"  Bảng cân đối dịu dàng   (valse, đàn hạc)
@@ -15,6 +16,7 @@
        "xu-huong"      Lên xu hướng            (nảy nhịp, marimba)
        "y-tuong"       Ý tưởng lấp lánh        (tinh nghịch, hộp nhạc)
        "khuc-xuan"     Khúc xuân lớp học       (ngũ cung, đàn tranh)
+       "dong-dau"      Đóng dấu yêu thương     (nhịp văn phòng, kalimba)
    - fileNhac: muốn dùng bài hát thật thì bỏ file vào thư mục nhac/ rồi điền, ví dụ "nhac/thao.mp3".
      Để "" thì dùng giai điệu ở trên. Lưu ý: repo công khai — chỉ dùng nhạc được phép chia sẻ.
    - tenNhac: tên bài hiển thị. Để "" thì dùng tên giai điệu.
@@ -45,7 +47,7 @@ window.LEAP = {
       goiTen: "Mrs. Thảo",
       vaiTro: "Hành chính Nhân sự – Kế toán",
       mau: "hong",
-      anhDaiDien: "",
+      anh: ["anh/phan-thi-thao-1.jpg", "anh/phan-thi-thao-2.jpg"],
       nhac: "bang-can-doi", fileNhac: "", tenNhac: "",
       danhHieu: "Người giữ nhịp cho cả nhà",
       moTaDanhHieu: "Lo trọn từng con số và từng con người của Leap, chu đáo đến từng chi tiết.",
@@ -63,7 +65,7 @@ window.LEAP = {
       goiTen: "Mrs. Thịnh",
       vaiTro: "Giám đốc Marketing",
       mau: "tim",
-      anhDaiDien: "",
+      anh: ["anh/nguyen-thi-thinh-1.jpg", "anh/nguyen-thi-thinh-2.jpg", "anh/nguyen-thi-thinh-3.jpg"],
       nhac: "chien-dich", fileNhac: "", tenNhac: "",
       danhHieu: "Người kể chuyện của Leap",
       moTaDanhHieu: "Đưa câu chuyện của Learn to Leap đến gần hơn với từng ngôi trường.",
@@ -81,7 +83,7 @@ window.LEAP = {
       goiTen: "Mrs. Ngọc",
       vaiTro: "Giám đốc Chuyên môn",
       mau: "dao",
-      anhDaiDien: "",
+      anh: ["anh/le-bich-ngoc-1.jpg"],
       nhac: "giao-an", fileNhac: "", tenNhac: "",
       danhHieu: "Người giữ chất lượng từng bài học",
       moTaDanhHieu: "Mỗi chương trình đến tay học sinh đều mang một dấu ấn chỉn chu.",
@@ -99,7 +101,7 @@ window.LEAP = {
       goiTen: "Mrs. Phương Anh",
       vaiTro: "Sự kiện",
       mau: "vang",
-      anhDaiDien: "",
+      anh: ["anh/dinh-hoang-phuong-anh-1.jpg", "anh/dinh-hoang-phuong-anh-2.jpg"],
       nhac: "khai-mac", fileNhac: "", tenNhac: "",
       danhHieu: "Phù thuỷ sự kiện",
       moTaDanhHieu: "Biến mỗi sự kiện của Leap thành một kỷ niệm đáng nhớ.",
@@ -117,7 +119,7 @@ window.LEAP = {
       goiTen: "Mrs. An",
       vaiTro: "Sự kiện",
       mau: "xanh",
-      anhDaiDien: "",
+      anh: ["anh/ho-thi-an-1.jpg", "anh/ho-thi-an-2.jpg"],
       nhac: "den-san-khau", fileNhac: "", tenNhac: "",
       danhHieu: "Người thắp sáng sân khấu",
       moTaDanhHieu: "Phía sau mỗi sự kiện trọn vẹn là một sự tận tâm thầm lặng.",
@@ -135,7 +137,7 @@ window.LEAP = {
       goiTen: "Mrs. Nhung",
       vaiTro: "Marketing",
       mau: "hong",
-      anhDaiDien: "",
+      anh: ["anh/pham-thi-hong-nhung-1.jpg", "anh/pham-thi-hong-nhung-2.jpg"],
       nhac: "xu-huong", fileNhac: "", tenNhac: "",
       danhHieu: "Người lan toả cảm hứng",
       moTaDanhHieu: "Mang hình ảnh Learn to Leap lan toả đến nhiều người hơn mỗi ngày.",
@@ -153,7 +155,7 @@ window.LEAP = {
       goiTen: "Mrs. Nga",
       vaiTro: "Marketing",
       mau: "tim",
-      anhDaiDien: "",
+      anh: ["anh/dieu-nga-1.jpg", "anh/dieu-nga-2.jpg"],
       nhac: "y-tuong", fileNhac: "", tenNhac: "",
       danhHieu: "Ngọn lửa sáng tạo",
       moTaDanhHieu: "Luôn có ý tưởng mới cho những câu chuyện của Leap.",
@@ -171,7 +173,7 @@ window.LEAP = {
       goiTen: "Mrs. Xuân",
       vaiTro: "Quản lý Giáo viên",
       mau: "dao",
-      anhDaiDien: "",
+      anh: ["anh/dao-thi-xuan-1.jpg", "anh/dao-thi-xuan-2.jpg"],
       nhac: "khuc-xuan", fileNhac: "", tenNhac: "",
       danhHieu: "Người dẫn dắt đội ngũ giáo viên",
       moTaDanhHieu: "Đồng hành cùng từng thầy cô để mỗi giờ học STEM đều trọn vẹn.",
@@ -181,6 +183,24 @@ window.LEAP = {
         { tu: "Sổ đầu bài ngày 20/10", noiDung: "Tiết 1: Nhận hoa – cả lớp hăng hái.\nTiết 2: Nghe lời chúc – cả lớp đồng thanh.\nTiết 3: Học cách nghỉ ngơi.\nBài tập về nhà: cười thật nhiều.\nXếp loại tiết học: Tốt!" },
         { tu: "Thời khoá biểu", noiDung: "Đã xếp lại toàn bộ lịch dạy: hôm nay không có tiết trống nào phải lo, không có lớp nào cần dạy thay. Chỉ còn đúng một tiết: tiết vinh danh người quản lý tận tâm nhất." },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã chăm chút đội ngũ giáo viên như chăm một khu vườn. Chúc một ngày 20/10 thật ấm áp và hạnh phúc!" }
+      ]
+    },
+    {
+      id: "ngoc-ha",
+      ten: "Ngọc Hà",
+      goiTen: "Mrs. Ngọc Hà",
+      vaiTro: "Hành chính Tổng hợp",
+      mau: "vang",
+      anh: ["anh/ngoc-ha-1.jpg", "anh/ngoc-ha-2.jpg"],
+      nhac: "dong-dau", fileNhac: "", tenNhac: "",
+      danhHieu: "Người giữ nếp cho văn phòng",
+      moTaDanhHieu: "Từ giấy tờ, lịch họp đến từng góc văn phòng, mọi việc đều được sắp xếp chu toàn.",
+      soLieu: [],
+      cauChuyen: [],
+      loiChuc: [
+        { tu: "Công văn số 20/10/HCTH", noiDung: "Kính gửi: người giữ nếp cả văn phòng.\nV/v: nghỉ ngơi và nhận hoa.\nNội dung: hôm nay mọi giấy tờ xin tự xếp hàng ngay ngắn.\nNơi nhận: cả nhà Leap (để cùng vui)." },
+        { tu: "Con dấu văn phòng", noiDung: "Mỗi ngày đóng không biết bao nhiêu dấu để giấy tờ chạy đúng hạn. Hôm nay con dấu xin đóng một dấu thật đặc biệt: ĐÃ DUYỆT – một ngày 20/10 thật vui!" },
+        { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã giữ cho văn phòng Leap luôn ngăn nắp, trơn tru và ấm áp. Chúc một ngày 20/10 thật nhẹ nhàng và rạng rỡ!" }
       ]
     }
   ]

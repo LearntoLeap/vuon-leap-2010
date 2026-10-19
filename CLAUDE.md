@@ -3,7 +3,7 @@
 Web quà 20/10/2026 của CEO Learn to Leap gửi nhân sự nữ. HTML/CSS/JS thuần, không build.
 **Đọc `NHAT-KY.md` trước khi làm** — có toàn bộ bối cảnh, quyết định đã chốt, cấu trúc dữ liệu và các bẫy đã gặp.
 
-- `index.html`: toàn bộ giao diện + logic (kể cả giai điệu `SONGS`). `data.js`: dữ liệu duy nhất CEO sửa (mỗi người chọn bài qua `nhac`). Ảnh để trong `anh/`, nhạc thật (nếu có) trong `nhac/`.
+- `index.html`: toàn bộ giao diện + logic (kể cả giai điệu `SONGS`, album trượt `slider`). `data.js`: dữ liệu duy nhất CEO sửa (bài nhạc qua `nhac`, ảnh qua mảng `anh`). Ảnh trong `anh/` (`<id>-<số>.jpg`, khung 4:5), nhạc thật (nếu có) trong `nhac/`.
 - Live: https://learntoleap.github.io/vuon-leap-2010/ và https://vuon-leap-2010.vercel.app/ (repo công khai; GitHub Pages + Vercel đều deploy từ `main` — push là cập nhật; đừng đưa dữ liệu nhạy cảm vào).
 - Chạy thử: `python -m http.server 5210` → `http://localhost:5210` (routes `#/`, `#/thu/<id>`, `#/trinh-chieu`).
 - Sau khi sửa `data.js`, kiểm tra cú pháp: `node -e "global.window={};require('./data.js');console.log(window.LEAP.chiEm.length)"`.

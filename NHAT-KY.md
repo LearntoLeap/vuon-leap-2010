@@ -16,14 +16,14 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
 | File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
 | Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`) |
-| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu 8 người thật, **mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban** (danh hiệu / thư CEO vẫn là **bản nháp**), chưa có ảnh. Đã push lên `main` và deploy Vercel 19/10 |
+| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu **9 người** thật, mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban + **album ảnh trượt** (18 ảnh). Danh hiệu / thư CEO vẫn là **bản nháp**. Đã push lên `main`, live trên GitHub Pages + Vercel |
 
 ### Ba màn hình (điều hướng bằng hash)
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
 - `#/thu/<id>` — **Phong thư riêng** của từng người: tim ruy băng "Gửi Mrs. X" + phong thư → bấm mở → lá thư gồm thiệp tên, danh hiệu (tải PNG được), số liệu, khoảnh khắc, lời chúc, thư tay CEO.
 - `#/trinh-chieu` — **Trình chiếu màn hình lớn**: slide mở đầu → mỗi người 1 slide (9 giây) → slide tri ân. Phím ←/→, Space (dừng), F (toàn màn hình).
 
-Link riêng hiện tại: `phan-thi-thao`, `nguyen-thi-thinh`, `le-bich-ngoc`, `dinh-hoang-phuong-anh`, `ho-thi-an`, `pham-thi-hong-nhung`, `dieu-nga`, `dao-thi-xuan`.
+Link riêng hiện tại: `phan-thi-thao`, `nguyen-thi-thinh`, `le-bich-ngoc`, `dinh-hoang-phuong-anh`, `ho-thi-an`, `pham-thi-hong-nhung`, `dieu-nga`, `dao-thi-xuan`, `ngoc-ha`.
 
 ---
 
@@ -54,7 +54,7 @@ window.LEAP = {
     goiTen: "Mrs. Ngọc",          // tên hiển thị chính
     vaiTro: "Giám đốc Chuyên môn",
     mau: "dao",                   // hong | tim | dao | vang | xanh
-    anhDaiDien: "",               // ảnh chân dung trên thẻ; "" → hiện bông hoa
+    anh: ["anh/le-bich-ngoc-1.jpg"], // album ảnh 4:5, trượt trên thẻ / trong thư / trình chiếu; [] → chỉ bông hoa
     nhac: "giao-an",              // giai điệu riêng (khoá trong SONGS của index.html)
     fileNhac: "", tenNhac: "",    // file nhạc thật "nhac/x.mp3" (lỗi/thiếu file → tự dùng giai điệu) + tên bài hiển thị
     danhHieu: "...", moTaDanhHieu: "...",
@@ -67,9 +67,11 @@ window.LEAP = {
 
 - **Bẫy cú pháp:** trong chuỗi `noiDung` phải viết `\n` (hai ký tự), KHÔNG xuống dòng thật — xuống dòng thật làm hỏng cả `data.js` → trang trắng/không có dữ liệu. Kiểm tra nhanh: `node -e "global.window={};require('./data.js');console.log(window.LEAP.chiEm.length)"`.
 - `index.html` nạp `data.js?t=<thời gian>` để sửa dữ liệu là thấy ngay (không bị cache).
-- Danh sách 8 người (CEO cung cấp 15/10): Phan Thị Thảo (HCNS_KT), Nguyễn Thị Thịnh (Giám đốc MKT), Lê Bích Ngọc (Giám đốc Chuyên môn), Đình Hoàng Phương Anh (Event), Hồ Thị An (Event), Phạm Thị Hồng Nhung (Marketing), Diệu Nga (Marketing), Đào Thị Xuân (Quản lý giáo viên). Họ "Đình" giữ đúng như CEO gửi (có thể là "Đinh" — chưa xác nhận).
+- Danh sách 8 người (CEO cung cấp 15/10): Phan Thị Thảo (HCNS_KT), Nguyễn Thị Thịnh (Giám đốc MKT), Lê Bích Ngọc (Giám đốc Chuyên môn), Đình Hoàng Phương Anh (Event), Hồ Thị An (Event), Phạm Thị Hồng Nhung (Marketing), Diệu Nga (Marketing), Đào Thị Xuân (Quản lý giáo viên). Thêm 19/10: Ngọc Hà (Hành chính Tổng hợp — CEO chỉ gửi "Ngọc Hà", chưa có họ đầy đủ). Họ "Đình" giữ đúng như CEO gửi (có thể là "Đinh" — chưa xác nhận).
 
-**Còn thiếu (CEO bổ sung dần):** ảnh chân dung, số liệu, câu chuyện + ảnh, xác nhận lại danh hiệu/lời chúc/thư CEO (đang là nháp theo vai trò), ảnh chữ ký CEO.
+**Ảnh (19/10):** CEO gửi zip "Ảnh chị em LtL" (18 ảnh, tên file theo người). Gán theo tên file, thứ tự trong album: ảnh không số trước rồi (1), (2). Đã cắt khung 4:5 (canh giữa người), thu về ≤800×1000, xoá EXIF, lưu `anh/<id>-<số>.jpg`. Script xử lý không nằm trong repo — ảnh mới thì cắt 4:5 tương tự.
+
+**Còn thiếu (CEO bổ sung dần):** số liệu, câu chuyện + ảnh, xác nhận lại danh hiệu/lời chúc/thư CEO (đang là nháp theo vai trò), ảnh chữ ký CEO.
 
 ---
 
@@ -80,11 +82,13 @@ window.LEAP = {
 - **Màu** (`:root`): `--ink #3a1230` (chữ chính), `--ink2 #71405f`, `--pink #e8559c`, `--paper #fffaf3`, `--vn` (gradient tím cho "PHỤ NỮ VIỆT NAM"), `--noise` (SVG hạt nhiễu dạng data URI).
 - **Định nghĩa SVG dùng chung** được JS chèn vào đầu `<body>`: gradient cánh hoa theo màu `pg-<mau>`/`pt-<mau>`, filter `#fuzz` (cánh mềm có hạt), `#leafg`, `#heart3d`, `#glassg`, `#silk`, `#silk2`, `#rib`.
 - **Hoa** `flower(mau, {kind, base, stem})`: `kind` = `tron` (5 cánh) | `tulip` | `sao` (4 cánh); xoay vòng theo thứ tự người (`KINDS[i % 3]`). Nở bằng class `.bloom`.
-- **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó.
+- **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó. Ảnh (`anh`) thành album trượt kiểu Instagram (ảnh cuối là bông hoa), avatar nhỏ = ảnh đầu, chấm trang chạy thật.
+- **Album trượt** `slider(root, {auto, delay})`: dùng chung cho thẻ, mục "Khoảnh khắc rạng rỡ" (polaroid) trong thư và thẻ ở trình chiếu. Cuộn ngang scroll-snap (vuốt trên điện thoại), nút ‹ › (ẩn trên máy cảm ứng), chấm trang; tự chuyển khi đang hiện trên màn hình, dừng 7 giây sau khi người xem tự vuốt/bấm. Nút/chấm nằm trong thẻ có link nên chặn `preventDefault` để không mở thư.
+- **Bức tường** 3 cột (9 người = 3×3); điện thoại 2 cột, thẻ lẻ cuối nằm giữa.
 - **Lớp trang trí cố định** `#decor`: hoa to mờ, hoa kính, tim 3D, vòng elip, sao ✦; trôi nhẹ theo con trỏ (parallax). Class `side` ẩn khi trình chiếu, `home-only` ẩn ở trang thư — ẩn bằng `filter:opacity(0)`.
 - **Canvas `#sky`**: cánh hoa rơi + lấp lánh + nổ tim/lấp lánh (`sky.burst(x, y, n, 'heart'|'glint')`).
 - **Nhạc nền** (tự sinh bằng Web Audio, không cần file): nút ♪ góc phải + nhãn tên bài đang phát (`#np`); bật khi mở thư/trình chiếu.
-  - `SONGS`: 9 giai điệu — `vuon-leap` (bài chung: trang chủ, slide mở đầu/tri ân) + 8 bài riêng đặt tên theo nghề: `bang-can-doi` (Thảo, valse), `chien-dich` (Thịnh, pop), `giao-an` (Ngọc, chậm rãi), `khai-mac` (Phương Anh, kèn hiệu), `den-san-khau` (An, 6/8 chuông), `xu-huong` (Nhung, nảy nhịp), `y-tuong` (Nga, lydian), `khuc-xuan` (Xuân, ngũ cung + luyến đàn tranh).
+  - `SONGS`: 9 giai điệu — `vuon-leap` (bài chung: trang chủ, slide mở đầu/tri ân) + 8 bài riêng đặt tên theo nghề: `bang-can-doi` (Thảo, valse), `chien-dich` (Thịnh, pop), `giao-an` (Ngọc, chậm rãi), `khai-mac` (Phương Anh, kèn hiệu), `den-san-khau` (An, 6/8 chuông), `xu-huong` (Nhung, nảy nhịp), `y-tuong` (Nga, lydian), `khuc-xuan` (Xuân, ngũ cung + luyến đàn tranh), `dong-dau` (Ngọc Hà, "Đóng dấu yêu thương", kalimba).
   - Cú pháp bài: `hop` vòng hợp âm (mỗi hợp âm 1 ô nhịp), `dem` tiếng đệm mỗi ô nhịp (`b` bè trầm, `0-3` nốt hợp âm, `4-7` cao 1 quãng tám, `.` nghỉ, `+` chơi cùng lúc), `giai` giai điệu (mỗi ký hiệu 1 bước), `sp` giây/bước, `tim` âm sắc trong `TIMBRE`.
   - `music.use(p)` đổi bài theo người (null → bài chung); mỗi bài phát qua một `GainNode` riêng (`bus`) để chuyển bài mờ dần, không lẫn nốt bài cũ.
   - Trong thư có dòng "♪ Giai điệu riêng: …" (bấm để bật nhạc).
@@ -107,6 +111,7 @@ window.LEAP = {
 10. **"Mrs. + Tên"**; tên trong thư đặt trên **thiệp giấy kem** (không lẫn vào nền); **tối ưu hiệu năng** (chỉ animate transform/opacity).
 11. 16/10: đưa lên GitHub (`LearntoLeap/vuon-leap-2010`) + viết nhật ký này và `CLAUDE.md`. CEO chọn chuyển repo **công khai** và bật **GitHub Pages** → link riêng dạng `https://learntoleap.github.io/vuon-leap-2010/#/thu/<id>`. Lưu ý: repo công khai nên ai cũng xem được `data.js` (tên, vai trò) — không đưa thông tin nhạy cảm vào.
 12. 19/10: kiểm tra chạy lại cả 3 màn hình (không lỗi). **Mỗi người một giai điệu riêng** (8 bài tự sinh, tên theo công việc; trình chiếu tự đổi bài theo slide; có thể thay bằng file mp3 qua `fileNhac`). **Viết lại lời chúc**: mỗi người 3 lời — 1 lời "đúng định dạng nghề" (phiếu chi, brief chiến dịch, giáo án, kịch bản chương trình, checklist hậu cần, bài đăng, biên bản brainstorm, sổ đầu bài), 1 lời dí dỏm, 1 lời tri ân từ Learn to Leap. Lời chúc hỗ trợ xuống dòng `\n`; lưới lời chúc 2 cột, lời lẻ cuối nằm giữa. Sửa góc gấp thư CEO che chữ trên điện thoại. Push lên GitHub + tạo project **Vercel** `vuon-leap-2010` nối repo (team mặc định khoá mọi bản deploy bằng đăng nhập Vercel → chuyển project về chỉ khoá bản preview để link production mở công khai).
+13. 19/10 (chiều): thêm **Ngọc Hà – Hành chính Tổng hợp** (bài "Đóng dấu yêu thương", 3 lời chúc kiểu công văn/con dấu). Nạp **ảnh cho cả 9 người** (18 ảnh, không trùng, đúng theo tên file CEO đặt) thành **album trượt**: thẻ trên bức tường + trình chiếu (kiểu Instagram), mục "Khoảnh khắc rạng rỡ" dạng polaroid trong thư. Trường `anhDaiDien` thay bằng mảng `anh` (code vẫn đọc `anhDaiDien` cũ).
 
 ---
 
@@ -128,7 +133,8 @@ window.LEAP = {
 
 - [ ] CEO duyệt/sửa danh hiệu, mô tả, thư CEO và 24 lời chúc mới (19/10) trong `data.js`.
 - [x] Push bản 19/10 lên `main` + deploy Vercel (https://vuon-leap-2010.vercel.app/).
+- [ ] CEO xác nhận họ tên đầy đủ, danh hiệu, lời chúc của Ngọc Hà (đang là nháp).
 - [ ] (Tuỳ chọn) Thay giai điệu bằng bài hát thật: bỏ file vào `nhac/`, điền `fileNhac` — repo công khai nên chỉ dùng nhạc được phép chia sẻ.
-- [ ] Thêm ảnh chân dung (`anhDaiDien`), số liệu, câu chuyện + ảnh vào thư mục `anh/`.
+- [x] Ảnh cho 9 người (19/10). - [ ] (Tuỳ chọn) số liệu, câu chuyện + ảnh.
 - [x] Deploy GitHub Pages (16/10). Gửi link riêng `…/#/thu/<id>` cho từng người sáng 20/10.
 - [ ] (Tuỳ chọn) In QR từng link lên thiệp kèm hoa; kịch bản robot trao thư; chạy thử trên TV văn phòng ngày 19/10.

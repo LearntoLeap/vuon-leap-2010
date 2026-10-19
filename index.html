@@ -120,7 +120,7 @@ body[data-route=show] .decor .side,body[data-route=thu] .decor .home-only{filter
 .lead{max-width:560px;color:var(--ink2);font-family:var(--display);font-style:italic;font-size:clamp(17px,2.2vw,20px);line-height:1.6}
 .actions{display:flex;gap:12px;margin:26px 0 8px;flex-wrap:wrap;justify-content:center}
 .wall>a{min-width:0}
-.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:34px 26px;width:min(1040px,100%);margin:40px auto 30px;padding:0 6px}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 26px;width:min(980px,100%);margin:40px auto 30px;padding:0 6px}
 .wall>a{display:block;animation:rise 1.2s var(--ease) both,bob var(--bt,6s) ease-in-out infinite;animation-delay:var(--d,0s),calc(var(--d,0s) + 1.2s);will-change:transform}
 @keyframes bob{50%{transform:translateY(-8px)}}
 
@@ -137,6 +137,23 @@ a:hover>.post{transform:rotate(0) translateY(-6px) scale(1.03);box-shadow:0 26px
 .shot::after{content:"";position:absolute;inset:0;background-image:var(--noise);opacity:.6;pointer-events:none}
 .shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .shot .flower{width:86%}
+/* Album ảnh trượt trong thẻ (vuốt / cuộn ngang, ảnh cuối là bông hoa) */
+.shot .track{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.track::-webkit-scrollbar{display:none}
+.shot .sl{position:relative;flex:0 0 100%;display:grid;place-items:center;scroll-snap-align:center;scroll-snap-stop:always}
+.shot.has-anh::after{opacity:.15}
+.av span img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.nav{position:absolute;top:50%;z-index:4;display:grid;place-items:center;width:44px;height:44px;margin-top:-22px;border-radius:50%;
+  background:var(--white-glass);border:1px solid #fff;backdrop-filter:blur(8px);color:var(--pink);font-size:22px;line-height:1;
+  box-shadow:0 6px 18px rgba(214,70,140,.25);transition:opacity .4s,transform .4s var(--ease)}
+.nav:hover{transform:scale(1.1)}
+.shot .nav{width:30px;height:30px;margin-top:-15px;font-size:17px;opacity:0}
+.shot .prev{left:6px}.shot .next{right:6px}
+a:hover .shot .nav{opacity:1}
+.slide .nav{display:none}
+@media (hover:none){.nav{display:none}}
+.icons .pg.real i{animation:none;cursor:pointer;transition:background .4s}
+.icons .pg.real i.on{background:#3b82f6}
 .n{position:absolute;z-index:2;font-family:var(--num);font-weight:400;color:#fff;line-height:1;font-size:var(--nf,54px);
   text-shadow:0 2px 14px rgba(150,20,90,.45),0 0 2px rgba(150,20,90,.35);animation:numIn 1.4s var(--ease) both;animation-delay:var(--nd,.6s)}
 .n20{top:9%;right:8%}.n10{left:7%;bottom:7%;--nd:.9s}
@@ -211,6 +228,21 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 .tune{display:flex;align-items:center;gap:6px;margin:14px auto 0;font-family:var(--display);font-style:italic;font-size:15px;color:var(--ink2)}
 .tune b{font-weight:600;color:var(--pink)}
 .tune:hover b{text-decoration:underline}
+/* Album ảnh trong thư: polaroid trượt ngang, tràn hết chiều rộng màn hình */
+.gal{--gw:min(360px,72vw);position:relative;margin-inline:calc(50% - 50vw)}
+.gal .track{position:relative;display:flex;gap:clamp(14px,3vw,26px);overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;
+  padding:14px calc(50vw - var(--gw) / 2) 34px}
+.pola{flex:0 0 var(--gw);margin:0;padding:10px 10px 0;border-radius:6px;background:#fff;scroll-snap-align:center;scroll-snap-stop:always;
+  box-shadow:0 18px 40px rgba(214,70,140,.25);transform:rotate(var(--r,-2.5deg)) scale(.9);opacity:.7;transition:transform .8s var(--ease),opacity .8s}
+.pola:nth-child(even){--r:2.5deg}
+.pola.on{transform:none;opacity:1}
+.pola img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:3px;background:var(--blush);-webkit-user-drag:none;user-select:none}
+.pola figcaption{padding:9px 0 11px;text-align:center;font-family:var(--num);font-size:14px;letter-spacing:.3em;color:var(--pink)}
+.gal .prev{left:max(12px,calc(50% - var(--gw) / 2 - 64px))}
+.gal .next{right:max(12px,calc(50% - var(--gw) / 2 - 64px))}
+.gdots{display:flex;justify-content:center;gap:10px;margin-top:-12px}
+.gdots i{width:8px;height:8px;border-radius:50%;background:#f2c2da;cursor:pointer;transition:transform .5s var(--ease),background .5s}
+.gdots i.on{background:var(--pink);transform:scale(1.4)}
 .sec{margin-top:64px}
 .sec-h{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;
   font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(14px,3.4vw,17px);color:var(--ink);text-align:center}
@@ -406,6 +438,7 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 @media (max-width:700px){
   .decor .d{opacity:.85}
   .wall{grid-template-columns:repeat(2,1fr);gap:22px 14px}
+  .wall>a:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}
   .post{padding:8px 8px 10px;border-radius:16px}
   .post header{font-size:11px;padding-bottom:7px}.post header small{display:none}
   .n{--nf:38px}
@@ -643,7 +676,11 @@ const SONGS = {
   // Ngũ cung điệu Bắc, luyến láy như đàn tranh
   'khuc-xuan':    {ten: 'Khúc xuân lớp học', tim: 'dan', sp: .26,
                    hop: 'Csus2 Fsus2 Csus2 Gsus4 Dm7 Fsus2 Gsus4 Csus2', dem: 'b . 2 . 4 . 2 .',
-                   giai: 'C6 . A5 G5 A5 . . . | F5 . G5 . A5 . C6 . | D6 . C6 . A5 . G5 . | G5 . . . . . . . | A5 . C6 . D6 . . . | C6 . A5 . G5 . F5 . | G5 . F5 . D5 . F5 . | C5 . . . . . . .'}
+                   giai: 'C6 . A5 G5 A5 . . . | F5 . G5 . A5 . C6 . | D6 . C6 . A5 . G5 . | G5 . . . . . . . | A5 . C6 . D6 . . . | C6 . A5 . G5 . F5 . | G5 . F5 . D5 . F5 . | C5 . . . . . . .'},
+  // Nhịp văn phòng gọn gàng, "cộp" như tiếng đóng dấu
+  'dong-dau':     {ten: 'Đóng dấu yêu thương', tim: 'kalimba', sp: .2,
+                   hop: 'Bb Gm Eb F Bb Gm Cm F', dem: 'b . 1+2 . b 1+2 . 1+2',
+                   giai: 'F5 . D5 . F5 . Bb5 . | G5 . . . D5 . G5 . | Bb5 . G5 . Eb5 . G5 . | A5 . . . F5 . . . | F5 . D5 . F5 . D6 . | D6 . Bb5 . G5 . Bb5 . | C6 . G5 . Eb5 . G5 . | F5 . A5 . C6 . . .'}
 };
 // w: sóng chính · hw/h/hv: hoạ âm phụ (loại, bội số, độ lớn) · a: tấn công · d: độ ngân · bend: tỉ lệ nốt luyến lên
 const TIMBRE = {
@@ -652,7 +689,8 @@ const TIMBRE = {
   marimba: {w: 'sine', hw: 'sine', h: 4, hv: .12, a: .004, d: .8},
   chuong:  {w: 'sine', hw: 'sine', h: 2.76, hv: .14, a: .005, d: 3.2},
   ken:     {w: 'triangle', hw: 'sine', h: 2, hv: .25, a: .03, d: 1.2},
-  dan:     {w: 'triangle', hw: 'sine', h: 3, hv: .12, a: .003, d: 1.6, bend: .35}
+  dan:     {w: 'triangle', hw: 'sine', h: 3, hv: .12, a: .003, d: 1.6, bend: .35},
+  kalimba: {w: 'sine', hw: 'sine', h: 5.4, hv: .16, a: .003, d: 1.3}
 };
 const PITCH = {C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11};
 const QUAL = {'': [0, 4, 7, 12], m: [0, 3, 7, 12], 7: [0, 4, 7, 10], m7: [0, 3, 7, 10], maj7: [0, 4, 7, 11], sus2: [0, 2, 7, 12], sus4: [0, 5, 7, 12]};
@@ -765,15 +803,21 @@ const ICON = {
   save: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>`
 };
 const ROT = [-2.2, 1.6, -1, 2.4];
+const anhOf = p => (p.anh && p.anh.length ? p.anh : p.anhDaiDien ? [p.anhDaiDien] : []);
+const NAV = '<button type="button" class="nav prev" data-go="-1" aria-label="Ảnh trước">‹</button><button type="button" class="nav next" data-go="1" aria-label="Ảnh sau">›</button>';
 function post(p, i, base = 0) {
-  const c = PAL[p.mau] || PAL.hong;
+  const c = PAL[p.mau] || PAL.hong, photos = anhOf(p);
+  const slides = [...photos.map((a, k) => `<div class="sl"><img src="${esc(a)}" alt="${esc(nm(p))} – ảnh ${k + 1}" draggable="false" decoding="async"></div>`),
+    `<div class="sl">${flower(p.mau, {kind: KINDS[i % 3], stem: false, base})}</div>`];
+  const many = slides.length > 1;
   return `<article class="post" style="--rot:${ROT[i % 4]}deg">
-    <header><span class="av"><span>✿</span></span>learntoleap<small>· 20.10</small><i>•••</i></header>
-    <div class="shot" style="--sh:radial-gradient(95% 75% at 22% 12%,#fff 0%,${c[2]} 26%,${c[1]} 66%,${c[0]} 125%)">
-      ${p.anhDaiDien ? `<img src="${esc(p.anhDaiDien)}" alt="${esc(p.ten)}" loading="lazy">` : flower(p.mau, {kind: KINDS[i % 3], stem: false, base})}
+    <header><span class="av"><span>${photos.length ? `<img src="${esc(photos[0])}" alt="">` : '✿'}</span></span>learntoleap<small>· 20.10</small><i>•••</i></header>
+    <div class="shot${photos.length ? ' has-anh' : ''}" style="--sh:radial-gradient(95% 75% at 22% 12%,#fff 0%,${c[2]} 26%,${c[1]} 66%,${c[0]} 125%)">
+      <div class="track">${slides.join('')}</div>
       <span class="n n20">20</span><span class="n n10">10</span>
+      ${many ? NAV : ''}
     </div>
-    <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg"><i></i><i></i><i></i><i></i></span>${ICON.save}</div>
+    <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg${many ? ' real' : ''}">${'<i></i>'.repeat(many ? slides.length : 4)}</span>${ICON.save}</div>
     <div class="cap"><b data-fit="11">${esc(nm(p))}</b><span>${esc(p.danhHieu)}</span></div>
   </article>`;
 }
@@ -789,6 +833,42 @@ const fitAll = (root = document) => root.querySelectorAll('[data-fit]').forEach(
 const fitWhenReady = root => document.fonts.ready.then(() => fitAll(root));
 addEventListener('resize', () => fitAll());
 const nm = p => p.goiTen || p.ten;
+
+/* ================= Album ảnh trượt (thẻ, thư, trình chiếu) ================= */
+// Vuốt/cuộn ngang theo scroll-snap; nút ‹ ›, chấm trang; tự chuyển ảnh khi đang hiện trên màn hình
+function slider(root, {auto = 0, delay = 0} = {}) {
+  const track = root && root.querySelector('.track');
+  if (!track) return () => {};
+  const slides = [...track.children], dots = [...root.querySelectorAll('.pg.real i, .gdots i')];
+  let i = 0, hold = 0, seen = false, t0 = 0, timer = 0, io = null;
+  const center = s => s.offsetLeft + s.offsetWidth / 2 - track.clientWidth / 2;
+  const mark = () => { slides.forEach((s, k) => s.classList.toggle('on', k === i)); dots.forEach((d, k) => d.classList.toggle('on', k === i)); };
+  const go = k => { i = (k + slides.length) % slides.length; track.scrollTo({left: center(slides[i]), behavior: 'smooth'}); mark(); };
+  const kill = () => { clearTimeout(t0); clearInterval(timer); if (io) io.disconnect(); };
+  mark();
+  if (slides.length < 2) return kill;
+  track.addEventListener('scroll', () => {
+    let best = 0, dist = Infinity;
+    slides.forEach((s, k) => { const d = Math.abs(center(s) - track.scrollLeft); if (d < dist) { dist = d; best = k; } });
+    if (best !== i) { i = best; mark(); }
+  }, {passive: true});
+  // nút và chấm nằm trong thẻ có link: chặn mở thư khi bấm
+  const tap = (e, k) => { e.preventDefault(); e.stopPropagation(); hold = Date.now(); go(k); };
+  root.querySelectorAll('.nav').forEach(b => b.onclick = e => tap(e, i + +b.dataset.go));
+  dots.forEach((d, k) => d.onclick = e => tap(e, k));
+  ['pointerdown', 'wheel', 'touchstart'].forEach(t => track.addEventListener(t, () => hold = Date.now(), {passive: true}));
+  if (auto) {
+    io = new IntersectionObserver(es => { seen = es[0].isIntersecting; }); io.observe(track);
+    t0 = setTimeout(() => {
+      timer = setInterval(() => {
+        if (!track.isConnected) return kill();
+        if (seen && !document.hidden && Date.now() - hold > 7000 && !root.matches(':hover')) go(i + 1);
+      }, auto);
+    }, delay);
+  }
+  cleanup.push(kill);
+  return kill;
+}
 const splitChars = t => Array.from(t).map((c, i) => c === ' ' ? ' ' : `<span class="ch" style="--i:${i}">${esc(c)}</span>`).join('');
 
 /* ================= Trang 1: Bức tường vinh danh ================= */
@@ -810,6 +890,7 @@ function home() {
       <p class="hint rise" style="--d:2.2s"><span class="blink">Chạm vào một tấm thiệp để mở thư</span></p>
     </section>`;
   bloomAll($app); fitWhenReady($app); music.use(null);
+  $app.querySelectorAll('.wall .post').forEach((el, k) => slider(el, {auto: 4200, delay: 2600 + k * 450}));
 }
 
 /* ================= Trang 2: Phong thư riêng ================= */
@@ -839,6 +920,8 @@ function letter(id) {
       <div><p>“${esc(w.noiDung)}”</p><span>— ${esc(w.tu)}</span></div>
     </div>`).join('');
   const stats = (p.soLieu || []).map(s => `<div class="stat"><b data-v="${esc(s.so)}">${esc(s.so)}</b><span>${esc(s.nhan)}</span></div>`).join('');
+  const photos = anhOf(p);
+  const album = photos.map((a, k) => `<figure class="pola"><img src="${esc(a)}" alt="${esc(nm(p))} – ảnh ${k + 1}" draggable="false" decoding="async"><figcaption>20 · 10</figcaption></figure>`).join('');
 
   $app.innerHTML = `
     <a class="btn back" href="#/">← Bức tường</a>
@@ -871,6 +954,12 @@ function letter(id) {
           <div class="role">${esc(p.vaiTro)}</div>
           <button class="tune" id="tune">♪ Giai điệu riêng: <b>${esc(tuneOf(p).ten)}</b></button>
         </header>
+
+        ${album ? `<section class="sec reveal" id="galSec">
+          <h2 class="sec-h">Khoảnh khắc rạng rỡ</h2>
+          <div class="gal"><div class="track">${album}</div>${photos.length > 1 ? NAV : ''}</div>
+          ${photos.length > 1 ? `<div class="gdots">${'<i></i>'.repeat(photos.length)}</div>` : ''}
+        </section>` : ''}
 
         <section class="sec reveal">
           <h2 class="sec-h" data-fit="11">Danh hiệu vinh danh</h2>
@@ -934,6 +1023,7 @@ function letter(id) {
   env.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } };
   document.getElementById('dl').onclick = () => downloadBadge(p);
   document.getElementById('tune').onclick = () => { music.want = true; music.start(); };
+  slider(document.getElementById('galSec'), {auto: 4800, delay: 3000});
 }
 
 function typewrite(el, text) {
@@ -1040,7 +1130,7 @@ function showView() {
     </div>`;
   const $show = document.getElementById('show'), $dots = [...document.querySelectorAll('#dots i')];
   const $play = document.getElementById('play');
-  let idx = 0, timer = null, paused = false;
+  let idx = 0, timer = null, paused = false, stopAlbum = () => {};
 
   function go(i) {
     idx = (i + slides.length) % slides.length;
@@ -1051,6 +1141,7 @@ function showView() {
     $dots.forEach((d, j) => d.classList.toggle('on', j === idx));
     music.use(D.chiEm[idx - 1]);   // slide mở đầu/tri ân: bài chung; slide từng người: bài riêng
     bloomAll($show.lastElementChild); fitWhenReady($show.lastElementChild);
+    stopAlbum(); stopAlbum = slider($show.lastElementChild.querySelector('.post'), {auto: 2600, delay: 1600});
     const old = document.getElementById('bar'), bar = old.cloneNode();
     bar.className = 'bar go' + (paused ? ' paused' : ''); bar.style.setProperty('--ms', SLIDE_MS + 'ms'); old.replaceWith(bar);
     setTimeout(() => sky.burst(innerWidth / 2, innerHeight * .4, 50), 900);
