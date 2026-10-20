@@ -120,6 +120,7 @@ body[data-route=show] .decor .side,body[data-route=thu] .decor .home-only{filter
 .lead{max-width:560px;color:var(--ink2);font-family:var(--display);font-style:italic;font-size:clamp(17px,2.2vw,20px);line-height:1.6}
 .actions{display:flex;gap:12px;margin:26px 0 8px;flex-wrap:wrap;justify-content:center}
 .wall>a{min-width:0}
+.wall>a:last-child:nth-child(3n+1){grid-column:2}   /* thẻ lẻ cuối (3 cột) nằm giữa */
 .wall{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 26px;width:min(980px,100%);margin:40px auto 30px;padding:0 6px}
 .wall>a{display:block;animation:rise 1.2s var(--ease) both,bob var(--bt,6s) ease-in-out infinite;animation-delay:var(--d,0s),calc(var(--d,0s) + 1.2s);will-change:transform}
 @keyframes bob{50%{transform:translateY(-8px)}}
@@ -243,6 +244,18 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 .gdots{display:flex;justify-content:center;gap:10px;margin-top:-12px}
 .gdots i{width:8px;height:8px;border-radius:50%;background:#f2c2da;cursor:pointer;transition:transform .5s var(--ease),background .5s}
 .gdots i.on{background:var(--pink);transform:scale(1.4)}
+/* Video thiệp trong thư + nút tải về */
+.vid{width:min(380px,100%);margin:0 auto;border:6px solid #fff;border-radius:24px;overflow:hidden;background:#fff;box-shadow:var(--shadow)}
+.vid video{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:#ffe3f0}
+.vid-act{display:flex;justify-content:center;margin-top:20px}
+.vid-note{max-width:380px;margin:12px auto 0;text-align:center;font-size:13px;line-height:1.6;color:var(--ink2)}
+.btn svg{flex:none;width:18px;height:18px}
+.btn.loading{pointer-events:none;background:linear-gradient(90deg,#ffc9e2 var(--pg,0%),#fff var(--pg,0%))}
+.vdl{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:9px;padding:8px 10px;border-radius:999px;cursor:pointer;
+  border:1.5px solid #f6b6d6;background:#fff;color:var(--pink);font:600 13px var(--sans);transition:transform .25s var(--ease)}
+.vdl svg{flex:none;width:15px;height:15px}
+.vdl:hover{background:var(--pink);border-color:var(--pink);color:#fff;transform:translateY(-1px)}
+.vdl:active{transform:scale(.97)}
 .sec{margin-top:64px}
 .sec-h{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px;
   font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:clamp(14px,3.4vw,17px);color:var(--ink);text-align:center}
@@ -438,12 +451,14 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 @media (max-width:700px){
   .decor .d{opacity:.85}
   .wall{grid-template-columns:repeat(2,1fr);gap:22px 14px}
+  .wall>a:last-child:nth-child(3n+1){grid-column:auto}
   .wall>a:last-child:nth-child(odd){grid-column:1/-1;justify-self:center;width:calc(50% - 7px)}
   .post{padding:8px 8px 10px;border-radius:16px}
   .post header{font-size:11px;padding-bottom:7px}.post header small{display:none}
   .n{--nf:38px}
   .icons{gap:8px}.icons svg{width:17px;height:17px}
   .cap b{font-size:14px}
+  .vdl{font-size:12px;padding:7px 6px}
   .slide{grid-template-columns:1fr;text-align:center;justify-items:center;gap:14px}
   .slide .post{width:62vw}
   .who p{margin-inline:auto}
@@ -680,7 +695,11 @@ const SONGS = {
   // Nhịp văn phòng gọn gàng, "cộp" như tiếng đóng dấu
   'dong-dau':     {ten: 'Đóng dấu yêu thương', tim: 'kalimba', sp: .2,
                    hop: 'Bb Gm Eb F Bb Gm Cm F', dem: 'b . 1+2 . b 1+2 . 1+2',
-                   giai: 'F5 . D5 . F5 . Bb5 . | G5 . . . D5 . G5 . | Bb5 . G5 . Eb5 . G5 . | A5 . . . F5 . . . | F5 . D5 . F5 . D6 . | D6 . Bb5 . G5 . Bb5 . | C6 . G5 . Eb5 . G5 . | F5 . A5 . C6 . . .'}
+                   giai: 'F5 . D5 . F5 . Bb5 . | G5 . . . D5 . G5 . | Bb5 . G5 . Eb5 . G5 . | A5 . . . F5 . . . | F5 . D5 . F5 . D6 . | D6 . Bb5 . G5 . Bb5 . | C6 . G5 . Eb5 . G5 . | F5 . A5 . C6 . . .'},
+  // Lật trang nhẹ nhàng như soạn một bộ học liệu mới
+  'hoc-lieu':     {ten: 'Trang học liệu mới', tim: 'hac', sp: .21,
+                   hop: 'Eb Cm Ab Bb Eb Gm Ab Bb', dem: 'b 1 2 4 . 2 1 2',
+                   giai: 'G5 . Bb5 . Eb6 . D6 C6 | Bb5 . G5 . . . Eb5 . | C6 . Ab5 . C6 . Eb6 . | D6 . . . Bb5 . F5 . | G5 . Bb5 . Eb6 . G6 . | F6 . D6 . Bb5 . G5 . | Ab5 . C6 . Bb5 . Ab5 . | G5 . . . F5 . Eb5 .'}
 };
 // w: sóng chính · hw/h/hv: hoạ âm phụ (loại, bội số, độ lớn) · a: tấn công · d: độ ngân · bend: tỉ lệ nốt luyến lên
 const TIMBRE = {
@@ -800,12 +819,13 @@ const ICON = {
   heart: `<svg viewBox="0 0 24 24"><path class="hrt" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.5 3 4.5 6.8 4.5c2.2 0 3.6 1.3 5.2 3.2 1.6-1.9 3-3.2 5.2-3.2 3.8 0 5.9 4 4.4 7.3C19.5 16.4 12 21 12 21z"/></svg>`,
   chat: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M20.5 11.6a8.4 8.4 0 0 1-12.3 7.4L3.5 20.5l1.5-4.6a8.4 8.4 0 1 1 15.5-4.3z"/></svg>`,
   send: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M21.5 3 10 14.5M21.5 3l-7 18-4.5-6.5L3 10z"/></svg>`,
-  save: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>`
+  save: `<svg viewBox="0 0 24 24" fill="none" stroke="#3a1230" stroke-width="1.8" stroke-linejoin="round"><path d="M6 3.5h12v17l-6-4.2-6 4.2z"/></svg>`,
+  down: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v11.5M6.5 10l5.5 5.5 5.5-5.5M4.5 20h15"/></svg>`
 };
 const ROT = [-2.2, 1.6, -1, 2.4];
 const anhOf = p => (p.anh && p.anh.length ? p.anh : p.anhDaiDien ? [p.anhDaiDien] : []);
 const NAV = '<button type="button" class="nav prev" data-go="-1" aria-label="Ảnh trước">‹</button><button type="button" class="nav next" data-go="1" aria-label="Ảnh sau">›</button>';
-function post(p, i, base = 0) {
+function post(p, i, base = 0, dl = false) {
   const c = PAL[p.mau] || PAL.hong, photos = anhOf(p);
   // có ảnh → album chỉ gồm ảnh (1 ảnh thì đứng yên); chưa có ảnh → bông hoa
   const slides = photos.length
@@ -821,6 +841,7 @@ function post(p, i, base = 0) {
     </div>
     <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg${many ? ' real' : ''}">${'<i></i>'.repeat(many ? slides.length : photos.length ? 0 : 4)}</span>${ICON.save}</div>
     <div class="cap"><b data-fit="11">${esc(nm(p))}</b><span>${esc(p.danhHieu)}</span></div>
+    ${dl ? `<button type="button" class="vdl" data-vid="${esc(p.id)}" aria-label="Tải video thiệp của ${esc(nm(p))}">${ICON.down}Tải video thiệp</button>` : ''}
   </article>`;
 }
 // Co cỡ chữ để tiêu đề/tên nằm gọn trên một dòng (không xuống dòng)
@@ -877,7 +898,7 @@ const splitChars = t => Array.from(t).map((c, i) => c === ' ' ? ' ' : `<span cla
 function home() {
   const cards = D.chiEm.map((p, i) => `
     <a href="#/thu/${encodeURIComponent(p.id)}" style="--d:${(1.2 + i * .12).toFixed(2)}s;--bt:${5 + (i % 3)}s" aria-label="Mở thư gửi ${esc(p.ten)}">
-      ${post(p, i, 1400 + i * 150)}
+      ${post(p, i, 1400 + i * 150, true)}
     </a>`).join('');
   $app.innerHTML = `
     <section class="home">
@@ -887,12 +908,75 @@ function home() {
       <h1 class="vn purpletext" data-fit="24" aria-label="Phụ nữ Việt Nam">${splitChars('Phụ nữ Việt Nam')}</h1>
       <div class="date rise" style="--d:1.2s">${esc(D.ngay)}</div>
       <p class="lead rise" style="--d:1.35s">${esc(D.loiMoDau)}</p>
-      <div class="actions rise" style="--d:1.5s"><a class="btn primary" href="#/trinh-chieu">✦ Trình chiếu màn hình lớn</a></div>
+      <div class="actions rise" style="--d:1.5s"><a class="btn primary" href="#/trinh-chieu">✦ Trình chiếu màn hình lớn</a>
+        <button class="btn" id="dlAll" type="button">${ICON.down}<span>Tải tất cả video thiệp</span></button></div>
       <div class="wall">${cards}</div>
       <p class="hint rise" style="--d:2.2s"><span class="blink">Chạm vào một tấm thiệp để mở thư</span></p>
     </section>`;
   bloomAll($app); fitWhenReady($app); music.use(null);
   $app.querySelectorAll('.wall .post').forEach((el, k) => slider(el, {auto: 4200, delay: 2600 + k * 450}));
+  // nút nằm trong thẻ có link: chặn mở thư, chỉ tải video
+  $app.querySelectorAll('.vdl').forEach(b => b.onclick = e => {
+    e.preventDefault(); e.stopPropagation();
+    const p = D.chiEm.find(x => x.id === b.dataset.vid); if (p) saveAs(vidOf(p), vidName(p));
+  });
+  document.getElementById('dlAll').onclick = e => downloadAll(e.currentTarget);
+}
+
+/* ================= Video thiệp: tải từng video / tải tất cả (gói ZIP) ================= */
+const vidOf = p => `video/${encodeURIComponent(p.id)}.mp4`;
+const vidName = p => `Vuon-Leap-20-10-${p.id}.mp4`;
+const IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+function saveAs(href, name) {
+  const a = document.createElement('a'); a.href = href; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+const CRC = (() => { const t = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+const crc32 = u8 => { let c = ~0; for (let i = 0; i < u8.length; i++) c = CRC[(c ^ u8[i]) & 255] ^ (c >>> 8); return ~c >>> 0; };
+// Gói ZIP kiểu "store" (video đã nén sẵn, không nén thêm)
+function zipStore(files) {
+  const enc = new TextEncoder(), parts = [], dir = [], d = new Date();
+  const dos = ((d.getFullYear() - 1980) << 25 | (d.getMonth() + 1) << 21 | d.getDate() << 16 | d.getHours() << 11 | d.getMinutes() << 5 | d.getSeconds() >> 1) >>> 0;
+  let off = 0;
+  for (const f of files) {
+    const name = enc.encode(f.name), size = f.data.length, crc = f.crc;
+    const h = new DataView(new ArrayBuffer(30));
+    h.setUint32(0, 0x04034b50, true); h.setUint16(4, 20, true); h.setUint16(6, 0x0800, true);
+    h.setUint32(10, dos, true); h.setUint32(14, crc, true); h.setUint32(18, size, true); h.setUint32(22, size, true); h.setUint16(26, name.length, true);
+    parts.push(h, name, f.data);
+    const c = new DataView(new ArrayBuffer(46));
+    c.setUint32(0, 0x02014b50, true); c.setUint16(4, 20, true); c.setUint16(6, 20, true); c.setUint16(8, 0x0800, true);
+    c.setUint32(12, dos, true); c.setUint32(16, crc, true); c.setUint32(20, size, true); c.setUint32(24, size, true);
+    c.setUint16(28, name.length, true); c.setUint32(42, off, true);
+    dir.push(c, name);
+    off += 30 + name.length + size;
+  }
+  const dirSize = dir.reduce((s, x) => s + x.byteLength, 0), e = new DataView(new ArrayBuffer(22));
+  e.setUint32(0, 0x06054b50, true); e.setUint16(8, files.length, true); e.setUint16(10, files.length, true);
+  e.setUint32(12, dirSize, true); e.setUint32(16, off, true);
+  return new Blob([...parts, ...dir, e], {type: 'application/zip'});
+}
+async function downloadAll(btn) {
+  if (btn.classList.contains('loading')) return;
+  const label = btn.querySelector('span'), old = label.textContent, n = D.chiEm.length, files = [];
+  const step = (k, msg) => { btn.style.setProperty('--pg', Math.round(k * 100) + '%'); label.textContent = msg; };
+  btn.classList.add('loading');
+  try {
+    for (const [k, p] of D.chiEm.entries()) {
+      step(k / n, `Đang gom video ${k + 1}/${n}…`);
+      const r = await fetch(vidOf(p)); if (!r.ok) throw new Error(p.id);
+      const data = new Uint8Array(await r.arrayBuffer());
+      files.push({name: vidName(p), data, crc: crc32(data)});
+    }
+    step(1, 'Đang đóng gói…');
+    const url = URL.createObjectURL(zipStore(files));
+    saveAs(url, 'Vuon-Leap-20-10-tat-ca-video.zip'); setTimeout(() => URL.revokeObjectURL(url), 120000);
+    label.textContent = '✓ Đã tải xong';
+  } catch (err) {
+    label.textContent = 'Chưa tải được, bấm thử lại';
+  }
+  btn.classList.remove('loading'); btn.style.removeProperty('--pg');
+  setTimeout(() => { if (btn.isConnected) label.textContent = old; }, 5000);
 }
 
 /* ================= Trang 2: Phong thư riêng ================= */
@@ -963,6 +1047,14 @@ function letter(id) {
           ${photos.length > 1 ? `<div class="gdots">${'<i></i>'.repeat(photos.length)}</div>` : ''}
         </section>` : ''}
 
+        <section class="sec reveal" id="vidSec">
+          <h2 class="sec-h" data-fit="11">Video thiệp 20.10</h2>
+          <div class="vid"><video src="${vidOf(p)}" poster="video/${encodeURIComponent(p.id)}.jpg" controls playsinline preload="none"></video></div>
+          <div class="vid-act"><a class="btn primary" href="${vidOf(p)}" download="${vidName(p)}">${ICON.down}Tải video thiệp</a></div>
+          <p class="vid-note">${IOS ? 'Trên iPhone/iPad: tải xong mở ứng dụng Tệp, chọn video → Chia sẻ → Lưu video để đưa vào Ảnh.'
+            : 'Video MP4 kèm giai điệu riêng — lưu về máy để giữ làm kỷ niệm.'}</p>
+        </section>
+
         <section class="sec reveal">
           <h2 class="sec-h" data-fit="11">Danh hiệu vinh danh</h2>
           <div class="badge">
@@ -1026,6 +1118,11 @@ function letter(id) {
   document.getElementById('dl').onclick = () => downloadBadge(p);
   document.getElementById('tune').onclick = () => { music.want = true; music.start(); };
   slider(document.getElementById('galSec'), {auto: 4800, delay: 3000});
+  // xem video thì tạm tắt nhạc nền, xem xong bật lại
+  const vid = page.querySelector('#vidSec video');
+  let resume = false;
+  vid.onplay = () => { if (music.on) { resume = true; music.stop(); } };
+  vid.onpause = vid.onended = () => { if (resume) { resume = false; music.want = true; music.start(); } };
 }
 
 function typewrite(el, text) {
@@ -1182,12 +1279,23 @@ function render() {
   cleanup.forEach(f => f()); cleanup = [];
   const h = decodeURIComponent(location.hash.slice(1)) || '/';
   scrollTo(0, 0);
-  document.body.dataset.route = h.startsWith('/thu/') ? 'thu' : h === '/trinh-chieu' ? 'show' : 'home';
+  document.body.dataset.route = h.startsWith('/thu/') ? 'thu' : h === '/trinh-chieu' ? 'show' : h === '/quay-video' ? 'studio' : 'home';
   if (h.startsWith('/thu/')) letter(h.slice(5));
   else if (h === '/trinh-chieu') showView();
+  else if (h === '/quay-video') studio();
   else home();
 }
 addEventListener('hashchange', route);
+
+/* ================= Máy quay video thiệp (trang ẩn #/quay-video, nạp video.js khi cần) ================= */
+window.VUON = {D, PAL, KINDS, SONGS, parseSong, tuneOf, anhOf, nm};
+function studio() {
+  const go = () => window.VuonVideo.studio($app);
+  if (window.VuonVideo) return go();
+  $app.innerHTML = '<p class="hint" style="text-align:center;padding-top:40vh">Đang mở máy quay…</p>';
+  const s = document.createElement('script'); s.src = 'video.js?t=' + Date.now(); s.onload = go;
+  document.head.appendChild(s);
+}
 
 // Vật trang trí trôi nhẹ theo con trỏ (lerp cho mượt)
 (() => {

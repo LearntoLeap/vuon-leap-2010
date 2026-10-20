@@ -14,16 +14,17 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 | Web live | https://learntoleap.github.io/vuon-leap-2010/ (GitHub Pages, nhánh `main`, push là tự cập nhật sau ~1 phút) |
 | Web live (Vercel) | https://vuon-leap-2010.vercel.app/ — project `vuon-leap-2010`, team "LTL's projects", nối repo GitHub, push `main` là tự deploy production. Bảo vệ đăng nhập Vercel chỉ áp cho bản preview (link production công khai) |
 | Công nghệ | HTML + CSS + JavaScript thuần, **không** build, không framework |
-| File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần) |
-| Chạy thử | `python -m http.server 5210` trong thư mục dự án → mở `http://localhost:5210` (trong Claude Code: preview `vuon-leap`, cấu hình ở `C:\Users\HP\.claude\launch.json`). Máy 2: `npx http-server -p 5210 -c-1`, preview `vuon-leap` ở `D:\Claude G\.claude\launch.json` |
-| Trạng thái 19/10/2026 | Giao diện hoàn thiện, dữ liệu **9 người** thật, mỗi người một giai điệu riêng + 3 lời chúc theo phòng ban + **album ảnh trượt** (18 ảnh). Danh hiệu / thư CEO vẫn là **bản nháp**. Đã push lên `main`, live trên GitHub Pages + Vercel |
+| File | `index.html` (toàn bộ giao diện + logic), `data.js` (dữ liệu duy nhất cần sửa), `anh/` (ảnh, tạo khi cần), `video.js` (máy quay video thiệp, chỉ nạp ở `#/quay-video`), `video/` (MP4 + ảnh bìa từng người), `cong-cu/may-chu.mjs` (máy chủ chạy thử + nhận video) |
+| Chạy thử | `node cong-cu/may-chu.mjs` → mở `http://127.0.0.1:5210` (máy 1 có thể dùng `python -m http.server 5210`, nhưng muốn quay video ghi thẳng vào `video/` thì phải dùng `may-chu.mjs`). Trong Claude Code: preview `vuon-leap` (máy 2 cấu hình ở `D:\Claude G\.claude\launch.json`, máy 1 ở `C:\Users\HP\.claude\launch.json` — cập nhật sang `node cong-cu/may-chu.mjs`) |
+| Trạng thái 20/10/2026 | **10 người** (thêm Thùy Linh), mỗi người một giai điệu riêng + 3 lời chúc + album ảnh trượt + **video thiệp MP4** (tải từng người trên thẻ/trong thư, hoặc "Tải tất cả" thành 1 file ZIP). Danh hiệu / thư CEO vẫn là **bản nháp** |
 
 ### Ba màn hình (điều hướng bằng hash)
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
 - `#/thu/<id>` — **Phong thư riêng** của từng người: tim ruy băng "Gửi Mrs. X" + phong thư → bấm mở → lá thư gồm thiệp tên, danh hiệu (tải PNG được), số liệu, khoảnh khắc, lời chúc, thư tay CEO.
 - `#/trinh-chieu` — **Trình chiếu màn hình lớn**: slide mở đầu → mỗi người 1 slide (9 giây) → slide tri ân. Phím ←/→, Space (dừng), F (toàn màn hình).
+- `#/quay-video` — **Máy quay video thiệp** (trang ẩn, không có link trên web): xem nhanh từng khung, "Quay người này" / "Quay tất cả".
 
-Link riêng hiện tại: `phan-thi-thao`, `nguyen-thi-thinh`, `le-bich-ngoc`, `dinh-hoang-phuong-anh`, `ho-thi-an`, `pham-thi-hong-nhung`, `dieu-nga`, `dao-thi-xuan`, `ngoc-ha`.
+Link riêng hiện tại: `phan-thi-thao`, `nguyen-thi-thinh`, `le-bich-ngoc`, `dinh-hoang-phuong-anh`, `ho-thi-an`, `pham-thi-hong-nhung`, `dieu-nga`, `dao-thi-xuan`, `ngoc-ha`, `thuy-linh`.
 
 ---
 
@@ -67,7 +68,7 @@ window.LEAP = {
 
 - **Bẫy cú pháp:** trong chuỗi `noiDung` phải viết `\n` (hai ký tự), KHÔNG xuống dòng thật — xuống dòng thật làm hỏng cả `data.js` → trang trắng/không có dữ liệu. Kiểm tra nhanh: `node -e "global.window={};require('./data.js');console.log(window.LEAP.chiEm.length)"`.
 - `index.html` nạp `data.js?t=<thời gian>` để sửa dữ liệu là thấy ngay (không bị cache).
-- Danh sách 8 người (CEO cung cấp 15/10): Phan Thị Thảo (HCNS_KT), Nguyễn Thị Thịnh (Giám đốc MKT), Lê Bích Ngọc (Giám đốc Chuyên môn), Đình Hoàng Phương Anh (Event), Hồ Thị An (Event), Phạm Thị Hồng Nhung (Marketing), Diệu Nga (Marketing), Đào Thị Xuân (Quản lý giáo viên). Thêm 19/10: Ngọc Hà (Hành chính Tổng hợp — CEO chỉ gửi "Ngọc Hà", chưa có họ đầy đủ). Họ "Đình" giữ đúng như CEO gửi (có thể là "Đinh" — chưa xác nhận).
+- Danh sách 8 người (CEO cung cấp 15/10): Phan Thị Thảo (HCNS_KT), Nguyễn Thị Thịnh (Giám đốc MKT), Lê Bích Ngọc (Giám đốc Chuyên môn), Đình Hoàng Phương Anh (Event), Hồ Thị An (Event), Phạm Thị Hồng Nhung (Marketing), Diệu Nga (Marketing), Đào Thị Xuân (Quản lý giáo viên). Thêm 19/10: Ngọc Hà (Hành chính Tổng hợp — CEO chỉ gửi "Ngọc Hà", chưa có họ đầy đủ). Thêm 20/10: Thùy Linh (Chuyên viên Chuyên môn — cũng chỉ có "Thùy Linh"; danh hiệu + lời chúc là nháp). Họ "Đình" giữ đúng như CEO gửi (có thể là "Đinh" — chưa xác nhận).
 
 **Ảnh (19/10):** CEO gửi zip "Ảnh chị em LtL" (18 ảnh, tên file theo người). Gán theo tên file, thứ tự trong album: ảnh không số trước rồi (1), (2). Đã cắt khung 4:5 (canh giữa người), thu về ≤800×1000, xoá EXIF, lưu `anh/<id>-<số>.jpg`. Script xử lý không nằm trong repo — ảnh mới thì cắt 4:5 tương tự.
 
@@ -84,11 +85,13 @@ window.LEAP = {
 - **Hoa** `flower(mau, {kind, base, stem})`: `kind` = `tron` (5 cánh) | `tulip` | `sao` (4 cánh); xoay vòng theo thứ tự người (`KINDS[i % 3]`). Nở bằng class `.bloom`.
 - **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó. Ảnh (`anh`) thành album trượt kiểu Instagram **chỉ gồm ảnh** (CEO 20/10: không chèn bông hoa; 1 ảnh thì đứng yên, không nút ‹ ›, không chấm), avatar nhỏ = ảnh đầu, chấm trang chạy thật. Người chưa có ảnh → 1 bông hoa + 4 chấm trang trí.
 - **Album trượt** `slider(root, {auto, delay})`: dùng chung cho thẻ, mục "Khoảnh khắc rạng rỡ" (polaroid) trong thư và thẻ ở trình chiếu. Cuộn ngang scroll-snap (vuốt trên điện thoại), nút ‹ › (ẩn trên máy cảm ứng), chấm trang; tự chuyển khi đang hiện trên màn hình, dừng 7 giây sau khi người xem tự vuốt/bấm. Nút/chấm nằm trong thẻ có link nên chặn `preventDefault` để không mở thư.
-- **Bức tường** 3 cột (9 người = 3×3); điện thoại 2 cột, thẻ lẻ cuối nằm giữa.
+- **Bức tường** 3 cột (10 người: hàng cuối 1 thẻ nằm giữa cột 2); điện thoại 2 cột, thẻ lẻ cuối nằm giữa. Mỗi thẻ có nút "Tải video thiệp" (nút nằm trong thẻ có link → chặn `preventDefault`).
+- **Video thiệp** (`video.js`): MP4 1080×1350, 30 khung/giây, H.264 ~1,3 Mbps + AAC 128 kbps, ~35–45 giây, ~6–7 MB/người. Kịch bản: mở đầu (Chúc mừng ngày / PHỤ NỮ VIỆT NAM tím / ngày / lời mở đầu) → polaroid ảnh (Ken Burns, nhiều ảnh thì chuyển lần lượt) + "Gửi Mrs. X" → thẻ danh hiệu → từng lời chúc (văn bản có `\n` canh trái mỗi mục một dòng, văn xuôi canh giữa, ngắt dòng cân đối) → tri ân + chữ ký CEO. Nền, hoa, dải lụa, cánh hoa rơi vẽ bằng canvas theo đúng đường nét hoa trên web; mọi chuyển động tính theo thời gian + hạt giống theo `id` (quay lại ra y hệt). Nhạc = giai điệu riêng dựng offline (cùng bộ phát với web), chuẩn hoá đỉnh −1 dB, vào/ra nhỏ dần. Mã hoá WebCodecs + `mp4-muxer@5.2.2` (jsDelivr), moov đặt đầu file (phát được ngay khi đang tải).
+- **Tải video**: trong thư có mục "Video thiệp 20.10" (trình phát + nút tải; iPhone hiện hướng dẫn Tệp → Chia sẻ → Lưu video); xem video thì nhạc nền tạm tắt. Trang chủ có "Tải tất cả video thiệp": tải lần lượt 10 MP4 rồi đóng ZIP ngay trên trình duyệt (kiểu store, tự viết, không thư viện) → `Vuon-Leap-20-10-tat-ca-video.zip`. Tên file từng video: `Vuon-Leap-20-10-<id>.mp4`.
 - **Lớp trang trí cố định** `#decor`: hoa to mờ, hoa kính, tim 3D, vòng elip, sao ✦; trôi nhẹ theo con trỏ (parallax). Class `side` ẩn khi trình chiếu, `home-only` ẩn ở trang thư — ẩn bằng `filter:opacity(0)`.
 - **Canvas `#sky`**: cánh hoa rơi + lấp lánh + nổ tim/lấp lánh (`sky.burst(x, y, n, 'heart'|'glint')`).
 - **Nhạc nền** (tự sinh bằng Web Audio, không cần file): nút ♪ góc phải + nhãn tên bài đang phát (`#np`); bật khi mở thư/trình chiếu.
-  - `SONGS`: 9 giai điệu — `vuon-leap` (bài chung: trang chủ, slide mở đầu/tri ân) + 8 bài riêng đặt tên theo nghề: `bang-can-doi` (Thảo, valse), `chien-dich` (Thịnh, pop), `giao-an` (Ngọc, chậm rãi), `khai-mac` (Phương Anh, kèn hiệu), `den-san-khau` (An, 6/8 chuông), `xu-huong` (Nhung, nảy nhịp), `y-tuong` (Nga, lydian), `khuc-xuan` (Xuân, ngũ cung + luyến đàn tranh), `dong-dau` (Ngọc Hà, "Đóng dấu yêu thương", kalimba).
+  - `SONGS`: 9 giai điệu — `vuon-leap` (bài chung: trang chủ, slide mở đầu/tri ân) + 8 bài riêng đặt tên theo nghề: `bang-can-doi` (Thảo, valse), `chien-dich` (Thịnh, pop), `giao-an` (Ngọc, chậm rãi), `khai-mac` (Phương Anh, kèn hiệu), `den-san-khau` (An, 6/8 chuông), `xu-huong` (Nhung, nảy nhịp), `y-tuong` (Nga, lydian), `khuc-xuan` (Xuân, ngũ cung + luyến đàn tranh), `dong-dau` (Ngọc Hà, "Đóng dấu yêu thương", kalimba), `hoc-lieu` (Linh, "Trang học liệu mới", đàn hạc, Mi giáng trưởng).
   - Cú pháp bài: `hop` vòng hợp âm (mỗi hợp âm 1 ô nhịp), `dem` tiếng đệm mỗi ô nhịp (`b` bè trầm, `0-3` nốt hợp âm, `4-7` cao 1 quãng tám, `.` nghỉ, `+` chơi cùng lúc), `giai` giai điệu (mỗi ký hiệu 1 bước), `sp` giây/bước, `tim` âm sắc trong `TIMBRE`.
   - `music.use(p)` đổi bài theo người (null → bài chung); mỗi bài phát qua một `GainNode` riêng (`bus`) để chuyển bài mờ dần, không lẫn nốt bài cũ.
   - Trong thư có dòng "♪ Giai điệu riêng: …" (bấm để bật nhạc).
@@ -115,6 +118,7 @@ window.LEAP = {
 14. 19/10: theo CEO, đảo thứ tự ảnh Hồ An — ảnh tốt nghiệp ("Hồ An 2") lên làm ảnh chính, ảnh "Hồ An 1" ra sau.
 15. 20/10: clone repo sang máy 2 (`D:\Claude G\vuon-leap-2010`). Theo CEO, Phương Anh **chỉ dùng 1 ảnh mới** (selfie hoa sứ) → xoá `-1`, `-2`, lưu ảnh mới tên `dinh-hoang-phuong-anh-3.jpg` (đặt tên mới để người đã mở link không bị dính ảnh cũ trong cache). Cắt 4:5 bằng System.Drawing của PowerShell (máy 2 không có Python), xoá EXIF.
 16. 20/10: theo CEO, album trượt trên thẻ (bức tường + trình chiếu) **chỉ chạy ảnh** — bỏ slide bông hoa ở cuối; 1 ảnh chạy 1 ảnh, 2 ảnh chạy 2 ảnh… Máy 2: preview mở bằng `http://127.0.0.1:5210` (`localhost` trỏ IPv6, http-server chỉ nghe IPv4).
+17. 20/10: thêm **Thùy Linh – Chuyên viên Chuyên môn** (ảnh Hội An, bài "Trang học liệu mới", 3 lời chúc: rubric đánh giá / bản thảo học liệu / tri ân). Thêm **video thiệp MP4 cho từng người** + nút tải trên thẻ, trong thư và "Tải tất cả" (ZIP). Máy quay ở `#/quay-video`; máy chủ `cong-cu/may-chu.mjs` thay cho http-server.
 
 ---
 
@@ -129,6 +133,7 @@ window.LEAP = {
 - **Chữ gradient + `background-clip:text`**: nét chữ/dấu vượt ra ngoài hộp sẽ bị mất → các `.ch`/`.script` có padding bù; glow dùng `filter: drop-shadow` (không dùng `text-shadow`).
 - **Ô xem trước của Claude bị ẩn** thì `requestAnimationFrame` không chạy và ảnh chụp bị trễ → kiểm tra logic bằng JS/DOM; với chuyển cảnh dùng `void el.offsetWidth` thay vì rAF.
 - **Commit author**: repo LtL đặt `git config user.name "LearntoLeap"` + `user.email "phonix.team2023@gmail.com"` cấp local.
+- **Máy quay video**: trạng thái canvas (`textAlign`, `letterSpacing`) quay về giá trị cũ sau `restore()` → đặt lại ngay trước khi vẽ chữ. Cánh hoa rơi phải vẽ **trước** nội dung (vẽ sau thì che mặt người trong ảnh và che chữ). Không dùng `requestAnimationFrame`/`setTimeout` khi quay (ô xem trước bị ẩn sẽ bị chậm) — vòng quay nhường luồng bằng `MessageChannel`. Máy 2: `localhost` trỏ IPv6 → mở bằng `127.0.0.1`.
 
 ---
 
@@ -136,7 +141,8 @@ window.LEAP = {
 
 - [ ] CEO duyệt/sửa danh hiệu, mô tả, thư CEO và 24 lời chúc mới (19/10) trong `data.js`.
 - [x] Push bản 19/10 lên `main` + deploy Vercel (https://vuon-leap-2010.vercel.app/).
-- [ ] CEO xác nhận họ tên đầy đủ, danh hiệu, lời chúc của Ngọc Hà (đang là nháp).
+- [ ] CEO xác nhận họ tên đầy đủ, danh hiệu, lời chúc của Ngọc Hà và Thùy Linh (đang là nháp).
+- [ ] **Mỗi lần sửa `data.js` → quay lại video** ở `#/quay-video` (chạy bằng `node cong-cu/may-chu.mjs`), rồi commit cả thư mục `video/`.
 - [ ] (Tuỳ chọn) Thay giai điệu bằng bài hát thật: bỏ file vào `nhac/`, điền `fileNhac` — repo công khai nên chỉ dùng nhạc được phép chia sẻ.
 - [x] Ảnh cho 9 người (19/10). - [ ] (Tuỳ chọn) số liệu, câu chuyện + ảnh.
 - [x] Deploy GitHub Pages (16/10). Gửi link riêng `…/#/thu/<id>` cho từng người sáng 20/10.

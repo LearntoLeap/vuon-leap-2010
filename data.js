@@ -17,6 +17,7 @@
        "y-tuong"       Ý tưởng lấp lánh        (tinh nghịch, hộp nhạc)
        "khuc-xuan"     Khúc xuân lớp học       (ngũ cung, đàn tranh)
        "dong-dau"      Đóng dấu yêu thương     (nhịp văn phòng, kalimba)
+       "hoc-lieu"      Trang học liệu mới      (lật trang nhẹ nhàng, đàn hạc)
    - fileNhac: muốn dùng bài hát thật thì bỏ file vào thư mục nhac/ rồi điền, ví dụ "nhac/thao.mp3".
      Để "" thì dùng giai điệu ở trên. Lưu ý: repo công khai — chỉ dùng nhạc được phép chia sẻ.
    - tenNhac: tên bài hiển thị. Để "" thì dùng tên giai điệu.
@@ -201,6 +202,24 @@ window.LEAP = {
         { tu: "Công văn số 20/10/HCTH", noiDung: "Kính gửi: người giữ nếp cả văn phòng.\nV/v: nghỉ ngơi và nhận hoa.\nNội dung: hôm nay mọi giấy tờ xin tự xếp hàng ngay ngắn.\nNơi nhận: cả nhà Leap (để cùng vui)." },
         { tu: "Con dấu văn phòng", noiDung: "Mỗi ngày đóng không biết bao nhiêu dấu để giấy tờ chạy đúng hạn. Hôm nay con dấu xin đóng một dấu thật đặc biệt: ĐÃ DUYỆT – một ngày 20/10 thật vui!" },
         { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã giữ cho văn phòng Leap luôn ngăn nắp, trơn tru và ấm áp. Chúc một ngày 20/10 thật nhẹ nhàng và rạng rỡ!" }
+      ]
+    },
+    {
+      id: "thuy-linh",
+      ten: "Thùy Linh",
+      goiTen: "Mrs. Linh",
+      vaiTro: "Chuyên viên Chuyên môn",
+      mau: "xanh",
+      anh: ["anh/thuy-linh-1.jpg"],
+      nhac: "hoc-lieu", fileNhac: "", tenNhac: "",
+      danhHieu: "Người ươm mầm từng bài học",
+      moTaDanhHieu: "Tỉ mỉ trong từng trang học liệu để mỗi giờ học STEM thêm gần gũi và hấp dẫn.",
+      soLieu: [],
+      cauChuyen: [],
+      loiChuc: [
+        { tu: "Rubric đánh giá ngày 20/10", noiDung: "Tiêu chí 1 – Nụ cười: Xuất sắc.\nTiêu chí 2 – Năng lượng: Xuất sắc.\nTiêu chí 3 – Được yêu thương: vượt thang điểm.\nTổng kết: 10/10, không cần chấm lại!" },
+        { tu: "Bản thảo học liệu", noiDung: "Bao nhiêu bản thảo đã qua tay, chỉnh từng hình minh hoạ, soát từng câu hỏi. Hôm nay mọi bản thảo xin tự hoàn thiện, để người soạn được nghỉ ngơi và nhận hoa." },
+        { tu: "Learn to Leap", noiDung: "Cảm ơn vì đã chăm chút từng bài học để thầy cô dạy thật hay, học sinh học thật vui. Chúc một ngày 20/10 thật rạng rỡ và ngọt ngào!" }
       ]
     }
   ]
