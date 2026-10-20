@@ -119,6 +119,7 @@ window.LEAP = {
 15. 20/10: clone repo sang máy 2 (`D:\Claude G\vuon-leap-2010`). Theo CEO, Phương Anh **chỉ dùng 1 ảnh mới** (selfie hoa sứ) → xoá `-1`, `-2`, lưu ảnh mới tên `dinh-hoang-phuong-anh-3.jpg` (đặt tên mới để người đã mở link không bị dính ảnh cũ trong cache). Cắt 4:5 bằng System.Drawing của PowerShell (máy 2 không có Python), xoá EXIF.
 16. 20/10: theo CEO, album trượt trên thẻ (bức tường + trình chiếu) **chỉ chạy ảnh** — bỏ slide bông hoa ở cuối; 1 ảnh chạy 1 ảnh, 2 ảnh chạy 2 ảnh… Máy 2: preview mở bằng `http://127.0.0.1:5210` (`localhost` trỏ IPv6, http-server chỉ nghe IPv4).
 17. 20/10: thêm **Thùy Linh – Chuyên viên Chuyên môn** (ảnh Hội An, bài "Trang học liệu mới", 3 lời chúc: rubric đánh giá / bản thảo học liệu / tri ân). Thêm **video thiệp MP4 cho từng người** + nút tải trên thẻ, trong thư và "Tải tất cả" (ZIP). Máy quay ở `#/quay-video`; máy chủ `cong-cu/may-chu.mjs` thay cho http-server.
+18. 20/10: thêm ảnh thứ 3 cho Mrs. Xuân (đứng trước pano "Ngày Hội Khoa học và Công nghệ", cắt 4:5 hẹp quanh người, giữ trọn tiêu đề) → `dao-thi-xuan-3.jpg`, cuối album; quay lại video của Mrs. Xuân (cảnh ảnh 10,2 giây cho 3 ảnh, video 45,6 giây).
 
 ---
 

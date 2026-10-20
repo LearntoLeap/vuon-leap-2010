@@ -174,7 +174,7 @@ window.LEAP = {
       goiTen: "Mrs. Xuân",
       vaiTro: "Quản lý Giáo viên",
       mau: "dao",
-      anh: ["anh/dao-thi-xuan-1.jpg", "anh/dao-thi-xuan-2.jpg"],
+      anh: ["anh/dao-thi-xuan-1.jpg", "anh/dao-thi-xuan-2.jpg", "anh/dao-thi-xuan-3.jpg"],
       nhac: "khuc-xuan", fileNhac: "", tenNhac: "",
       danhHieu: "Người dẫn dắt đội ngũ giáo viên",
       moTaDanhHieu: "Đồng hành cùng từng thầy cô để mỗi giờ học STEM đều trọn vẹn.",
