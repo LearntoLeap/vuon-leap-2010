@@ -807,8 +807,10 @@ const anhOf = p => (p.anh && p.anh.length ? p.anh : p.anhDaiDien ? [p.anhDaiDien
 const NAV = '<button type="button" class="nav prev" data-go="-1" aria-label="Ảnh trước">‹</button><button type="button" class="nav next" data-go="1" aria-label="Ảnh sau">›</button>';
 function post(p, i, base = 0) {
   const c = PAL[p.mau] || PAL.hong, photos = anhOf(p);
-  const slides = [...photos.map((a, k) => `<div class="sl"><img src="${esc(a)}" alt="${esc(nm(p))} – ảnh ${k + 1}" draggable="false" decoding="async"></div>`),
-    `<div class="sl">${flower(p.mau, {kind: KINDS[i % 3], stem: false, base})}</div>`];
+  // có ảnh → album chỉ gồm ảnh (1 ảnh thì đứng yên); chưa có ảnh → bông hoa
+  const slides = photos.length
+    ? photos.map((a, k) => `<div class="sl"><img src="${esc(a)}" alt="${esc(nm(p))} – ảnh ${k + 1}" draggable="false" decoding="async"></div>`)
+    : [`<div class="sl">${flower(p.mau, {kind: KINDS[i % 3], stem: false, base})}</div>`];
   const many = slides.length > 1;
   return `<article class="post" style="--rot:${ROT[i % 4]}deg">
     <header><span class="av"><span>${photos.length ? `<img src="${esc(photos[0])}" alt="">` : '✿'}</span></span>learntoleap<small>· 20.10</small><i>•••</i></header>
@@ -817,7 +819,7 @@ function post(p, i, base = 0) {
       <span class="n n20">20</span><span class="n n10">10</span>
       ${many ? NAV : ''}
     </div>
-    <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg${many ? ' real' : ''}">${'<i></i>'.repeat(many ? slides.length : 4)}</span>${ICON.save}</div>
+    <div class="icons">${ICON.heart}${ICON.chat}${ICON.send}<span class="pg${many ? ' real' : ''}">${'<i></i>'.repeat(many ? slides.length : photos.length ? 0 : 4)}</span>${ICON.save}</div>
     <div class="cap"><b data-fit="11">${esc(nm(p))}</b><span>${esc(p.danhHieu)}</span></div>
   </article>`;
 }

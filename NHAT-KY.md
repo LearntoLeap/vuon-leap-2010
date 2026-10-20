@@ -82,7 +82,7 @@ window.LEAP = {
 - **Màu** (`:root`): `--ink #3a1230` (chữ chính), `--ink2 #71405f`, `--pink #e8559c`, `--paper #fffaf3`, `--vn` (gradient tím cho "PHỤ NỮ VIỆT NAM"), `--noise` (SVG hạt nhiễu dạng data URI).
 - **Định nghĩa SVG dùng chung** được JS chèn vào đầu `<body>`: gradient cánh hoa theo màu `pg-<mau>`/`pt-<mau>`, filter `#fuzz` (cánh mềm có hạt), `#leafg`, `#heart3d`, `#glassg`, `#silk`, `#silk2`, `#rib`.
 - **Hoa** `flower(mau, {kind, base, stem})`: `kind` = `tron` (5 cánh) | `tulip` | `sao` (4 cánh); xoay vòng theo thứ tự người (`KINDS[i % 3]`). Nở bằng class `.bloom`.
-- **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó. Ảnh (`anh`) thành album trượt kiểu Instagram (ảnh cuối là bông hoa), avatar nhỏ = ảnh đầu, chấm trang chạy thật.
+- **Thẻ** `post(p, i)`: khung bài đăng; nền thẻ là gradient theo màu của người đó. Ảnh (`anh`) thành album trượt kiểu Instagram **chỉ gồm ảnh** (CEO 20/10: không chèn bông hoa; 1 ảnh thì đứng yên, không nút ‹ ›, không chấm), avatar nhỏ = ảnh đầu, chấm trang chạy thật. Người chưa có ảnh → 1 bông hoa + 4 chấm trang trí.
 - **Album trượt** `slider(root, {auto, delay})`: dùng chung cho thẻ, mục "Khoảnh khắc rạng rỡ" (polaroid) trong thư và thẻ ở trình chiếu. Cuộn ngang scroll-snap (vuốt trên điện thoại), nút ‹ › (ẩn trên máy cảm ứng), chấm trang; tự chuyển khi đang hiện trên màn hình, dừng 7 giây sau khi người xem tự vuốt/bấm. Nút/chấm nằm trong thẻ có link nên chặn `preventDefault` để không mở thư.
 - **Bức tường** 3 cột (9 người = 3×3); điện thoại 2 cột, thẻ lẻ cuối nằm giữa.
 - **Lớp trang trí cố định** `#decor`: hoa to mờ, hoa kính, tim 3D, vòng elip, sao ✦; trôi nhẹ theo con trỏ (parallax). Class `side` ẩn khi trình chiếu, `home-only` ẩn ở trang thư — ẩn bằng `filter:opacity(0)`.
@@ -114,6 +114,7 @@ window.LEAP = {
 13. 19/10 (chiều): thêm **Ngọc Hà – Hành chính Tổng hợp** (bài "Đóng dấu yêu thương", 3 lời chúc kiểu công văn/con dấu). Nạp **ảnh cho cả 9 người** (18 ảnh, không trùng, đúng theo tên file CEO đặt) thành **album trượt**: thẻ trên bức tường + trình chiếu (kiểu Instagram), mục "Khoảnh khắc rạng rỡ" dạng polaroid trong thư. Trường `anhDaiDien` thay bằng mảng `anh` (code vẫn đọc `anhDaiDien` cũ).
 14. 19/10: theo CEO, đảo thứ tự ảnh Hồ An — ảnh tốt nghiệp ("Hồ An 2") lên làm ảnh chính, ảnh "Hồ An 1" ra sau.
 15. 20/10: clone repo sang máy 2 (`D:\Claude G\vuon-leap-2010`). Theo CEO, Phương Anh **chỉ dùng 1 ảnh mới** (selfie hoa sứ) → xoá `-1`, `-2`, lưu ảnh mới tên `dinh-hoang-phuong-anh-3.jpg` (đặt tên mới để người đã mở link không bị dính ảnh cũ trong cache). Cắt 4:5 bằng System.Drawing của PowerShell (máy 2 không có Python), xoá EXIF.
+16. 20/10: theo CEO, album trượt trên thẻ (bức tường + trình chiếu) **chỉ chạy ảnh** — bỏ slide bông hoa ở cuối; 1 ảnh chạy 1 ảnh, 2 ảnh chạy 2 ảnh… Máy 2: preview mở bằng `http://127.0.0.1:5210` (`localhost` trỏ IPv6, http-server chỉ nghe IPv4).
 
 ---
 
