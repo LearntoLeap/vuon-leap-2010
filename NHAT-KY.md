@@ -22,6 +22,7 @@ File này ghi lại **toàn bộ** quá trình làm, các quyết định đã c
 - `#/` — **Bức tường vinh danh**: tiêu đề "Chúc mừng ngày / PHỤ NỮ VIỆT NAM / 20 · 10 · 2026", lưới thẻ kiểu bài đăng Instagram, mỗi người một thẻ (có số 20/10 to, tim, bình luận…). Bấm thẻ → mở thư.
 - `#/thu/<id>` — **Phong thư riêng** của từng người: tim ruy băng "Gửi Mrs. X" + phong thư → bấm mở → lá thư gồm thiệp tên, danh hiệu (tải PNG được), số liệu, khoảnh khắc, lời chúc, thư tay CEO.
 - `#/trinh-chieu` — **Trình chiếu màn hình lớn**: slide mở đầu → mỗi người 1 slide (9 giây) → slide tri ân. Phím ←/→, Space (dừng), F (toàn màn hình).
+- `#/trinh-chieu-day-du` — **Trình chiếu đầy đủ lời chúc** (nút thứ 2 trên trang chủ): mở đầu → mỗi người: slide vinh danh (album trượt hết ảnh) + **từng lời chúc 1 slide** (polaroid + thẻ giấy, "1 / 3") → **thư tay CEO** đầy đủ → tri ân → lặp lại. 43 slide, ~8,4 phút/vòng; thời lượng mỗi slide theo độ dài chữ (`readMs`). Chấm điều hướng = từng người. Bấm nút vào là bật nhạc luôn.
 - `#/quay-video` — **Máy quay video thiệp** (trang ẩn, không có link trên web): xem nhanh từng khung, "Quay người này" / "Quay tất cả".
 
 Link riêng hiện tại: `phan-thi-thao`, `nguyen-thi-thinh`, `le-bich-ngoc`, `dinh-hoang-phuong-anh`, `ho-thi-an`, `pham-thi-hong-nhung`, `dieu-nga`, `dao-thi-xuan`, `ngoc-ha`, `thuy-linh`.
@@ -120,6 +121,7 @@ window.LEAP = {
 16. 20/10: theo CEO, album trượt trên thẻ (bức tường + trình chiếu) **chỉ chạy ảnh** — bỏ slide bông hoa ở cuối; 1 ảnh chạy 1 ảnh, 2 ảnh chạy 2 ảnh… Máy 2: preview mở bằng `http://127.0.0.1:5210` (`localhost` trỏ IPv6, http-server chỉ nghe IPv4).
 17. 20/10: thêm **Thùy Linh – Chuyên viên Chuyên môn** (ảnh Hội An, bài "Trang học liệu mới", 3 lời chúc: rubric đánh giá / bản thảo học liệu / tri ân). Thêm **video thiệp MP4 cho từng người** + nút tải trên thẻ, trong thư và "Tải tất cả" (ZIP). Máy quay ở `#/quay-video`; máy chủ `cong-cu/may-chu.mjs` thay cho http-server.
 18. 20/10: thêm ảnh thứ 3 cho Mrs. Xuân (đứng trước pano "Ngày Hội Khoa học và Công nghệ", cắt 4:5 hẹp quanh người, giữ trọn tiêu đề) → `dao-thi-xuan-3.jpg`, cuối album; quay lại video của Mrs. Xuân (cảnh ảnh 10,2 giây cho 3 ảnh, video 45,6 giây).
+19. 21/10: thêm **trình chiếu đầy đủ lời chúc** (`showView(true)`, route `#/trinh-chieu-day-du`) để chiếu liên tục trên TV: ảnh + danh hiệu + từng lời chúc + thư CEO, vòng lặp vô hạn. Đã đo vừa khung ở 1920×1080, 1366×768 và điện thoại 375px. Trình chiếu cũ giữ nguyên.
 
 ---
 

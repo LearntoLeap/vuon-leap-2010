@@ -356,6 +356,25 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
 .who .bignum{font-family:var(--num);font-size:clamp(36px,5vw,72px);color:var(--pink);letter-spacing:.12em;line-height:1.1}
 .minis{display:flex;justify-content:center;gap:2px;margin-top:22px;flex-wrap:wrap}
 .minis .flower{width:clamp(44px,5.4vw,74px)}
+/* Trình chiếu đầy đủ: slide lời chúc (polaroid + thẻ giấy) và slide thư CEO. Độ nghiêng dùng `rotate` để không bị animation transform đè */
+.pola-s{width:min(27vw,340px,42vh);margin:0;padding:10px 10px 0;border-radius:6px;background:#fff;rotate:-3deg;
+  box-shadow:0 22px 50px rgba(214,70,140,.3);animation:postIn 1.4s var(--ease) both .2s}
+.pola-s .ph2{display:grid;place-items:center;aspect-ratio:4/5;overflow:hidden;border-radius:3px;background:linear-gradient(160deg,#ffd0e6,#fff2f8)}
+.pola-s img{display:block;width:100%;height:100%;object-fit:cover;animation:kb 16s ease-out both}
+.pola-s .flower{width:80%}
+.pola-s figcaption{padding:10px 6px 12px;text-align:center;font-family:var(--display);font-weight:600;font-size:clamp(16px,1.7vw,26px);color:var(--ink)}
+.pola-s figcaption small{display:block;margin-top:3px;font:700 clamp(10px,.85vw,13px) var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--pink)}
+@keyframes kb{from{transform:scale(1.02)}to{transform:scale(1.12)}}
+.wcount{margin:6px 0 18px;font:700 clamp(12px,1vw,15px) var(--sans);letter-spacing:.3em;color:var(--ink2)}
+.wish-big{position:relative;max-width:760px;padding:clamp(26px,3vw,46px) clamp(22px,2.6vw,42px) clamp(18px,2vw,30px);border-radius:8px;
+  background:var(--paper);box-shadow:0 24px 60px rgba(214,70,140,.22)}
+.wish-big::before{content:"";position:absolute;top:-12px;left:50%;width:110px;height:26px;margin-left:-55px;background:rgba(255,160,205,.7);transform:rotate(-3deg)}
+.who .wish-big p{max-width:none;margin:0;text-shadow:none;font-family:var(--display);font-style:italic;font-weight:400;
+  font-size:clamp(19px,min(2.4vw,3.8vh),38px);line-height:1.55;color:var(--ink);white-space:pre-line}
+.who .wish-big.long p{font-size:clamp(17px,min(2vw,3.2vh),32px)}
+.wish-big span{display:block;margin-top:14px;text-align:right;font-size:clamp(13px,1.2vw,18px);font-weight:700;color:var(--pink)}
+.ceo-slide .ceo{max-width:min(880px,92vw);margin:14px auto 0;text-align:left;rotate:-.8deg}
+.ceo-slide .ceo .body{font-size:clamp(15px,min(1.7vw,2.5vh),26px);line-height:1.75}
 .ctrl{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:8px;align-items:center;z-index:30;
   padding:6px;border-radius:999px;background:var(--white-glass);backdrop-filter:blur(10px);border:1px solid #fff;box-shadow:0 8px 24px rgba(214,70,140,.2)}
 .ctrl .btn{width:40px;height:40px;padding:0;justify-content:center;box-shadow:none}
@@ -461,6 +480,7 @@ a:hover .icons .hrt{animation:heartbeat .9s ease-in-out infinite}
   .vdl{font-size:12px;padding:7px 6px}
   .slide{grid-template-columns:1fr;text-align:center;justify-items:center;gap:14px}
   .slide .post{width:62vw}
+  .pola-s{width:44vw}
   .who p{margin-inline:auto}
   .stats{gap:8px}
   .ceo{padding-top:84px}
@@ -909,6 +929,7 @@ function home() {
       <div class="date rise" style="--d:1.2s">${esc(D.ngay)}</div>
       <p class="lead rise" style="--d:1.35s">${esc(D.loiMoDau)}</p>
       <div class="actions rise" style="--d:1.5s"><a class="btn primary" href="#/trinh-chieu">✦ Trình chiếu màn hình lớn</a>
+        <a class="btn primary" href="#/trinh-chieu-day-du">✦ Trình chiếu đầy đủ lời chúc</a>
         <button class="btn" id="dlAll" type="button">${ICON.down}<span>Tải tất cả video thiệp</span></button></div>
       <div class="wall">${cards}</div>
       <p class="hint rise" style="--d:2.2s"><span class="blink">Chạm vào một tấm thiệp để mở thư</span></p>
@@ -1190,39 +1211,58 @@ function wrap(g, text, x, y, max, lh) {
   return y;
 }
 
-/* ================= Trang 3: Trình chiếu màn hình lớn ================= */
+/* ================= Trang 3: Trình chiếu màn hình lớn =================
+   #/trinh-chieu: mỗi người 1 slide · #/trinh-chieu-day-du: thêm từng lời chúc + thư CEO. Cả hai chạy vòng lặp liên tục. */
 const SLIDE_MS = 9000;
-function showView() {
+const readMs = (s, k, lo, hi) => Math.min(hi, Math.max(lo, 3500 + Array.from(s || '').length * k));   // đủ thời gian đọc
+function showView(full = false) {
   const minis = D.chiEm.map((p, i) => flower(p.mau, {kind: KINDS[i % 3], stem: false, base: 400 + i * 160})).join('');
-  const lastPara = ((D.thuCEO || {}).noiDung || '').split(/\n\s*\n/).pop();
-  const slides = [
-    () => `<div class="slide center">${ribbon()}<div class="who">
+  const ceo = D.thuCEO || {}, lastPara = (ceo.noiDung || '').split(/\n\s*\n/).pop(), n = D.chiEm.length;
+  const slides = [];   // {html, ms, p (người → nhạc riêng), g (nhóm cho chấm điều hướng)}
+  slides.push({g: 0, ms: SLIDE_MS, html: () => `<div class="slide center">${ribbon()}<div class="who">
         <div class="script">Chúc mừng ngày</div>
         <h1 class="vn purpletext" data-fit="24">${splitChars('Phụ nữ Việt Nam')}</h1>
         <div class="bignum">20 · 10</div>
         <p>${esc(D.loiMoDau)}</p>
-        <div class="minis">${minis}</div></div></div>`,
-    ...D.chiEm.map((p, i) => () => `<div class="slide">
+        <div class="minis">${minis}</div></div></div>`});
+  D.chiEm.forEach((p, i) => {
+    const photos = anhOf(p), wishes = (p.loiChuc || []).filter(w => w && w.noiDung);
+    slides.push({g: i + 1, p, ms: full ? Math.max(SLIDE_MS, photos.length * 2600 + 2400) : SLIDE_MS, html: () => `<div class="slide">
         ${post(p, i, 500)}
         <div class="who">
           <div class="script">Vinh danh</div>
           <h1 data-fit="24">${esc(nm(p))}</h1>
           <h2 data-fit="18">${esc(p.danhHieu)}</h2>
           <p>${p.goiTen ? esc(p.ten) + ' · ' : ''}${esc(p.vaiTro)}${p.moTaDanhHieu ? '<br>' + esc(p.moTaDanhHieu) : ''}</p>
-        </div></div>`),
-    () => `<div class="slide center"><div class="who">
+        </div></div>`});
+    if (full) wishes.forEach((w, k) => slides.push({g: i + 1, p, ms: readMs(w.noiDung, 65, 8000, 14000), html: () => `<div class="slide">
+        <figure class="pola-s">
+          <div class="ph2">${photos.length ? `<img src="${esc(photos[(k + 1) % photos.length])}" alt="${esc(nm(p))}">` : flower(p.mau, {kind: KINDS[i % 3], stem: false, base: 300})}</div>
+          <figcaption>${esc(nm(p))}<small>${esc(p.vaiTro)}</small></figcaption>
+        </figure>
+        <div class="who">
+          <div class="script">Lời chúc</div>
+          <div class="wcount">${k + 1} / ${wishes.length}</div>
+          <div class="wish-big${Array.from(w.noiDung).length > 150 ? ' long' : ''}"><p>${esc(w.noiDung)}</p><span>— ${esc(w.tu)}</span></div>
+        </div></div>`}));
+  });
+  if (full && ceo.noiDung) slides.push({g: n + 1, ms: readMs(ceo.noiDung, 50, 12000, 24000), html: () => `<div class="slide center ceo-slide"><div class="who">
+        <div class="script">Thư tay từ CEO</div>
+        <div class="ceo"><div class="body">${esc(ceo.noiDung)}</div>
+          <div class="sign">${ceo.anhChuKy ? `<img src="${esc(ceo.anhChuKy)}" alt="Chữ ký">` : ''}<b>${esc(ceo.nguoiKy)}</b><small>${esc(ceo.chucVu)}</small></div></div>
+        </div></div>`});
+  slides.push({g: n + 1, ms: SLIDE_MS, html: () => `<div class="slide center"><div class="who">
         <div class="script">Tri ân</div>
         <h1>Cảm ơn vì đã nở hoa cùng Leap</h1>
         <p>${esc(lastPara)}</p>
-        <div class="minis">${minis}</div></div></div>`
-  ];
+        <div class="minis">${minis}</div></div></div>`});
   $app.innerHTML = `
     <a class="btn back" href="#/">← Thoát</a>
     <div class="bar" id="bar"></div>
     <section class="screen" id="show"></section>
     <div class="ctrl">
       <button class="btn" id="prev" aria-label="Trước">‹</button>
-      <div class="dots" id="dots">${slides.map((_, i) => `<i data-i="${i}"></i>`).join('')}</div>
+      <div class="dots" id="dots">${Array.from({length: n + 2}, (_, g) => `<i data-g="${g}"></i>`).join('')}</div>
       <button class="btn" id="play" aria-label="Tạm dừng">❚❚</button>
       <button class="btn" id="next" aria-label="Sau">›</button>
       <button class="btn" id="fs" aria-label="Toàn màn hình">⛶</button>
@@ -1232,21 +1272,22 @@ function showView() {
   let idx = 0, timer = null, paused = false, stopAlbum = () => {};
 
   function go(i) {
-    idx = (i + slides.length) % slides.length;
+    idx = (i + slides.length) % slides.length;   // hết vòng thì quay lại slide đầu
+    const s = slides[idx];
     $show.querySelectorAll('.slide:not(.leave)').forEach(el => {
       el.classList.add('leave'); setTimeout(() => el.remove(), 1000);
     });
-    $show.insertAdjacentHTML('beforeend', slides[idx]());
-    $dots.forEach((d, j) => d.classList.toggle('on', j === idx));
-    music.use(D.chiEm[idx - 1]);   // slide mở đầu/tri ân: bài chung; slide từng người: bài riêng
+    $show.insertAdjacentHTML('beforeend', s.html());
+    $dots.forEach((d, j) => d.classList.toggle('on', j === s.g));
+    music.use(s.p || null);   // slide mở đầu/thư CEO/tri ân: bài chung; slide từng người: bài riêng
     bloomAll($show.lastElementChild); fitWhenReady($show.lastElementChild);
     stopAlbum(); stopAlbum = slider($show.lastElementChild.querySelector('.post'), {auto: 2600, delay: 1600});
     const old = document.getElementById('bar'), bar = old.cloneNode();
-    bar.className = 'bar go' + (paused ? ' paused' : ''); bar.style.setProperty('--ms', SLIDE_MS + 'ms'); old.replaceWith(bar);
+    bar.className = 'bar go' + (paused ? ' paused' : ''); bar.style.setProperty('--ms', s.ms + 'ms'); old.replaceWith(bar);
     setTimeout(() => sky.burst(innerWidth / 2, innerHeight * .4, 50), 900);
     schedule();
   }
-  function schedule() { clearTimeout(timer); if (!paused) timer = setTimeout(() => go(idx + 1), SLIDE_MS); }
+  function schedule() { clearTimeout(timer); if (!paused) timer = setTimeout(() => go(idx + 1), slides[idx].ms); }
   function toggle() {
     paused = !paused; $play.textContent = paused ? '▶' : '❚❚';
     if (paused) { clearTimeout(timer); document.getElementById('bar').classList.add('paused'); } else go(idx);
@@ -1254,7 +1295,7 @@ function showView() {
   document.getElementById('prev').onclick = () => { music.start(); go(idx - 1); };
   document.getElementById('next').onclick = () => { music.start(); go(idx + 1); };
   $play.onclick = toggle;
-  $dots.forEach(d => d.onclick = () => go(+d.dataset.i));
+  $dots.forEach(d => d.onclick = () => go(slides.findIndex(s => s.g === +d.dataset.g)));   // chấm = từng người (nhảy tới slide đầu của người đó)
   document.getElementById('fs').onclick = () => { music.start(); document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.(); };
   const onKey = e => {
     if (e.key === 'ArrowRight' || e.key === 'PageDown') { music.start(); go(idx + 1); }
@@ -1264,6 +1305,8 @@ function showView() {
   };
   addEventListener('keydown', onKey);
   cleanup.push(() => { clearTimeout(timer); removeEventListener('keydown', onKey); });
+  // bấm nút vào trình chiếu đầy đủ là bật nhạc luôn (trình duyệt chỉ cho phát khi người xem đã bấm vào trang)
+  if (full && navigator.userActivation?.hasBeenActive) music.start();
   go(0);
 }
 
@@ -1279,9 +1322,10 @@ function render() {
   cleanup.forEach(f => f()); cleanup = [];
   const h = decodeURIComponent(location.hash.slice(1)) || '/';
   scrollTo(0, 0);
-  document.body.dataset.route = h.startsWith('/thu/') ? 'thu' : h === '/trinh-chieu' ? 'show' : h === '/quay-video' ? 'studio' : 'home';
+  const show = h === '/trinh-chieu' || h === '/trinh-chieu-day-du';
+  document.body.dataset.route = h.startsWith('/thu/') ? 'thu' : show ? 'show' : h === '/quay-video' ? 'studio' : 'home';
   if (h.startsWith('/thu/')) letter(h.slice(5));
-  else if (h === '/trinh-chieu') showView();
+  else if (show) showView(h === '/trinh-chieu-day-du');
   else if (h === '/quay-video') studio();
   else home();
 }
